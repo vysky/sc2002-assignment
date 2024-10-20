@@ -1,1 +1,3 @@
-# sc2002-assignment
+# Hospital Management System
+
+Hospital Management System for NTU SC2002 assignment
