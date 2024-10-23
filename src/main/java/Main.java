@@ -1,4 +1,8 @@
+import java.util.List;
 import java.util.Scanner;
+
+import hms.user.Patient;
+import hms.user.helpers.ExcelReader;
 
 public class Main
 {
@@ -7,6 +11,8 @@ public class Main
         int option;
         Scanner input = new Scanner(System.in);
 
+        List<Patient> patients = ExcelReader.readPatientData("Patient_List.xlsx");
+        
         do
         {
             menuLogin();
@@ -14,7 +20,7 @@ public class Main
 
             switch(option) {
                 case 1:
-                    menuPatient();
+                    menuPatient(patients);
                     break;
                 case 2:
                     menuDoctor();
@@ -48,7 +54,7 @@ public class Main
                 """);
     }
 
-    public static void menuPatient()
+    public static void menuPatient(List<Patient> patients)
     {
         int option;
         Scanner input = new Scanner(System.in);
@@ -72,7 +78,7 @@ public class Main
             switch(option)
             {
                 case 1:
-                    patientOption1();
+                    patientOption1(patients);
                     break;
                 case 2:
                     patientOption2();
@@ -139,9 +145,11 @@ public class Main
                 """);
     }
 
-    public static void patientOption1()
+    public static void patientOption1(List<Patient> patients)
     {
-        System.out.println("View Medical Record");
+        for (int i = 0; i < patients.size(); i++) {
+            System.out.println(patients.get(i).getPatientId());
+        }
     }
 
     public static void patientOption2()
