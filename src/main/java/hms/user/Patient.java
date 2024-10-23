@@ -15,7 +15,7 @@ public class Patient extends User {
     private List<String> treatments = new ArrayList<>();
 
     public Patient(String patientId, String name, String dateOfBirth, String gender, String bloodType, String email) {
-        super("from excel sheet", "from excel sheet", false);
+        super(patientId, dateOfBirth, false);
         this.patientId = patientId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -53,12 +53,16 @@ public class Patient extends User {
         return bloodType;
     }
 
-    public List<String> getDiagnoses() {
-        return diagnoses;
+    public String getDiagnoses() {
+        StringBuilder resultStr = new StringBuilder();
+        diagnoses.forEach(diag -> resultStr.append(diag).append(", "));
+        return resultStr.toString().trim();
     }
 
-    public List<String> getTreatments() {
-        return treatments;
+    public String getTreatments() {
+        StringBuilder resultStr = new StringBuilder();
+        treatments.forEach(treat -> resultStr.append(treat).append(", "));
+        return resultStr.toString().trim();
     }
 
     // SETTERS

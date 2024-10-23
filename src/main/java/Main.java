@@ -10,6 +10,7 @@ public class Main
     {
         int option;
         Scanner input = new Scanner(System.in);
+        
 
         List<Patient> patients = ExcelReader.readPatientData("Patient_List.xlsx");
         
@@ -145,11 +146,33 @@ public class Main
                 """);
     }
 
-    public static void patientOption1(List<Patient> patients)
+    public static void patientOption1(List<Patient> patients) // Not final implementation. For testing only
     {
-        for (int i = 0; i < patients.size(); i++) {
-            System.out.println(patients.get(i).getPatientId());
-        }
+        Patient user = new Patient(patients.get(0).getPatientId(), patients.get(0).getName(), patients.get(0).getDateOfBirth(), patients.get(0).getGender(), patients.get(0).getBloodType(), patients.get(0).getEmail());
+        user.setDiagnoses("flu");
+        user.setDiagnoses("cold");
+        user.setDiagnoses("back pain");
+
+        System.out.println("\n-----MEDICAL RECORD OF " + user.getPatientId() + "----");
+        System.out.println("Name: " + user.getName());
+        System.out.println("Date of Birth: " + user.getDateOfBirth());
+        System.out.println("Gender: " + user.getGender());
+        System.out.println("Contact Number: " + user.getHpNumber());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Blood Type: " + user.getBloodType());
+        System.out.println("Past Diagnoses: " + user.getDiagnoses());
+        System.out.println("Past Treatments" + user.getTreatments());
+        // for (int i = 0; i < patients.size(); i++) {
+        //     System.out.println("\n-----MEDICAL RECORD OF " + patients.get(i).getPatientId() + "----");
+        //     System.out.println("Name: " + patients.get(i).getName());
+        //     System.out.println("Date of Birth: " + patients.get(i).getDateOfBirth());
+        //     System.out.println("Gender: " + patients.get(i).getGender());
+        //     System.out.println("Contact Number: " + patients.get(i).getHpNumber());
+        //     System.out.println("Email: " + patients.get(i).getEmail());
+        //     System.out.println("Blood Type: " + patients.get(i).getBloodType());
+        //     System.out.println("Past Diagnoses: " + patients.get(i).getDiagnoses());
+        //     System.out.println("Past Treatments" + patients.get(i).getTreatments());
+        // }
     }
 
     public static void patientOption2()
