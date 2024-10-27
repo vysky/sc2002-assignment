@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import hms.user.Administrator;
 import hms.user.Patient;
 import hms.user.User;
 
@@ -78,10 +79,11 @@ public class ExcelReader {
                     String name = row.getCell(1).getStringCellValue();
                     String role = row.getCell(2).getStringCellValue();
                     String gender = row.getCell(3).getStringCellValue();
-                    String age = row.getCell(4).getStringCellValue();
-
-                    User staff = new Patient(staffID, name, role, gender, gender, age);
-                    staffs.add(staff);
+                    double age = row.getCell(4).getNumericCellValue();
+                    if(role == "Administrator"){
+                        User Administrator = new Administrator(staffID, name, role, gender, age);
+                        staffs.add(Administrator);
+                    }
                 }
             }
             
