@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import hms.user.Patient;
+import hms.user.User;
 import hms.user.helpers.ExcelReader;
 
 public class Main
@@ -13,7 +14,7 @@ public class Main
         
 
         List<Patient> patients = ExcelReader.readPatientData("Patient_List.xlsx");
-        List<Patient> staff = ExcelReader.readPatientData("Staff_List.xlsx");
+        List<User> staffs = ExcelReader.readstaffData("Staff_List.xlsx");
         do
         {
             menuLogin();
@@ -30,7 +31,7 @@ public class Main
                     menuPharmacist();
                     break;
                 case 4:
-                    menuAdministrator();
+                    menuAdministrator(staffs);
                     break;
                 case 0:
                     System.out.println("Goodbye!");
@@ -135,15 +136,63 @@ public class Main
                 """);
     }
 
-    public static void menuAdministrator()
+    public static void menuAdministrator(List<User> staffs)
     {
-        System.out.println("""
+        /*System.out.println("""
                 (1) View and Manage Hospital Staff
                 (2) View Appointments details
                 (3) View and Manage Medication Inventory
                 (4) Approve Replenishment Requests
                 (0) Logout
-                """);
+                """);*/
+                int option;
+                Scanner input = new Scanner(System.in);
+        
+                System.out.println("""
+                        (1) View and Manage Hospital Staff
+                        (2) View Appointments details
+                        (3) View and Manage Medication Inventory
+                        (4) Approve Replenishment Requests
+                        (0) Logout
+                        """);
+        
+                do
+                {
+                    option = input.nextInt();
+        
+                    switch(option)
+                    {
+                        case 1:
+                            staffOption1(patients);
+                            break;
+                        case 2:
+                            staffOption2();
+                            break;
+                        case 3:
+                            patientOption3();
+                            break;
+                        case 4:
+                            patientOption4();
+                            break;
+                        case 5:
+                            patientOption5();
+                            break;
+                        case 6:
+                            patientOption6();
+                            break;
+                        case 7:
+                            patientOption7();
+                            break;
+                        case 8:
+                            patientOption8();
+                            break;
+                        case 0:
+                            System.out.println("Goodbye!");
+                        default:
+                            continue;
+                    }
+                } while (option != 0);
+
     }
 
     public static void patientOption1(List<Patient> patients) // Not final implementation. For testing only
