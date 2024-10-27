@@ -13,7 +13,7 @@ public class Main
         
 
         List<Patient> patients = ExcelReader.readPatientData("Patient_List.xlsx");
-        
+        List<Patient> staff = ExcelReader.readPatientData("Staff_List.xlsx");
         do
         {
             menuLogin();

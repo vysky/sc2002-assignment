@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import hms.user.Patient;
+import hms.user.User;
 
 public class ExcelReader {
     public static List<Patient> readPatientData(String fileName) {
@@ -52,5 +53,44 @@ public class ExcelReader {
         }
 
         return patients;
+    }
+
+    public static List<User> readstaffData(String fileName) {
+        List<User> staffs = new ArrayList<>();
+
+        try {
+            ClassLoader classLoader = ExcelReader.class.getClassLoader();
+            InputStream file = classLoader.getResourceAsStream(fileName);
+            
+            if (file == null) {
+                throw new FileNotFoundException("File " + fileName + " not found in resources");
+            }
+
+
+            Workbook workbook = new XSSFWorkbook(file);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+
+                if (row != null) {
+                    String staffID = row.getCell(0).getStringCellValue();
+                    String name = row.getCell(1).getStringCellValue();
+                    String role = row.getCell(2).getStringCellValue();
+                    String gender = row.getCell(3).getStringCellValue();
+                    String age = row.getCell(4).getStringCellValue();
+
+                    User staff = new Patient(staffID, name, role, gender, gender, age);
+                    staffs.add(staff);
+                }
+            }
+            
+            workbook.close();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return staffs;
     }
 }
