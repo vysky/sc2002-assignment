@@ -9,7 +9,7 @@ public class Staff extends User {
     private int age;
 
     public Staff(String staffId, String name, String role, String gender, int age) {
-        super(staffId, "password", true);
+        super(staffId, "password", role);
         this.staffId = staffId;
         this.name = name;
         this.role = role;
@@ -41,5 +41,23 @@ public class Staff extends User {
 
     // SETTERS
 
-    
+    public void setStaffId(String id) {
+        staffId = id;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    public void setRole(String newRole) {
+        role = newRole;
+    }
+
+    public void setGender(String gen) {
+        gender = gen;
+    }
+
+    public void setAge(int a) {
+        age = a;
+    }
 }

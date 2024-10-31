@@ -13,32 +13,30 @@ public class User{
     private String hospitalId = "";
     private String password = "";
     private Role userRole = Role.UNASSIGNED;
-    private boolean isStaff = false;
 
-    public User(String id, String pwd, boolean staff) {
+    public User(String id, String pwd, String role) {
         hospitalId = id;
         pwd = password;
-        isStaff = staff;
 
-        char roleChar = id.charAt(0);
-        switch (roleChar) {
-            case 'P': { // Since there are 2 'P's, use staff role to differentiate the 2
-                if (staff) {
-                    userRole = Role.PHARMACIST;
-                }
-                else {
-                    userRole = Role.PATIENT;
-                }
+        String curRole = role;
+        switch (curRole) {
+            case "Pharmacist": { // Since there are 2 'P's, use staff role to differentiate the 2
+                userRole = Role.PHARMACIST;
                 break;
             }
 
-            case 'D': {
+            case "Doctor": {
                 userRole = Role.DOCTOR;
                 break;
             }
 
-            case 'A': {
+            case "Administrator": {
                 userRole = Role.ADMIN;
+                break;
+            }
+
+            case "Patient": {
+                userRole = Role.PATIENT;
                 break;
             }
 
