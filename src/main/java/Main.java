@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import hms.user.Patient;
+import hms.user.Staff;
 import hms.user.User;
 import hms.user.helpers.ExcelReader;
 
@@ -14,7 +15,7 @@ public class Main
         
 
         List<Patient> patients = ExcelReader.readPatientData("Patient_List.xlsx");
-        List<User> staffs = ExcelReader.readstaffData("Staff_List.xlsx");
+        List<Staff> listOfStaffs = ExcelReader.readstaffData("Staff_List.xlsx");
         do
         {
             menuLogin();
@@ -31,7 +32,7 @@ public class Main
                     menuPharmacist();
                     break;
                 case 4:
-                    menuAdministrator(staffs);
+                    menuAdministrator(listOfStaffs,Staff.getrole());   // Should check if 'User' is allowed to access this menu
                     break;
                 case 0:
                     System.out.println("Goodbye!");
@@ -136,7 +137,7 @@ public class Main
                 """);
     }
 
-    public static void menuAdministrator(List<User> staffs)
+    public static void menuAdministrator(List<Staff> staffs ,String role) //If role is administrator, User will be allowed to use options within menu
     {
         /*System.out.println("""
                 (1) View and Manage Hospital Staff
@@ -145,6 +146,11 @@ public class Main
                 (4) Approve Replenishment Requests
                 (0) Logout
                 """);*/
+                if(role!="Administrator"){
+                    System.out.println("You DO NOT have access to this menu options!");
+
+                    return;
+                }
                 int option;
                 Scanner input = new Scanner(System.in);
         
@@ -163,10 +169,10 @@ public class Main
                     switch(option)
                     {
                         case 1:
-                            staffOption1(patients);
+                            AdminOption1(staffs);
                             break;
                         case 2:
-                            staffOption2();
+                            AdminOption2();
                             break;
                         case 3:
                             patientOption3();
@@ -192,6 +198,7 @@ public class Main
                             continue;
                     }
                 } while (option != 0);
+            }
 
     }
 
@@ -258,4 +265,22 @@ public class Main
     {
         System.out.println("View Past Appointment Outcome Records");
     }
+
+    public static void AdminOption1(List<Staff> staffs){
+        int i=1;
+        for(Staff perstaff : staffs){
+            String id = String.format("%-10s",perstaff.getHospitalId());
+            String name = String.format("%-10s",perstaff.getName());
+            String role = String.format("%-10s",perstaff.getrole());
+            String gender = String.format("%-10s",perstaff.getGender());
+            int age = (int)perstaff.getAge();
+            System.out.println("No."+i+"   ID: "+id+"\t|Name: "+name+"\t|Role: "+role+"\t|Gender: "+gender+"\t|Age: "+age);
+            i++;
+        }
+    }
+
+    public static void AdminOption2(){
+        System.err.println("nothing here");
+    }
+
 }

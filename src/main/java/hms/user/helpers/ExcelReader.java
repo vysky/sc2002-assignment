@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import hms.user.Administrator;
 import hms.user.Patient;
 import hms.user.User;
+import hms.user.Staff;
 
 public class ExcelReader {
     public static List<Patient> readPatientData(String fileName) {
@@ -56,8 +57,8 @@ public class ExcelReader {
         return patients;
     }
 
-    public static List<User> readstaffData(String fileName) {
-        List<User> staffs = new ArrayList<>();
+    public static List<Staff> readstaffData(String fileName) {
+        List<Staff> listOfStaffs = new ArrayList<>();
 
         try {
             ClassLoader classLoader = ExcelReader.class.getClassLoader();
@@ -80,10 +81,9 @@ public class ExcelReader {
                     String role = row.getCell(2).getStringCellValue();
                     String gender = row.getCell(3).getStringCellValue();
                     double age = row.getCell(4).getNumericCellValue();
-                    if(role == "Administrator"){
-                        User Administrator = new Administrator(staffID, name, role, gender, age);
-                        staffs.add(Administrator);
-                    }
+                    Staff Staff = new Staff(staffID, name, role, gender, age);
+                    listOfStaffs.add(Staff);
+                    
                 }
             }
             
@@ -93,6 +93,6 @@ public class ExcelReader {
             e.printStackTrace();
         }
 
-        return staffs;
+        return listOfStaffs;
     }
 }
