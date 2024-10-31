@@ -15,7 +15,7 @@ public class Patient extends User {
     private List<String> treatments = new ArrayList<>();
 
     public Patient(String patientId, String name, String dateOfBirth, String gender, String bloodType, String email) {
-        super(patientId, dateOfBirth, false);
+        super(patientId, dateOfBirth, "Patient");
         this.patientId = patientId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
