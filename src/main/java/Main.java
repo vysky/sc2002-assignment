@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 
+import hms.user.Administrator;
 import hms.user.Patient;
 import hms.user.Staff;
 import hms.user.User;
@@ -32,7 +33,8 @@ public class Main
                     menuPharmacist();
                     break;
                 case 4:
-                    menuAdministrator(listOfStaffs,Staff.getrole());   // Should check if 'User' is allowed to access this menu
+                    String user = "A001";
+                    menuAdministrator(listOfStaffs/*,user,"Administrator"*/);   // Should check if 'User' is allowed to access this menu
                     break;
                 case 0:
                     System.out.println("Goodbye!");
@@ -40,6 +42,7 @@ public class Main
                     continue;
             }
         } while(option != 0);
+        //input.close();
     }
 
     public static void menuLogin()
@@ -137,7 +140,7 @@ public class Main
                 """);
     }
 
-    public static void menuAdministrator(List<Staff> staffs ,String role) //If role is administrator, User will be allowed to use options within menu
+    public static void menuAdministrator(List<Staff> staffs /*Administrator user,String role*/) //If role is administrator, User will be allowed to use options within menu
     {
         /*System.out.println("""
                 (1) View and Manage Hospital Staff
@@ -146,13 +149,33 @@ public class Main
                 (4) Approve Replenishment Requests
                 (0) Logout
                 """);*/
-                if(role!="Administrator"){
+                Scanner admininput = new Scanner(System.in);
+                System.out.println("Enter your ID");
+                String id = admininput.nextLine();
+                System.out.println("Enter your Password");
+                String pw = admininput.nextLine();
+                String role = "";
+                Administrator currAdmin= null;;
+                for(int i=0;i<staffs.size();i++){
+                    //System.out.println(staffs.get(i).getStaffId()+"a");
+                    //System.out.println(staffs.get(i).getPassword()+"a");
+                    //System.out.println(staffs.get(i).getrole());
+                    if(staffs.get(i).getStaffId().compareTo(id)==0 && staffs.get(i).getPassword().compareTo(pw)==0){
+                        System.out.println("Login successful");
+                        currAdmin = new Administrator(staffs.get(i).getStaffId(), staffs.get(i).getPassword(), staffs.get(i).getrole(), staffs.get(i).getGender(), staffs.get(i).getAge());
+                        role = staffs.get(i).getrole();
+                        //System.out.println(role);
+                    }
+                }
+                
+                // this section will check if the user is authorized to access this menu
+                if(!role.equals("Administrator")){
                     System.out.println("You DO NOT have access to this menu options!");
-
                     return;
                 }
+
+
                 int option;
-                Scanner input = new Scanner(System.in);
         
                 System.out.println("""
                         (1) View and Manage Hospital Staff
@@ -164,12 +187,12 @@ public class Main
         
                 do
                 {
-                    option = input.nextInt();
+                    option = admininput.nextInt();
         
                     switch(option)
                     {
                         case 1:
-                            AdminOption1(staffs);
+                            AdminOption1(staffs,currAdmin);
                             break;
                         case 2:
                             AdminOption2();
@@ -198,9 +221,10 @@ public class Main
                             continue;
                     }
                 } while (option != 0);
+                //admininput.close();
             }
 
-    }
+    
 
     public static void patientOption1(List<Patient> patients) // Not final implementation. For testing only
     {
@@ -266,17 +290,9 @@ public class Main
         System.out.println("View Past Appointment Outcome Records");
     }
 
-    public static void AdminOption1(List<Staff> staffs){
-        int i=1;
-        for(Staff perstaff : staffs){
-            String id = String.format("%-10s",perstaff.getHospitalId());
-            String name = String.format("%-10s",perstaff.getName());
-            String role = String.format("%-10s",perstaff.getrole());
-            String gender = String.format("%-10s",perstaff.getGender());
-            int age = (int)perstaff.getAge();
-            System.out.println("No."+i+"   ID: "+id+"\t|Name: "+name+"\t|Role: "+role+"\t|Gender: "+gender+"\t|Age: "+age);
-            i++;
-        }
+    public static void AdminOption1(List<Staff> staffs,Administrator curAdm){
+        curAdm.defaultSort(staffs);
+
     }
 
     public static void AdminOption2(){

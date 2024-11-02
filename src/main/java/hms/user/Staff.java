@@ -7,6 +7,7 @@ public class Staff extends User {
     private String role;
     private String gender;
     private double age;
+    private String password;
 
     public Staff(String staffId, String name, String role, String gender, double age) {
         super(staffId, "password", role);
@@ -39,6 +40,10 @@ public class Staff extends User {
         return age;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
     // SETTERS
 
     public void setStaffId(String id) {
@@ -55,5 +60,9 @@ public class Staff extends User {
 
     public void setAge(double a) {
         age = a;
+    }
+
+    public void setPassword(String newPassword) {
+        password = newPassword;
     }
 }

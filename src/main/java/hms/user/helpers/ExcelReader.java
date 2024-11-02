@@ -82,6 +82,7 @@ public class ExcelReader {
                     String gender = row.getCell(3).getStringCellValue();
                     double age = row.getCell(4).getNumericCellValue();
                     Staff Staff = new Staff(staffID, name, role, gender, age);
+                    Staff.setPassword("password");
                     listOfStaffs.add(Staff);
                     
                 }
