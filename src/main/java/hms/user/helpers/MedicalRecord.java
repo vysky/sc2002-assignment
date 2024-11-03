@@ -36,6 +36,18 @@ public class MedicalRecord {
         System.out.println("Email: " + p.getEmail());
         System.out.println("Blood Type: " + p.getBloodType());
         System.out.println("Past Diagnoses: " + p.getDiagnoses());
-        System.out.println("Past Treatments" + p.getTreatments());
+        System.out.println("Past Treatments: " + p.getTreatments());
     }
+
+    public void setNewDiagnosis(String patientId, String diagnosis) {
+        Patient p = getPatientById(patientId);
+        p.setDiagnoses(diagnosis);
+    }
+
+    public void setNewTreatment(String patientId, String treatment) {
+        Patient p = getPatientById(patientId);
+        p.setTreatments(treatment);
+    }
+
+    // Prescription method goes here too
 }
