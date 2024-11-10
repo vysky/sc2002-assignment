@@ -175,7 +175,7 @@ public class Main
                 }
 
 
-                int option;
+                String option;
         
                 System.out.println("""
                         (1) View and Manage Hospital Staff
@@ -184,43 +184,50 @@ public class Main
                         (4) Approve Replenishment Requests
                         (0) Logout
                         """);
+                option = admininput.nextLine();
+                /*if(admininput.hasNextLine()){
+                admininput.nextLine();}*/
         
                 do
                 {
-                    option = admininput.nextInt();
+                    //admininput.nextLine();
         
                     switch(option)
                     {
-                        case 1:
-                            AdminOption1(staffs,currAdmin);
-                            break;
-                        case 2:
+                        case "1":
+                            //admininput.nextLine();
+                            AdminOption1(staffs,currAdmin,admininput);
+                            option = showAdminMenu(admininput);
+                            //admininput.nextLine();
+                            continue;
+                        case "2":
                             AdminOption2();
                             break;
-                        case 3:
+                        case "3":
                             patientOption3();
                             break;
-                        case 4:
+                        case "4":
                             patientOption4();
                             break;
-                        case 5:
+                        case "5":
                             patientOption5();
                             break;
-                        case 6:
+                        case "6":
                             patientOption6();
                             break;
-                        case 7:
+                        case "7":
                             patientOption7();
                             break;
-                        case 8:
+                        case "8":
                             patientOption8();
                             break;
-                        case 0:
+                        case "0":
                             System.out.println("Goodbye!");
+                            break;
                         default:
                             continue;
                     }
-                } while (option != 0);
+                } while (!option.equals("0"));
                 //admininput.close();
             }
 
@@ -290,13 +297,129 @@ public class Main
         System.out.println("View Past Appointment Outcome Records");
     }
 
-    public static void AdminOption1(List<Staff> staffs,Administrator curAdm){
-        curAdm.defaultSort(staffs);
+    public static void AdminOption1(List<Staff> staffs,Administrator curAdm,Scanner tempScanner){
+        int opt=0;
+        String tempopt;
+        curAdm.sortMenu(staffs,tempScanner);
+        //tempScanner.nextLine();
+
+        System.out.println("Enter 1 to choose a staff to manage otherwise any key to exit");
+        //tempScanner.nextLine();
+        tempopt = tempScanner.nextLine();
+        
+        
+        //tempScanner.nextLine();
+        if(tempopt.equals("1")){
+            tempopt = "";
+            System.out.println("Enter the index of the staff to manage. (No.#)");
+            opt = tempScanner.nextInt();
+            
+            if(tempScanner.hasNextLine()){
+                tempScanner.nextLine();}
+            //tempScanner.skip("\n");
+            //System.out.println(staffs.get(opt-1).getName());
+            System.out.println("Confirm to edit the following Staff: "+staffs.get(opt-1).getName());
+            System.out.println("Enter 1 to confirm, otherwise any key to cancel");
+            //tempScanner.nextLine();
+            tempopt = tempScanner.nextLine();
+
+            if(tempopt.equals("1")){
+                System.out.println("""
+                    Which attribute do you want to edit (ID is not changable!)
+                    Enter 0 to exit.
+                    1. Name
+                    2. Gender
+                    3. Age
+                    4. Password
+                    0. Exit                
+                                            """);
+                tempopt = tempScanner.nextLine();
+                switch (tempopt) {
+                    case "1":
+                        
+                        System.out.println("Enter New Name value:");
+                        //tempScanner.nextLine();
+                        staffs.get(opt-1).setName(tempScanner.nextLine());
+                        break;
+                        
+                    case "2":
+                        String getCap;
+                        
+                        while(true){
+                            System.out.println("Enter New Gender value: (Male or Female only)");
+                            String newName = tempScanner.nextLine();
+                            if(newName.equalsIgnoreCase("male") || newName.equalsIgnoreCase("female")){
+                                getCap = newName.substring(0,1).toUpperCase()+newName.substring(1);
+                                staffs.get(opt-1).setGender(getCap);
+                                break;
+                            }
+                            else
+                                System.out.println("Enter Valid Gender");
+                            }
+                        break;
+                        
+                    case "3":
+                            double age;
+                            while(true){
+                            try{
+                                System.out.println("Enter New Age value:");
+                                age = tempScanner.nextDouble();
+                                
+                                staffs.get(opt-1).setAge(age);
+                                break;
+                            }
+                            catch(Exception e){
+                                System.out.println("Invalid input! Try again!");
+                            }
+                            //tempScanner.nextLine();
+                            }
+                            break;
+                        
+                    case "4":
+                            
+                        System.out.println("Enter New Password:");
+                        //tempScanner.nextLine();
+                        staffs.get(opt-1).setPassword(tempScanner.nextLine());
+                        break;
+                    
+                    case "0":
+                            
+                        System.out.println("Exiting...");
+                        break;
+                    default:
+                        System.out.println("Invalid Option!");
+                        System.out.println("Exiting...");
+                        //tempScanner.nextLine();
+                        break;
+                }
+                //tempopt = tempScanner.nextLine();
+            }
+            //tempScanner.nextLine();
+            return;
+        }
+        else{
+            return;
+        }
 
     }
 
     public static void AdminOption2(){
         System.err.println("nothing here");
+    }
+
+    public static String showAdminMenu(Scanner tempScanner){
+        String opt;
+        System.out.println("""
+                        (1) View and Manage Hospital Staff
+                        (2) View Appointments details
+                        (3) View and Manage Medication Inventory
+                        (4) Approve Replenishment Requests
+                        (0) Logout
+                        """);
+        opt = tempScanner.nextLine();
+        //tempScanner.nextLine();
+
+        return opt;
     }
 
 }
