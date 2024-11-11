@@ -133,6 +133,32 @@ public class Main
                 (4) Submit Replenishment Request
                 (0) Logout
                 """);
+
+         do {
+            System.out.print("Select an option: ");
+            option = input.nextInt();
+
+            switch (option) {
+                case 1:
+                    Pharmacist.viewAppointmentOutcomeRecord();
+                    break;
+                case 2:
+                    Pharmacist.updatePrescriptionStatus();
+                    break;
+                case 3:
+                    Pharmacist.viewMedicationInventory();
+                    break;
+                case 4:
+                    Pharmacist.submitReplenishmentRequest();
+                    break;
+                case 0:
+                    System.out.println("Logging out...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        } while (option != 0);
+    }
     }
 
     public static void menuAdministrator()
