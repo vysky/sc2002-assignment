@@ -1,11 +1,12 @@
 package hms.service.user;
 
-import hms.model.user.*;
+import hms.model.user.Patient;
 
-// public class PatientServices implements Menu
+import java.util.Scanner;
+
 public class PatientServiceImpl extends UserService
 {
-    Patient authenticatedPatient;
+    private Patient authenticatedPatient;
 
     public PatientServiceImpl(Patient patient)
     {
@@ -15,6 +16,7 @@ public class PatientServiceImpl extends UserService
     public void printMenu()
     {
         System.out.print("""
+                                 ========== Patient's Menu ==========
                                  (1) View Medical Record
                                  (2) Update Personal Information
                                  (3) View Available Appointment Slots
@@ -24,12 +26,12 @@ public class PatientServiceImpl extends UserService
                                  (7) View Scheduled Appointments
                                  (8) View Past Appointment Outcome Records
                                  (0) Logout
-                                 Select an option:\s
                                  """);
+        System.out.print("Select an option: ");
     }
 
     @Override
-    public void handleSelectedOption(int option, SharedUserServiceImpl sharedUserServices)
+    public void handleSelectedOption(Scanner input, int option)
     {
         switch (option)
         {

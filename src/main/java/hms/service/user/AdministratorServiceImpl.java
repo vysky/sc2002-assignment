@@ -1,19 +1,29 @@
 package hms.service.user;
 
+import hms.model.medicine.Medicine;
 import hms.model.user.*;
+import hms.service.medicine.InventoryServiceImpl;
+
+import java.util.Scanner;
 
 public class AdministratorServiceImpl extends UserService
 {
-    Administrator authenticatedAdministrator;
+    private Administrator authenticatedAdministrator;
+    private InventoryServiceImpl inventoryService;
+    private SharedUserServiceImpl sharedUserService;
 
-    public AdministratorServiceImpl(Administrator administrator)
+    public AdministratorServiceImpl(Administrator administrator, InventoryServiceImpl inventoryService, SharedUserServiceImpl sharedUserService)
     {
         this.authenticatedAdministrator = administrator;
+        this.inventoryService = inventoryService;
+        this.sharedUserService = sharedUserService;
     }
 
     public void printMenu()
     {
+        // todo: for logout, want to try logout back to main menu. may be an option to logout and an option to end program?
         System.out.print("""
+                                 ========== Administrator's Menu ==========
                                  (1) View and Manage Hospital Staff
                                  (2) View Appointments details
                                  (3) View and Manage Medication Inventory
@@ -24,21 +34,13 @@ public class AdministratorServiceImpl extends UserService
     }
 
     @Override
-    public void handleSelectedOption(int option, SharedUserServiceImpl sharedUserServices)
+    public void handleSelectedOption(Scanner input, int option)
     {
         switch (option)
         {
             case 1 ->
             {
-                // option1();
-                Administrator administrator = new Administrator("AAA", "No Name", "Super Admin", "---", 18);
-                sharedUserServices.getStaffList().add(administrator);
-                sharedUserServices.updateStaffList();
-
-                for (Staff staff : sharedUserServices.getStaffList())
-                {
-                    System.out.println(staff.getName());
-                }
+                option1();
             }
             case 2 ->
             {
@@ -46,11 +48,13 @@ public class AdministratorServiceImpl extends UserService
             }
             case 3 ->
             {
-                option3();
+                // View and Manage Medication Inventory
+                option3(input);
             }
             case 4 ->
             {
-                option4();
+                // Approve Replenishment Requests
+                option4(input);
             }
             case 0 ->
             {
@@ -73,13 +77,73 @@ public class AdministratorServiceImpl extends UserService
         System.out.println("Option 2");
     }
 
-    public void option3()
+    // View and Manage Medication Inventory
+    public void option3(Scanner input)
     {
-        System.out.println("Option 3");
+        int option;
+
+        do
+        {
+            inventoryService.printMedicineList();
+            System.out.print("""
+                                       ----- Manage Medication Inventory -----
+                                       (1) Add new medicine
+                                       (2) Remove existing medicine
+                                       (3) Update stock level of existing medicine
+                                       (0) Go back main menu
+                                       """);
+            System.out.print("Select an option: ");
+            option = input.nextInt();
+
+            switch (option)
+            {
+                case 1 ->
+                {
+                    System.out.print("Enter medicine name: ");
+                    String medicineName = input.next();
+                    System.out.print("Enter stock level: ");
+                    int stockLevel = input.nextInt();
+                    System.out.print("Enter low stock level alert: ");
+                    int lowStockLevel = input.nextInt();
+                    Medicine newMedicine = new Medicine(medicineName, stockLevel, lowStockLevel);
+                    inventoryService.getMedicineList().add(newMedicine);
+                    System.out.println("New medicine added!");
+                }
+                case 2 ->
+                {
+                    inventoryService.printMedicineList();
+                    System.out.print("Select medicine to remove (Enter the No. of medicine): ");
+                    inventoryService.removeMedicine(input.nextInt());
+                    System.out.println("Medicine removed!");
+                }
+                case 3 ->
+                {
+                    inventoryService.printMedicineList();
+                    System.out.print("Select medicine to update stock level (Enter the No. of medicine): ");
+                    int index = input.nextInt();
+                    System.out.print("Enter new stock: ");
+                    inventoryService.updateMedicineStock(index, input.nextInt());
+                    System.out.println("Stock updated!");
+                }
+                case 0 ->
+                {
+                    System.out.print("Main menu");
+                }
+                default ->
+                {
+                    System.out.println("Invalid option, please select a new option.");
+                }
+            }
+        } while (option != 0);
     }
 
-    public void option4()
+    // Approve Replenishment Requests
+    public void option4(Scanner input)
     {
-        System.out.println("Option 4");
+        int option;
+        inventoryService.printReplenishmentRequestList();
+        System.out.print("Enter replenishment request No. to approve (Enter 0 to go back main menu): ");
+        option = input.nextInt();
+        inventoryService.approveReplenishmentRequest(option);
     }
 }

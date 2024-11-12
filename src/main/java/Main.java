@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 import hms.model.shared.CredentialPair;
 import hms.model.user.*;
-import hms.service.medicine.MedicineServiceImpl;
+import hms.service.medicine.InventoryServiceImpl;
 import hms.service.user.*;
 
 public class Main
@@ -13,7 +13,7 @@ public class Main
 
     private static Scanner input;
 
-    // private static MedicineServiceImpl medicineService;
+    private static InventoryServiceImpl inventoryService;
 
     private static SharedUserServiceImpl sharedUserService;
     private static UserAuthenticationServiceImpl userAuthenticationService;
@@ -33,20 +33,82 @@ public class Main
 
     public static void main(String[] args)
     {
-        // initialize instances
         initializeInstances();
-        CredentialPair credentialPair = printLoginDialog();
+        // CredentialPair credentialPair = printLoginDialog();
+        CredentialPair credentialPair = printMainMenu();
         authenticatedUser = performAuthentication(credentialPair);
         userService = postLoginCreateService();
         runUserService();
     }
 
+    // initialize instances
     private static void initializeInstances()
     {
         input = new Scanner(System.in);
-        // medicineService = new MedicineServiceImpl(); // rename to inventory services??
+        inventoryService = new InventoryServiceImpl();
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
+    }
+
+    // todo: should set a login limit, if failed to login then kick user back to this menu
+    private static CredentialPair printMainMenu()
+    {
+        int option;
+
+        do
+        {
+            System.out.print("""
+                                       Welcome to Hospital Management System
+                                       1. Login
+                                       2. Forgot password (not implemented)
+                                       3. (DEV) Login as Patient
+                                       4. (DEV) Login as Administrator
+                                       5. (DEV) Login as Doctor
+                                       6. (DEV) Login as Pharmacist
+                                       0. Exit program
+                                       """);
+            System.out.print("Enter an option: ");
+            option = input.nextInt();
+
+            switch (option)
+            {
+                case 1 ->
+                {
+                    printLoginDialog();
+                }
+                case 2 ->
+                {
+                    System.out.println("To reset password, enter your ID: ");
+                }
+                case 3 ->
+                {
+                    return new CredentialPair("P1001", "password");
+                }
+                case 4 ->
+                {
+                    return new CredentialPair("A001", "password");
+                }
+                case 5 ->
+                {
+                    return new CredentialPair("D001", "password");
+                }
+                case 6 ->
+                {
+                    return new CredentialPair("P001", "password");
+                }
+                case 0 ->
+                {
+                    System.out.println("Goodbye!");
+                    System.exit(0); // todo: see if can remove this
+                }
+                default ->
+                {
+                    System.out.println("Invalid option.");
+                }
+            }
+        } while (option != 0);
+
+        return null;
     }
 
     private static CredentialPair printLoginDialog()
@@ -87,17 +149,17 @@ public class Main
             case "administrator" ->
             {
                 assert authenticatedUser instanceof Administrator;
-                return new AdministratorServiceImpl((Administrator) authenticatedUser);
+                return new AdministratorServiceImpl((Administrator) authenticatedUser, inventoryService, sharedUserService);
             }
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService);
             }
             case "pharmacist" ->
             {
                 assert authenticatedUser instanceof Pharmacist;
-                return new PharmacistServiceImpl((Pharmacist) authenticatedUser);
+                return new PharmacistServiceImpl((Pharmacist) authenticatedUser, inventoryService);
             }
             default ->
             {
@@ -115,7 +177,7 @@ public class Main
         {
             userService.printMenu();
             option = input.nextInt();
-            userService.handleSelectedOption(option, sharedUserService);
+            userService.handleSelectedOption(input, option);
         } while (option != 0);
     }
 }

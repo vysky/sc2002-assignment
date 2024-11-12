@@ -2,18 +2,18 @@ package hms.repository;
 
 import hms.model.medicine.Medicine;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineRepository
+public class MedicineRepository implements CsvRepository
 {
     static final String CSV_FILE_PATH_MEDICINE = "src/main/resources/csv/medicine.csv";
+
+    String[] MEDICINE_HEADERS = {"Medicine Name", "Initial Stock", "Low Stock Level Alert"};
 
     public List<Medicine> getMedicineList()
     {
@@ -34,6 +34,12 @@ public class MedicineRepository
                 medicineArrayList.add(medicine);
             }
 
+            // todo: delete, for dev only
+            for (Medicine medicine : medicineArrayList)
+            {
+                System.out.println(medicine.getMedicineName());
+            }
+
             return medicineArrayList;
         }
         catch (FileNotFoundException e)
@@ -48,8 +54,25 @@ public class MedicineRepository
         return null;
     }
 
-    private void updateMedicineCsv(List<Medicine> medicineList)
+    public void updateMedicineCsv(List<Medicine> medicineList)
     {
+        try
+        {
+            Writer out = new FileWriter(CSV_FILE_PATH_MEDICINE);
+            CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(MEDICINE_HEADERS).build();
 
+            final CSVPrinter csvPrinter = new CSVPrinter(out, csvFormat);
+
+            for (Medicine medicine : medicineList)
+            {
+                csvPrinter.printRecord(medicine.getMedicineName(), medicine.getInitialStock(), medicine.getLowStockAlert());
+            }
+
+            csvPrinter.flush();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error writing file.");
+        }
     }
 }

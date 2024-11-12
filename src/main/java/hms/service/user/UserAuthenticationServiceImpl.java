@@ -4,7 +4,6 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
-import hms.repository.UserRepository;
 
 import java.util.List;
 

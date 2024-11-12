@@ -2,21 +2,23 @@ package hms.service.user;
 
 import hms.model.user.Patient;
 import hms.model.user.Staff;
-import hms.repository.UserRepository;
+import hms.repository.PatientRepository;
+import hms.repository.StaffRepository;
 
 import java.util.List;
 
 public class SharedUserServiceImpl
 {
-    private static final UserRepository userRepository = new UserRepository();
+    // private static final UserRepository userRepository = new UserRepository();
+    private static final PatientRepository patientRepository = new PatientRepository();
+    private static final StaffRepository staffRepository = new StaffRepository();
     private final List<Patient> patientList;
     private final List<Staff> staffList;
 
     public SharedUserServiceImpl()
     {
-        UserRepository userRepository = new UserRepository();
-        this.patientList = userRepository.getPatientList();
-        this.staffList = userRepository.getStaffList();
+        this.patientList = patientRepository.getPatientList();
+        this.staffList = staffRepository.getStaffList();
     }
 
     public List<Patient> getPatientList()
@@ -29,13 +31,15 @@ public class SharedUserServiceImpl
         return this.staffList;
     }
 
-    public void updatePatientList()
+    // write patient list to csv
+    public void setPatientList()
     {
-        userRepository.updatePatientCsv(patientList);
+        patientRepository.updatePatientCsv(this.patientList);
     }
 
-    public void updateStaffList()
+    // write staff list to csv
+    public void setStaffList()
     {
-        userRepository.updateStaffCsv(staffList);
+        staffRepository.updateStaffCsv(this.staffList);
     }
 }

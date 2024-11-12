@@ -1,31 +1,37 @@
 package hms.service.user;
 
 import hms.model.user.Pharmacist;
+import hms.service.medicine.InventoryServiceImpl;
+
+import java.util.Scanner;
 
 // public class PharmacistServiceImpl implements Menu
 public class PharmacistServiceImpl extends UserService
 {
-    Pharmacist authenticatedPharmacist;
+    private Pharmacist authenticatedPharmacist;
+    private InventoryServiceImpl inventoryService;
 
-    public PharmacistServiceImpl(Pharmacist pharmacist)
+    public PharmacistServiceImpl(Pharmacist pharmacist, InventoryServiceImpl inventoryService)
     {
         this.authenticatedPharmacist = pharmacist;
+        this.inventoryService = inventoryService;
     }
 
     public void printMenu()
     {
         System.out.print("""
+                                 ========== Pharmacist's Menu ==========
                                  (1) View Appointment Outcome Record
                                  (2) Update Prescription Status
                                  (3) View Medication Inventory
                                  (4) Submit Replenishment Request
                                  (0) Logout
-                                 Select an option:\s
                                  """);
+        System.out.print("Select an option: ");
     }
 
     @Override
-    public void handleSelectedOption(int option, SharedUserServiceImpl sharedUserService)
+    public void handleSelectedOption(Scanner input, int option)
     {
         switch (option)
         {
@@ -43,7 +49,7 @@ public class PharmacistServiceImpl extends UserService
             }
             case 4 ->
             {
-                option4();
+                option4(input);
             }
             case 0 ->
             {
@@ -68,11 +74,20 @@ public class PharmacistServiceImpl extends UserService
 
     public void option3()
     {
-        System.out.println("Option 3");
+        inventoryService.printMedicineList();
     }
 
-    public void option4()
+    public void option4(Scanner input)
     {
-        System.out.println("Option 4");
+        inventoryService.printMedicineList();
+
+        System.out.print("Enter medicine to replenish: ");
+        int index = input.nextInt();
+
+        System.out.print("Enter the amount to replenish: ");
+        int amount = input.nextInt();
+
+        inventoryService.createReplenishmentRequest(index, amount);
+        inventoryService.printReplenishmentRequestList();
     }
 }
