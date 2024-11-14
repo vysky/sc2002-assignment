@@ -6,9 +6,10 @@ public class Staff extends User {
     private String name;
     private String role;
     private String gender;
-    private int age;
+    private double age;
+    private String password;
 
-    public Staff(String staffId, String name, String role, String gender, int age) {
+    public Staff(String staffId, String name, String role, String gender, double age) {
         super(staffId, "password", role);
         this.staffId = staffId;
         this.name = name;
@@ -31,8 +32,16 @@ public class Staff extends User {
         return gender;
     }
 
-    public int getAge() {
+    public String getrole() {
+        return role;
+    }
+
+    public double getAge() {
         return age;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     // SETTERS
@@ -49,7 +58,11 @@ public class Staff extends User {
         gender = gen;
     }
 
-    public void setAge(int a) {
+    public void setAge(double a) {
         age = a;
+    }
+
+    public void setPassword(String newPassword) {
+        password = newPassword;
     }
 }
