@@ -77,98 +77,133 @@ public class Administrator extends Staff{
             return;
         }
         List<Staff> copystaff = new ArrayList<>(staffs);
-        
-        int i=1;
+        Staff temp;
+        int index;
         switch (opt) {
             case "1":
                 Collections.sort(copystaff, new idComparator());
-                System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-                for(Staff s : copystaff){
-                    String id = String.format("%-10s",s.getHospitalId());
-                    String name = String.format("%-10s",s.getName());
-                    String role = String.format("%-10s",s.getrole());
-                    String gender = String.format("%-10s",s.getGender());
-                    int age = (int)s.getAge();
-                    System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-                    i++;
-                }
-                
+                printStaff(copystaff);
+                index = editMenu(tempscan);
+                if(index == -1) break;
+                temp = new Staff(copystaff.get(index-1).getHospitalId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getrole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                editDetails(copystaff, index,tempscan);
                 break;
             case "2":
                 Collections.sort(copystaff, new roleComparator());
-                System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-                for(Staff s : copystaff){
-                    String id = String.format("%-10s",s.getHospitalId());
-                    String name = String.format("%-10s",s.getName());
-                    String role = String.format("%-10s",s.getrole());
-                    String gender = String.format("%-10s",s.getGender());
-                    int age = (int)s.getAge();
-                    System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-                    i++;
-                }
+                printStaff(copystaff);
+                index = editMenu(tempscan);
+                if(index == -1) break;
+                temp = new Staff(copystaff.get(index-1).getHospitalId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getrole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                editDetails(copystaff, index,tempscan);
                 break;
             case "3":
                 Collections.sort(copystaff, new genderComparator());
-                System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-                for(Staff s : copystaff){
-                    String id = String.format("%-10s",s.getHospitalId());
-                    String name = String.format("%-10s",s.getName());
-                    String role = String.format("%-10s",s.getrole());
-                    String gender = String.format("%-10s",s.getGender());
-                    int age = (int)s.getAge();
-                    System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-                    i++;
-                }
+                printStaff(copystaff);
+                index = editMenu(tempscan);
+                if(index == -1) break;
+                temp = new Staff(copystaff.get(index-1).getHospitalId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getrole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                editDetails(copystaff, index,tempscan);
                 break;
             case "4":
                 Collections.sort(copystaff, new ageComparator());
-                System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-                for(Staff s : copystaff){
-                    String id = String.format("%-10s",s.getHospitalId());
-                    String name = String.format("%-10s",s.getName());
-                    String role = String.format("%-10s",s.getrole());
-                    String gender = String.format("%-10s",s.getGender());
-                    int age = (int)s.getAge();
-                    System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-                    i++;
-                }
+                printStaff(copystaff);
+                index = editMenu(tempscan);
+                if(index == -1) break;
+                temp = new Staff(copystaff.get(index-1).getHospitalId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getrole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                editDetails(copystaff, index,tempscan);
                 break;
             case "5":
                 Collections.sort(copystaff, new nameComparator());
-                System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-                for(Staff s : copystaff){
-                    String id = String.format("%-10s",s.getHospitalId());
-                    String name = String.format("%-10s",s.getName());
-                    String role = String.format("%-10s",s.getrole());
-                    String gender = String.format("%-10s",s.getGender());
-                    int age = (int)s.getAge();
-                    System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-                    i++;
-                }
+                printStaff(copystaff);
+                index = editMenu(tempscan);
+                if(index == -1) break;
+                temp = new Staff(copystaff.get(index-1).getHospitalId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getrole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                editDetails(copystaff, index,tempscan);
                 break;
             default:
                 break;
         }
+
+
     }
 
-    /*public void defaultSort(List<Staff> staffs){
-
+    public void printStaff(List<Staff> theList){
         int i=1;
         System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-        for(Staff perstaff : staffs){
-            String id = String.format("%-10s",perstaff.getHospitalId());
-            String name = String.format("%-10s",perstaff.getName());
-            String role = String.format("%-10s",perstaff.getrole());
-            String gender = String.format("%-10s",perstaff.getGender());
-            int age = (int)perstaff.getAge();
+        for(Staff s : theList){
+            String id = String.format("%-10s",s.getHospitalId());
+            String name = String.format("%-10s",s.getName());
+            String role = String.format("%-10s",s.getrole());
+            String gender = String.format("%-10s",s.getGender());
+            int age = (int)s.getAge();
             System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
             i++;
         }
     }
 
-    public void idSort(List<Staff> staffs){
-        
-    }*/
+    public int editMenu(Scanner tempScanner){
+        String tempopt;
+        System.out.println("Press 1 to edit the details of a staff or any other key to quit.");
+        tempopt = tempScanner.nextLine();
+        if(!tempopt.equals("1")){
+            return -1;
+        }
+        else{
+            System.out.println("Choose the index of the staff you want to edit.");
+            tempopt = tempScanner.nextLine();
+            return Integer.parseInt(tempopt);
+        }
+    }
+
+    public void editDetails(List<Staff> theList,int index,Scanner tempScanner){
+        System.out.println("""
+            What do you want to edit
+            1) Name
+            2) Role
+            3) Gender
+            4) Age
+        """);
+        String tempopt = tempScanner.nextLine();
+        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4"))
+        {
+            System.out.println("Invalid option! Exiting...");
+            return;
+        }
+        switch (tempopt) {
+            case "1":
+                System.out.println("Enter new name: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setName(tempopt);
+                break;
+
+            case "2":
+                System.out.println("Enter new role: ");
+                tempopt = tempScanner.nextLine();
+                
+                //staff.setrole(tempopt);           #set role function
+                    
+                break;
+
+            case "3":
+                System.out.println("Enter new gender: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setGender(tempopt);
+                        
+                break;
+
+            case "4":
+                System.out.println("Enter new age: ");
+                double newAge = tempScanner.nextDouble();
+                theList.get(index-1).setAge(newAge);
+                            
+                if(tempScanner.hasNextLine()){
+                tempScanner.nextLine();}
+                break;
+            default:
+                break;
+        }
+        return;
+    }
 
     class idComparator implements Comparator<Staff> {
         // Method
@@ -179,16 +214,6 @@ public class Administrator extends Staff{
             return a.getHospitalId().compareToIgnoreCase(b.getHospitalId());
         }
     }
-
-    /*class idComparator implements java.util.Comparator<Staff> {
-        @Override
-        public int compare(Staff a, Staff b) {
-            int ageCompare = Double.compare(a.getAge(), b.getAge());
-            int hospitalId = a.getHospitalId().compareTo(b.getHospitalId());
-            //Double ageCompare = a.getAge().compare(b.getAge());
-            return (hospitalId==0) ? ageCompare:hospitalId;
-        }
-    }*/
 
     class nameComparator implements java.util.Comparator<Staff> {
         @Override
@@ -216,7 +241,7 @@ public class Administrator extends Staff{
             int ageCompare = Double.compare(a.getAge(), b.getAge());
             int hospitalId = a.getHospitalId().compareTo(b.getHospitalId());
             //Double ageCompare = a.getAge().compare(b.getAge());
-            return (hospitalId==0) ? ageCompare:hospitalId;
+            return (ageCompare==0) ? hospitalId:ageCompare;
         }
     }
 

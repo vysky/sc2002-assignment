@@ -185,8 +185,6 @@ public class Main
                         (0) Logout
                         """);
                 option = admininput.nextLine();
-                /*if(admininput.hasNextLine()){
-                admininput.nextLine();}*/
         
                 do
                 {
@@ -199,7 +197,7 @@ public class Main
                             AdminOption1(staffs,currAdmin,admininput);
                             option = showAdminMenu(admininput);
                             //admininput.nextLine();
-                            continue;
+                            break;
                         case "2":
                             AdminOption2();
                             break;
@@ -303,7 +301,7 @@ public class Main
         curAdm.sortMenu(staffs,tempScanner);
         //tempScanner.nextLine();
 
-        System.out.println("Enter 1 to choose a staff to manage otherwise any key to exit");
+        /*System.out.println("Enter 1 to choose a staff to manage otherwise any key to exit");
         //tempScanner.nextLine();
         tempopt = tempScanner.nextLine();
         
@@ -399,7 +397,8 @@ public class Main
         }
         else{
             return;
-        }
+        }*/
+        return;
 
     }
 
