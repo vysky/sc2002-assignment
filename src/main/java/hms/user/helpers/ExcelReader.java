@@ -11,7 +11,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import hms.user.Administrator;
 import hms.user.Patient;
+import hms.user.User;
+import hms.user.Staff;
 
 public class ExcelReader {
     public static List<Patient> readPatientData(String fileName) {
@@ -52,5 +55,45 @@ public class ExcelReader {
         }
 
         return patients;
+    }
+
+    public static List<Staff> readstaffData(String fileName) {
+        List<Staff> listOfStaffs = new ArrayList<>();
+
+        try {
+            ClassLoader classLoader = ExcelReader.class.getClassLoader();
+            InputStream file = classLoader.getResourceAsStream(fileName);
+            
+            if (file == null) {
+                throw new FileNotFoundException("File " + fileName + " not found in resources");
+            }
+
+
+            Workbook workbook = new XSSFWorkbook(file);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+
+                if (row != null) {
+                    String staffID = row.getCell(0).getStringCellValue();
+                    String name = row.getCell(1).getStringCellValue();
+                    String role = row.getCell(2).getStringCellValue();
+                    String gender = row.getCell(3).getStringCellValue();
+                    double age = row.getCell(4).getNumericCellValue();
+                    Staff Staff = new Staff(staffID, name, role, gender, age);
+                    Staff.setPassword("password");
+                    listOfStaffs.add(Staff);
+                    
+                }
+            }
+            
+            workbook.close();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return listOfStaffs;
     }
 }
