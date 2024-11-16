@@ -1,9 +1,20 @@
 import java.util.Scanner;
 
 import hms.model.shared.CredentialPair;
-import hms.model.user.*;
+import hms.model.user.Administrator;
+import hms.model.user.Doctor;
+import hms.model.user.Patient;
+import hms.model.user.Pharmacist;
+import hms.model.user.User;
+import hms.service.medicalRecord.MedicalRecordService;
 import hms.service.medicine.InventoryServiceImpl;
-import hms.service.user.*;
+import hms.service.user.AdministratorServiceImpl;
+import hms.service.user.DoctorServiceImpl;
+import hms.service.user.PatientServiceImpl;
+import hms.service.user.PharmacistServiceImpl;
+import hms.service.user.SharedUserServiceImpl;
+import hms.service.user.UserAuthenticationServiceImpl;
+import hms.service.user.UserService;
 
 public class Main
 {
@@ -21,6 +32,8 @@ public class Main
     // private static CredentialPair credentialPair;
     private static User authenticatedUser;
     private static UserService userService;
+
+    private static MedicalRecordService medicalRecordService;
 
     // private static PatientServiceImpl patientService;
     // private static AdministratorServiceImpl administratorService;
@@ -48,6 +61,7 @@ public class Main
         inventoryService = new InventoryServiceImpl();
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
+        medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
     }
 
     // todo: should set a login limit, if failed to login then kick user back to this menu
@@ -154,7 +168,7 @@ public class Main
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService);
             }
             case "pharmacist" ->
             {
