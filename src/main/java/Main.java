@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.Scanner;
 
 import hms.model.shared.CredentialPair;
@@ -21,7 +22,7 @@ public class Main
     // ============================================================
     // Stored Properties
     // ============================================================
-
+    private static Console csl;
     private static Scanner input;
 
     private static InventoryServiceImpl inventoryService;
@@ -46,6 +47,7 @@ public class Main
 
     public static void main(String[] args)
     {
+
         initializeInstances();
         // CredentialPair credentialPair = printLoginDialog();
         CredentialPair credentialPair = printMainMenu();
@@ -57,6 +59,7 @@ public class Main
     // initialize instances
     private static void initializeInstances()
     {
+        csl = System.console();
         input = new Scanner(System.in);
         inventoryService = new InventoryServiceImpl();
         sharedUserService = new SharedUserServiceImpl();
@@ -133,8 +136,10 @@ public class Main
 
         System.out.print("Username: ");
         String username = input.nextLine();
-        System.out.print("Password: ");
-        String password = input.nextLine();
+        char[] ch = csl.readPassword( 
+            "Enter password : "); 
+        //System.out.print("Password: ");
+        String password = new String(ch);
 
         return new CredentialPair(username, password);
     }
