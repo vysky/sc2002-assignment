@@ -187,9 +187,10 @@ public class AdministratorServiceImpl extends UserService
             2) Role
             3) Gender
             4) Age
+            5) Password
         """);
         String tempopt = tempScanner.nextLine();
-        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4"))
+        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5"))
         {
             System.out.println("Invalid option! Exiting...");
             return;
@@ -204,16 +205,13 @@ public class AdministratorServiceImpl extends UserService
             case "2":
                 System.out.println("Enter new role: ");
                 tempopt = tempScanner.nextLine();
-                
                 //staff.setrole(tempopt);           #set role function
-                    
                 break;
 
             case "3":
                 System.out.println("Enter new gender: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setGender(tempopt);
-                        
                 break;
 
             case "4":
@@ -223,6 +221,12 @@ public class AdministratorServiceImpl extends UserService
                             
                 if(tempScanner.hasNextLine()){
                 tempScanner.nextLine();}
+                break;
+
+            case "5":
+                System.out.println("Enter new password: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setPassword(tempopt);
                 break;
             default:
                 break;
