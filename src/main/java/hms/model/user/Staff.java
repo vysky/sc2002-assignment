@@ -20,6 +20,7 @@ public class Staff extends User
         this.age = age;
     }
 
+    
     public int getAge()
     {
         return this.age;
