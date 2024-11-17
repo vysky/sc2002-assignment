@@ -22,7 +22,7 @@ public class PharmacistServiceImpl extends UserService
         System.out.print("""
                                  ========== Pharmacist's Menu ==========
                                  (1) View Appointment Outcome Record
-                                 (2) Update Prescription Status
+                                 (2) Update Prescription Status (use inventory service, and inventory service should contain appointment list, which should contain prescription order)
                                  (3) View Medication Inventory
                                  (4) Submit Replenishment Request
                                  (0) Logout

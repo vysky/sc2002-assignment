@@ -20,7 +20,7 @@ public class ReplenishmentRequest
         return this.medicine;
     }
 
-    public void setMedicine(Medicine medicine)
+    private void setMedicine(Medicine medicine)
     {
         this.medicine = medicine;
     }
@@ -30,7 +30,7 @@ public class ReplenishmentRequest
         return this.requestedQuantity;
     }
 
-    public void setRequestedQuantity(int requestedQuantity)
+    private void setRequestedQuantity(int requestedQuantity)
     {
         this.requestedQuantity = requestedQuantity;
     }
