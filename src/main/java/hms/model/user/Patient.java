@@ -52,7 +52,7 @@ public class Patient extends User
         return email;
     }
 
-    private void setEmail()
+    private void setEmail(String email)
     {
         this.email = email;
     }
