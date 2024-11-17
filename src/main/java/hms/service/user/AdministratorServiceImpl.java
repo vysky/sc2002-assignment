@@ -152,84 +152,6 @@ public class AdministratorServiceImpl extends UserService
         inventoryService.approveReplenishmentRequest(option);
     }
 
-    public void printStaff(List<Staff> theList){
-        int i=1;
-        System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
-        for(Staff s : theList){
-            String id = String.format("%-10s",s.getId());
-            String name = String.format("%-10s",s.getName());
-            String role = String.format("%-10s",s.getRole());
-            String gender = String.format("%-10s",s.getGender());
-            int age = s.getAge();
-            System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
-            i++;
-        }
-    }
-
-    public int editMenu(Scanner tempScanner){
-        String tempopt;
-        System.out.println("Press 1 to edit the details of a staff or any other key to quit.");
-        tempopt = tempScanner.nextLine();
-        if(!tempopt.equals("1")){
-            return -1;
-        }
-        else{
-            System.out.println("Choose the index of the staff you want to edit.");
-            tempopt = tempScanner.nextLine();
-            return Integer.parseInt(tempopt);
-        }
-    }
-
-    public void editDetails(List<Staff> theList,int index,Scanner tempScanner){
-        System.out.println("""
-            What do you want to edit
-            1) Name
-            2) Role
-            3) Gender
-            4) Age
-        """);
-        String tempopt = tempScanner.nextLine();
-        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4"))
-        {
-            System.out.println("Invalid option! Exiting...");
-            return;
-        }
-        switch (tempopt) {
-            case "1":
-                System.out.println("Enter new name: ");
-                tempopt = tempScanner.nextLine();
-                theList.get(index-1).setName(tempopt);
-                break;
-
-            case "2":
-                System.out.println("Enter new role: ");
-                tempopt = tempScanner.nextLine();
-                
-                //staff.setrole(tempopt);           #set role function
-                    
-                break;
-
-            case "3":
-                System.out.println("Enter new gender: ");
-                tempopt = tempScanner.nextLine();
-                theList.get(index-1).setGender(tempopt);
-                        
-                break;
-
-            case "4":
-                System.out.println("Enter new age: ");
-                int newAge = tempScanner.nextInt();
-                theList.get(index-1).setAge(newAge);
-                            
-                if(tempScanner.hasNextLine()){
-                tempScanner.nextLine();}
-                break;
-            default:
-                break;
-        }
-        return;
-    }
-
     public void sortMenu(List<Staff> staffs, Scanner tempscan){
         String opt;
         System.out.println("""
@@ -247,47 +169,47 @@ public class AdministratorServiceImpl extends UserService
             return;
         }
         List<Staff> copystaff = new ArrayList<>(staffs);
-        Staff temp;
-        int index;
+        //Staff temp;
+        int index,i;
         switch (opt) {
             case "1":
                 Collections.sort(copystaff, new idComparator());
-                printStaff(copystaff);
-                index = editMenu(tempscan);
+                i=printStaff(copystaff);
+                index = editMenu(tempscan,i);
                 if(index == -1) break;
-                temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                //temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
                 editDetails(copystaff, index,tempscan);
                 break;
             case "2":
                 Collections.sort(copystaff, new roleComparator());
-                printStaff(copystaff);
-                index = editMenu(tempscan);
+                i=printStaff(copystaff);
+                index = editMenu(tempscan,i);
                 if(index == -1) break;
-                temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                //temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
                 editDetails(copystaff, index,tempscan);
                 break;
             case "3":
                 Collections.sort(copystaff, new genderComparator());
-                printStaff(copystaff);
-                index = editMenu(tempscan);
+                i=printStaff(copystaff);
+                index = editMenu(tempscan,i);
                 if(index == -1) break;
-                temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                //temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
                 editDetails(copystaff, index,tempscan);
                 break;
             case "4":
                 Collections.sort(copystaff, new ageComparator());
-                printStaff(copystaff);
-                index = editMenu(tempscan);
+                i=printStaff(copystaff);
+                index = editMenu(tempscan,i);
                 if(index == -1) break;
-                temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                //temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
                 editDetails(copystaff, index,tempscan);
                 break;
             case "5":
                 Collections.sort(copystaff, new nameComparator());
-                printStaff(copystaff);
-                index = editMenu(tempscan);
+                i=printStaff(copystaff);
+                index = editMenu(tempscan,i);
                 if(index == -1) break;
-                temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
+                //temp = new Staff(copystaff.get(index-1).getId(), copystaff.get(index-1).getName(), copystaff.get(index-1).getRole(), copystaff.get(index-1).getGender(), copystaff.get(index-1).getAge());
                 editDetails(copystaff, index,tempscan);
                 break;
             default:
@@ -295,6 +217,110 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    public int printStaff(List<Staff> theList){
+        int i=1;
+        System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
+        for(Staff s : theList){
+            String id = String.format("%-10s",s.getId());
+            String name = String.format("%-10s",s.getName());
+            String role = String.format("%-10s",s.getRole());
+            String gender = String.format("%-10s",s.getGender());
+            int age = s.getAge();
+            System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
+            i++;
+        }
+        System.out.println(i-1);
+        return i-1;
+    }
+
+    public int editMenu(Scanner tempScanner,int maxPeep){
+        String tempopt;
+        System.out.println("Press 1 to edit the details of a staff or any other key to quit.");
+        tempopt = tempScanner.nextLine();
+        if(!tempopt.equals("1")){
+            System.out.println("Invalid Option! Exiting...");
+            return -1;
+        }
+        else{
+            int index;
+            while(true){
+                System.out.println("Choose the index of the staff you want to edit.");
+                try{
+                    index = Integer.parseInt(tempScanner.nextLine());
+                }catch(NumberFormatException e) { 
+                    System.out.println("Invalid Option! Exiting...");
+                    return -1; 
+                } catch(NullPointerException e) {
+                    System.out.println("Invalid Option! Exiting...");
+                    return -1;
+                }
+                System.out.println(index);
+                if(index>maxPeep || index <1){
+                    System.out.println("Invalid selection of selected staff index!!");
+                    return -1;
+                }
+                break;
+            }
+            return index;
+        }
+    }
+
+    public void editDetails(List<Staff> theList,int index,Scanner tempScanner){
+        System.out.println("""
+            What do you want to edit
+            1) Name
+            2) Role
+            3) Gender
+            4) Age
+            5) Password
+        """);
+        String tempopt = tempScanner.nextLine();
+        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5"))
+        {
+            System.out.println("Invalid option! Exiting...");
+            return;
+        }
+        switch (tempopt) {
+            case "1":
+                System.out.println("Enter new name: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setName(tempopt);
+                break;
+
+            case "2":
+                System.out.println("Enter new role: ");
+                tempopt = tempScanner.nextLine();
+                //staff.setrole(tempopt);           #set role function
+                break;
+
+            case "3":
+                System.out.println("Enter new gender: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setGender(tempopt);
+                break;
+
+            case "4":
+                System.out.println("Enter new age: ");
+                int newAge = tempScanner.nextInt();
+                theList.get(index-1).setAge(newAge);
+                            
+                if(tempScanner.hasNextLine()){
+                tempScanner.nextLine();}
+                break;
+
+            case "5":
+                System.out.println("Enter new age: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setPassword(tempopt);
+                break;
+
+            default:
+                break;
+        }
+        return;
+    }
+
+    
     class idComparator implements Comparator<Staff> {
         // Method
         // Sorting in ascending order of name
