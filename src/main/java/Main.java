@@ -54,31 +54,33 @@ public class Main
     private static CredentialPair printMainMenu()
     {
         int option;
+        int currentAttempt = 1;
+        int maximumAttempt = 3;
 
         do
         {
             System.out.print("""
-                                       Welcome to Hospital Management System
-                                       1. Login
-                                       2. Forgot password (not implemented)
-                                       3. (DEV) Login as Patient
-                                       4. (DEV) Login as Administrator
-                                       5. (DEV) Login as Doctor
-                                       6. (DEV) Login as Pharmacist
-                                       0. Exit program
-                                       """);
+                                     Welcome to Hospital Management System
+                                     1. Login
+                                     2. Forgot password
+                                     3. (DEV) Login as Patient
+                                     4. (DEV) Login as Administrator
+                                     5. (DEV) Login as Doctor
+                                     6. (DEV) Login as Pharmacist
+                                     0. Exit program
+                                     """);
             System.out.print("Enter an option: ");
-            option = input.nextInt();
+            option = Integer.parseInt(input.nextLine());
 
             switch (option)
             {
                 case 1 ->
                 {
-                    printLoginDialog();
+                    return printLoginDialog();
                 }
                 case 2 ->
                 {
-                    System.out.println("To reset password, enter your ID: ");
+                    printForgetPasswordDialog();
                 }
                 case 3 ->
                 {
@@ -123,6 +125,24 @@ public class Main
         return new CredentialPair(username, password);
     }
 
+    private static void printForgetPasswordDialog()
+    {
+        System.out.println("----- Reset Password -----");
+        System.out.print("Enter your username (hospital ID): ");
+        String username = input.nextLine();
+        System.out.print("Enter new password: ");
+        String password = input.nextLine();
+
+        if (userAuthenticationService.changePassword(username, password))
+        {
+            System.out.println("Password changed successfully.");
+        }
+        else
+        {
+            System.out.println("Error changing password, please try again.");
+        }
+    }
+
     private static User performAuthentication(CredentialPair credentialPair)
     {
         var authenticatedUser = userAuthenticationService.authenticateUser(credentialPair);
@@ -134,10 +154,23 @@ public class Main
             authenticatedUser = performAuthentication(credentialPair);
         }
 
+        if (authenticatedUser.getPassword().equals("password"))
+        {
+            String newPassword = performFirstTimeLoginChangePassword();
+            authenticatedUser.setPassword(newPassword);
+        }
+
         return authenticatedUser;
     }
 
-    public static UserService postLoginCreateService()
+    private static String performFirstTimeLoginChangePassword()
+    {
+        System.out.print("Please change your password on your first login.\n");
+        System.out.print("Enter new password: ");
+        return input.nextLine();
+    }
+
+    private static UserService postLoginCreateService()
     {
         switch (authenticatedUser.getRole())
         {
@@ -168,7 +201,7 @@ public class Main
         }
     }
 
-    public static void runUserService()
+    private static void runUserService()
     {
         int option;
         System.out.printf("Welcome %s!\n", authenticatedUser.getName());
@@ -176,7 +209,7 @@ public class Main
         do
         {
             userService.printMenu();
-            option = input.nextInt();
+            option = Integer.parseInt(input.nextLine());
             userService.handleSelectedOption(input, option);
         } while (option != 0);
     }

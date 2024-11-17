@@ -61,9 +61,43 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         return null;
     }
 
+    public boolean changePassword(String id, String newPassword)
+    {
+        try
+        {
+            if (isIdFromPatient(id))
+            {
+                getPatientById(id).setPassword(newPassword);
+                return true;
+            }
+
+            if (isIdFromStaff(id))
+            {
+                getStaffById(id).setPassword(newPassword);
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Invalid id format.");
+        }
+
+        return false;
+    }
+
     // ============================================================
     // Private Methods
     // ============================================================
+
+    private boolean isIdFromPatient(String id)
+    {
+        return this.patientList.stream().anyMatch(patient -> patient.getId().equals(id));
+    }
+
+    private boolean isIdFromStaff(String id)
+    {
+        return this.staffList.stream().anyMatch(staff -> staff.getId().equals(id));
+    }
 
     private boolean isCredentialFromPatient(String id, String password)
     {
