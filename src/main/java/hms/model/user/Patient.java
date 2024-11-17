@@ -1,7 +1,5 @@
 package hms.model.user;
 
-import hms.service.user.PatientServiceImpl;
-
 import java.util.ArrayList;
 
 public class Patient extends User
@@ -71,5 +69,13 @@ public class Patient extends User
         StringBuilder resultStr = new StringBuilder();
         treatments.forEach(treat -> resultStr.append(treat).append(", "));
         return resultStr.toString().trim();
+    }
+
+    public void setDiagnoses(String newDiag) {
+        diagnoses.add(newDiag);
+    }
+
+    public void setTreatments(String newTreat) {
+        treatments.add(newTreat);
     }
 }
