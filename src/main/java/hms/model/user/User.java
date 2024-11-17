@@ -34,7 +34,7 @@ public class User
         return this.id;
     }
 
-    private void setId(String id)
+    public void setId(String id)
     {
         this.id = id;
     }
@@ -44,7 +44,7 @@ public class User
         return this.name;
     }
 
-    private void setName(String name)
+    public void setName(String name)
     {
         this.name = name;
     }
@@ -54,7 +54,7 @@ public class User
         return this.role;
     }
 
-    private void setRole(String role)
+    public void setRole(String role)
     {
         this.role = role;
     }
@@ -64,7 +64,7 @@ public class User
         return this.gender;
     }
 
-    private void setGender(String gender)
+    public void setGender(String gender)
     {
         this.gender = gender;
     }

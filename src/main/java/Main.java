@@ -69,6 +69,7 @@ public class Main
                                        """);
             System.out.print("Enter an option: ");
             option = input.nextInt();
+            input.nextLine();
 
             switch (option)
             {
@@ -177,6 +178,7 @@ public class Main
         {
             userService.printMenu();
             option = input.nextInt();
+            input.nextLine();
             userService.handleSelectedOption(input, option);
         } while (option != 0);
     }
