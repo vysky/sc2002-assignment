@@ -17,12 +17,12 @@ public class MedicineRepository implements CsvRepository<Medicine>
 
     public List<Medicine> importFromCsv()
     {
-        ArrayList<Medicine> medicineArrayList = new ArrayList<Medicine>();
+        ArrayList<Medicine> medicineArrayList = new ArrayList<>();
 
         try
         {
-            Reader in = new FileReader(CSV_FILE_PATH_MEDICINE);
-            Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
+            Reader reader = new FileReader(CSV_FILE_PATH_MEDICINE);
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader);
 
             for (CSVRecord record : records)
             {
@@ -58,10 +58,10 @@ public class MedicineRepository implements CsvRepository<Medicine>
     {
         try
         {
-            Writer out = new FileWriter(CSV_FILE_PATH_MEDICINE);
+            Writer writer = new FileWriter(CSV_FILE_PATH_MEDICINE);
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(MEDICINE_HEADERS).build();
 
-            final CSVPrinter csvPrinter = new CSVPrinter(out, csvFormat);
+            CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
             for (Medicine medicine : medicineList)
             {
