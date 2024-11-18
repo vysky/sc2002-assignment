@@ -25,6 +25,4 @@ public class Doctor extends Staff
     {
         super(id, name, role, gender, age, password);
     }
-
-    
 }

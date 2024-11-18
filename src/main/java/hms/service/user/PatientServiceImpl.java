@@ -131,7 +131,7 @@ public class PatientServiceImpl extends UserService
         }
 
         System.out.println("Enter any key to continue");
-        if (input.nextInt() == 1) {} 
+        if (input.nextInt() == 1) {}
     }
 
     public void option4()
@@ -196,8 +196,6 @@ public class PatientServiceImpl extends UserService
                 System.out.println("The selected timeslot is not available.");
             }
         }
-
-
     }
 
     public void option5()
@@ -267,8 +265,6 @@ public class PatientServiceImpl extends UserService
 
 
         rescheduleAppointment(existingAppointment.getAppointmentId());
-
-
     }
 
     public void option6()
