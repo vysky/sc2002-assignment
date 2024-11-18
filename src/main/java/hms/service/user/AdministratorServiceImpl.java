@@ -321,7 +321,7 @@ public class AdministratorServiceImpl extends UserService
     }
 
     
-    class idComparator implements Comparator<Staff> {
+    private class idComparator implements Comparator<Staff> {
         // Method
         // Sorting in ascending order of name
         public int compare(Staff a, Staff b)
@@ -331,7 +331,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    class nameComparator implements java.util.Comparator<Staff> {
+    private class nameComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
             int nameCompare = a.getName().compareToIgnoreCase(b.getName());
@@ -341,7 +341,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    class genderComparator implements java.util.Comparator<Staff> {
+    private class genderComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
             int genderCompare = a.getGender().compareTo(b.getGender());
@@ -351,7 +351,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    class ageComparator implements java.util.Comparator<Staff> {
+    private class ageComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
             int ageCompare = Double.compare(a.getAge(), b.getAge());
@@ -361,7 +361,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    class roleComparator implements java.util.Comparator<Staff> {
+    private class roleComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
             int roleCompare = a.getRole().compareToIgnoreCase(b.getRole());
