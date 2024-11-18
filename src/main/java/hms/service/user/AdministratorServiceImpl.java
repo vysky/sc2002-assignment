@@ -44,7 +44,7 @@ public class AdministratorServiceImpl extends UserService
         {
             case 1 ->
             {
-                option1(input);
+                viewManage(input);
             }
             case 2 ->
             {
@@ -71,7 +71,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    public void option1(Scanner input)
+    private void viewManage(Scanner input)
     {
         sortMenu(sharedUserService.getStaffList(),input);
         return;
@@ -152,7 +152,7 @@ public class AdministratorServiceImpl extends UserService
         inventoryService.approveReplenishmentRequest(option);
     }
 
-    public void sortMenu(List<Staff> staffs, Scanner tempscan){
+    private void sortMenu(List<Staff> staffs, Scanner tempscan){
         String opt;
         System.out.println("""
                 Select the sorting order:
@@ -217,7 +217,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    public int printStaff(List<Staff> theList){
+    private int printStaff(List<Staff> theList){
         int i=1;
         System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
         for(Staff s : theList){
@@ -233,7 +233,7 @@ public class AdministratorServiceImpl extends UserService
         return i-1;
     }
 
-    public int editMenu(Scanner tempScanner,int maxPeep){
+    private int editMenu(Scanner tempScanner,int maxPeep){
         String tempopt;
         System.out.println("Press 1 to edit the details of a staff or any other key to quit.");
         tempopt = tempScanner.nextLine();
@@ -265,7 +265,7 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
-    public void editDetails(List<Staff> theList,int index,Scanner tempScanner){
+    private void editDetails(List<Staff> theList,int index,Scanner tempScanner){
         System.out.println("""
             What do you want to edit
             1) Name
