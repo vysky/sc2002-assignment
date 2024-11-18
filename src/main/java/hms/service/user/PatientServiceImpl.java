@@ -196,6 +196,8 @@ public class PatientServiceImpl extends UserService
                 System.out.println("The selected timeslot is not available.");
             }
         }
+
+
     }
 
     public void option5()
@@ -228,9 +230,39 @@ public class PatientServiceImpl extends UserService
             return;
         }
 
-        String appointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
         String doctorId = existingAppointments.get(appointmentNumber - 1).getDoctorId();
+
+        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        String date = input.nextLine();
         
+        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
+        if (availableTimeslots.isEmpty()) {
+            System.out.println("No available timeslots for the selected date.");
+        } else {
+            System.out.println("Available Timeslots:");
+            for (int i = 0; i < availableTimeslots.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + availableTimeslots.get(i).getTime());
+            }
+
+            System.out.println("Select a timeslot by number:");
+            int timeslotNumber = input.nextInt();
+            input.nextLine();
+
+            if (timeslotNumber < 1 || timeslotNumber > availableTimeslots.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+
+            String timeslot = availableTimeslots.get(timeslotNumber - 1).getTime();
+
+            if (appointmentManager.isAvailable(doctorId, date, timeslot)) {
+                appointmentManager.makeAppointment(authenticatedPatient.getId(), doctorId, date, timeslot);
+            } else {
+                System.out.println("The selected timeslot is not available.");
+            }
+        }
+
+        String appointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
 
 
 
