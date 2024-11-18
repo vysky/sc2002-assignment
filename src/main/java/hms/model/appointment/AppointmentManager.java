@@ -34,10 +34,10 @@ public class AppointmentManager {
 
         return doctors;
     }
-    
+
     public List<Timeslot> getAvailableTimeslots(String doctorId, String date) {
         List<Timeslot> availableTimeslots = new ArrayList<>();
-    
+
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -48,7 +48,7 @@ public class AppointmentManager {
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-    
+
         return availableTimeslots;
     }
 
@@ -78,7 +78,7 @@ public class AppointmentManager {
                 Appointment appointment = new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]);
                 if (appointment.getPatientId().equals(patientId) && appointment.getDoctorId().equals(doctorId) &&
                         appointment.isPendingOrConfirmed()) {
-                    return appointment; 
+                    return appointment;
                 }
             }
         } catch (IOException | CsvValidationException e) {
@@ -90,7 +90,7 @@ public class AppointmentManager {
 
     public List<Appointment> getExistingAppointment(String patientId) {
         List<Appointment> appointment = new ArrayList<>();
-        
+
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -103,7 +103,7 @@ public class AppointmentManager {
     }
 
     public boolean rescheduleAppointment(String appointmentId) {
-
+        return false;
     }
 
     public String generateAppointmentID() {

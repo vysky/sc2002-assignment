@@ -60,7 +60,7 @@ public class HMSApp
             {
                 System.out.println();
                 System.out.print("""
-                                         Welcome to Hospital Management System
+                                         ----- Welcome to Hospital Management System -----
                                          1. Login
                                          2. Forgot password
                                          3. (DEV) Login as Patient
@@ -136,6 +136,7 @@ public class HMSApp
     private static CredentialPair printLoginDialog()
     {
         // todo: use hashmap if have time, probably need to refactor
+        System.out.println("----- Enter your user id and password to login -----");
         System.out.print("User id: ");
         String id = input.nextLine();
         System.out.print("Password: ");
@@ -206,12 +207,38 @@ public class HMSApp
 
     private static void performChangePasswordOnFirstLogin()
     {
+        boolean passwordVerified = false;
+        int counter = 1;
+        int maximumAttempt = 3;
+
         // todo: if have time, add a parameter in csv to track if login the first time instead of checking the default password
         if (authenticatedUser.getPassword().equals("password"))
         {
-            System.out.print("Please change your password on your first login.\n");
-            System.out.print("Enter new password: ");
-            authenticatedUser.setPassword(input.nextLine());
+
+            while (!passwordVerified && counter <= maximumAttempt)
+            {
+                System.out.print("Please change your password on your first login.\n");
+                System.out.print("Enter new password: ");
+                String password = input.nextLine();
+                System.out.print("Enter new password again: ");
+
+                if (password.equals(input.nextLine()))
+                {
+                    authenticatedUser.setPassword(password);
+                    System.out.println("Password changed successfully.");
+                    passwordVerified = true;
+                }
+                else
+                {
+                    System.out.printf("Password does not match, please try again (Attempt %d/%d).\n", counter, maximumAttempt);
+                    counter++;
+                }
+            }
+
+            if (counter >= maximumAttempt)
+            {
+                System.out.println("Attempt exceeded, exiting to main menu.");
+            }
         }
     }
 
@@ -257,5 +284,7 @@ public class HMSApp
             option = Integer.parseInt(input.nextLine());
             userService.handleSelectedOption(input, option);
         } while (option != 0);
+
+        authenticatedUser = null;
     }
 }

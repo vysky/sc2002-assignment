@@ -17,13 +17,13 @@ public class PatientRepository implements CsvRepository<Patient>
 
     public List<Patient> importFromCsv()
     {
-        ArrayList<Patient> patientArrayList = new ArrayList<Patient>();
+        ArrayList<Patient> patientArrayList = new ArrayList<>();
 
         try
         {
-            Reader in = new FileReader(CSV_FILE_PATH_PATIENT);
+            Reader reader = new FileReader(CSV_FILE_PATH_PATIENT);
             // Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader);
 
             for (CSVRecord record : records)
             {
@@ -36,6 +36,7 @@ public class PatientRepository implements CsvRepository<Patient>
                 String bloodType = record.get("Blood Type");
                 String email = record.get("Contact Information");
                 String password = "";
+                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 
                 try
                 {
@@ -82,10 +83,10 @@ public class PatientRepository implements CsvRepository<Patient>
     {
         try
         {
-            Writer out = new FileWriter(CSV_FILE_PATH_PATIENT);
+            Writer writer = new FileWriter(CSV_FILE_PATH_PATIENT);
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(PATIENT_HEADERS).build();
 
-            final CSVPrinter csvPrinter = new CSVPrinter(out, csvFormat);
+            CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
             for (Patient patient : patientList)
             {
