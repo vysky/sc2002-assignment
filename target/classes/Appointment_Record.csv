@@ -1,4 +1,3 @@
 ﻿Appointment ID,Patient,Doctor,Date,Timeslot,Appointment_Status,Service,Medication,Notes,Prescription_Status
-A00001,P0001,D001,31 Oct 24,14:00 - 15:00,,,,,
-"D001","31 Oct 24","09:00 - 10:00"
-"D001","31 Oct 24","17:00 - 18:00"
+A00001,P0001,D001,31 Oct 2024,14:00 - 15:00, Confirmed,,,,
+"A00002","Test","D001","31 Oct 2024","11:00 - 12:00","Pending"
