@@ -5,10 +5,6 @@ public class ReplenishmentRequest
     private Medicine medicine;
     private int requestedQuantity;
 
-    public ReplenishmentRequest()
-    {
-    }
-
     public ReplenishmentRequest(Medicine medicine, int requestedQuantity)
     {
         this.medicine = medicine;

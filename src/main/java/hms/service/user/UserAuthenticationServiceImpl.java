@@ -79,7 +79,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         }
         catch (Exception ex)
         {
-            System.out.println("Invalid id format.");
+            System.out.println("Invalid user id.");
         }
 
         return false;

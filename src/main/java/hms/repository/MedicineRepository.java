@@ -9,13 +9,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineRepository implements CsvRepository
+public class MedicineRepository implements CsvRepository<Medicine>
 {
     static final String CSV_FILE_PATH_MEDICINE = "src/main/resources/csv/medicine.csv";
 
     String[] MEDICINE_HEADERS = {"Medicine Name", "Initial Stock", "Low Stock Level Alert"};
 
-    public List<Medicine> getMedicineList()
+    public List<Medicine> importFromCsv()
     {
         ArrayList<Medicine> medicineArrayList = new ArrayList<Medicine>();
 
@@ -54,7 +54,7 @@ public class MedicineRepository implements CsvRepository
         return null;
     }
 
-    public void updateMedicineCsv(List<Medicine> medicineList)
+    public void exportToCsv(List<Medicine> medicineList)
     {
         try
         {
