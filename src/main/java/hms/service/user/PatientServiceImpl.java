@@ -1,11 +1,17 @@
 package hms.service.user;
 
+import hms.model.user.Doctor;
 import hms.model.user.Patient;
+import hms.model.appointment.Appointment;
+import hms.model.appointment.AppointmentManager;
+import hms.model.appointment.Timeslot;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class PatientServiceImpl extends UserService
 {
+    private static AppointmentManager appointmentManager = new AppointmentManager();
     private Patient authenticatedPatient;
 
     public PatientServiceImpl(Patient patient)
@@ -90,17 +96,147 @@ public class PatientServiceImpl extends UserService
 
     public void option3()
     {
-        System.out.println("View Available Appointment Slots");
+        Scanner input = new Scanner(System.in);
+
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+
+        System.out.println("List of doctors:");
+        for (int i = 0; i < doctors.size(); i++) {
+            Doctor doctor = doctors.get(i);
+            System.out.println("(" + (i + 1) + ") Dr. " + doctor.getName());
+        }
+
+        System.out.println("Select a doctor by numbers:");
+        int doctorNumber = input.nextInt();
+        input.nextLine();
+
+        if (doctorNumber < 1 || doctorNumber > doctors.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        String doctorId = doctors.get(doctorNumber - 1).getId();
+
+        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        String date = input.nextLine();
+
+        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
+        if (availableTimeslots.isEmpty()) {
+            System.out.println("No available timeslots for the selected date.");
+        } else {
+            System.out.println("Available Timeslots:");
+            for (int i = 0; i < availableTimeslots.size(); i++) {
+                System.out.println(availableTimeslots.get(i).getTime());
+            }
+        }
+
+        System.out.println("Enter any key to continue");
+        if (input.nextInt() == 1) {} 
     }
 
     public void option4()
     {
-        System.out.println("Schedule an Appointment");
+        Scanner input = new Scanner(System.in);
+
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+
+        System.out.println("List of doctors:");
+        for (int i = 0; i < doctors.size(); i++) {
+            Doctor doctor = doctors.get(i);
+            System.out.println("(" + (i + 1) + ") Dr. " + doctor.getName());
+        }
+
+        System.out.println("Select a doctor by numbers:");
+        int doctorNumber = input.nextInt();
+        input.nextLine();
+
+        if (doctorNumber < 1 || doctorNumber > doctors.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        String doctorId = doctors.get(doctorNumber - 1).getId();
+
+        Appointment existingAppointment = appointmentManager.getExistingAppointment(authenticatedPatient.getId(), doctorId);
+        if (existingAppointment != null) {
+            System.out.println("You already have an existing appointment with Dr. " + doctors.get(doctorNumber).getName() + " on " +
+                existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
+
+            System.out.println("Enter any key to continue");
+            if (input.nextInt() == 1) {} 
+            return;
+        }
+
+        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        String date = input.nextLine();
+
+        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
+        if (availableTimeslots.isEmpty()) {
+            System.out.println("No available timeslots for the selected date.");
+        } else {
+            System.out.println("Available Timeslots:");
+            for (int i = 0; i < availableTimeslots.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + availableTimeslots.get(i).getTime());
+            }
+
+            System.out.println("Select a timeslot by number:");
+            int timeslotNumber = input.nextInt();
+            input.nextLine();
+
+            if (timeslotNumber < 1 || timeslotNumber > availableTimeslots.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+
+            String timeslot = availableTimeslots.get(timeslotNumber - 1).getTime();
+
+            if (appointmentManager.isAvailable(doctorId, date, timeslot)) {
+                appointmentManager.makeAppointment(authenticatedPatient.getId(), doctorId, date, timeslot);
+            } else {
+                System.out.println("The selected timeslot is not available.");
+            }
+        }
     }
 
     public void option5()
     {
-        System.out.println("Reschedule an Appointment");
+        Scanner input = new Scanner(System.in);
+
+        List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+
+        System.out.println("Your existing appointment:");
+        for (int i = 0; i < existingAppointments.size(); i++) {
+            Appointment appointment = existingAppointments.get(i);
+            String doctorId = appointment.getDoctorId(); 
+
+            for (Doctor doctor : doctors) {
+                if (doctor.getDoctorId() == doctorId) {
+                    String doctorName = doctor.getName();
+
+                    System.out.println("(" + (i + 1) + ") " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());
+                }
+            }
+        }
+
+        System.out.println("Select a timeslot for rescheduling by number:");
+        int appointmentNumber = input.nextInt();
+        input.nextLine();
+
+        if (appointmentNumber < 1 || appointmentNumber > existingAppointments.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        String appointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
+        String doctorId = existingAppointments.get(appointmentNumber - 1).getDoctorId();
+        
+
+
+
+        rescheduleAppointment(existingAppointment.getAppointmentId());
+
+
     }
 
     public void option6()

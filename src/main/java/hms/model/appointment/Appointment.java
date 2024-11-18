@@ -1,4 +1,4 @@
-package hms.appointment;
+package hms.model.appointment;
 
 public class Appointment {
     private String appointmentId;
@@ -63,6 +63,10 @@ public class Appointment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isPendingOrConfirmed() {
+        return "Pending".equalsIgnoreCase(this.status) || "Confirmed".equalsIgnoreCase(this.status);
     }
 
     @Override
