@@ -17,8 +17,8 @@ public class SharedUserServiceImpl
 
     public SharedUserServiceImpl()
     {
-        this.patientList = patientRepository.getPatientList();
-        this.staffList = staffRepository.getStaffList();
+        this.patientList = patientRepository.importFromCsv();
+        this.staffList = staffRepository.importFromCsv();
     }
 
     public List<Patient> getPatientList()
@@ -34,12 +34,12 @@ public class SharedUserServiceImpl
     // write patient list to csv
     public void setPatientList()
     {
-        patientRepository.updatePatientCsv(this.patientList);
+        patientRepository.exportToCsv(this.patientList);
     }
 
     // write staff list to csv
     public void setStaffList()
     {
-        staffRepository.updateStaffCsv(this.staffList);
+        staffRepository.exportToCsv(this.staffList);
     }
 }

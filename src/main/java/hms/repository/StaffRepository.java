@@ -12,13 +12,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffRepository implements CsvRepository
+public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
     String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age"};
 
-    public List<Staff> getStaffList()
+    public List<Staff> importFromCsv()
     {
         ArrayList<Staff> staffArrayList = new ArrayList<Staff>();
 
@@ -107,7 +107,7 @@ public class StaffRepository implements CsvRepository
         return null;
     }
 
-    public void updateStaffCsv(List<Staff> staffList)
+    public void exportToCsv(List<Staff> staffList)
     {
         try
         {

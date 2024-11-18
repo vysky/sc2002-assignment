@@ -7,10 +7,6 @@ public class PrescriptionOrder
     private List<Prescription> prescriptionList;
     private boolean status; // 0 = pending, 1 = dispensed
 
-    public PrescriptionOrder()
-    {
-    }
-
     public PrescriptionOrder(List<Prescription> prescriptionList)
     {
         this.prescriptionList = prescriptionList;

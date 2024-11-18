@@ -15,7 +15,7 @@ public class InventoryServiceImpl
 
     public InventoryServiceImpl()
     {
-        this.medicineList = medicineRepository.getMedicineList();
+        this.medicineList = medicineRepository.importFromCsv();
 
         // test data
         ReplenishmentRequest replenishmentRequest1 = new ReplenishmentRequest(medicineList.get(0), 1000);
@@ -38,7 +38,7 @@ public class InventoryServiceImpl
 
     public void updateMedicineList()
     {
-        medicineRepository.updateMedicineCsv(this.medicineList);
+        medicineRepository.exportToCsv(this.medicineList);
     }
 
     public void printMedicineList()
