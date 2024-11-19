@@ -1,5 +1,10 @@
 package hms.model.appointment;
 
+/**
+ * The Timeslot class represents a specific time slot for a doctor's appointment.
+ * It contains information about the doctor, date, time, and availability status of the slot.
+ */
+
 public class Timeslot {
     private String doctorId;
     private String date;
@@ -11,7 +16,7 @@ public class Timeslot {
      * @param doctorId the ID of the doctor
      * @param date the date of the timeslot
      * @param time the time of the timeslot
-     * @param status the status of the timeslot
+     * @param status the availability status of the timeslot
      */
     public Timeslot(String doctorId, String date, String time, String status) {
         this.doctorId = doctorId;
