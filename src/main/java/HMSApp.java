@@ -1,6 +1,6 @@
-import java.io.Console;
 import java.util.Scanner;
 
+import hms.model.appointment.AppointmentManager;
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
 import hms.model.user.Doctor;
@@ -27,6 +27,7 @@ public class HMSApp
     private static UserAuthenticationServiceImpl userAuthenticationService;
     private static UserService userService;
     private static MedicalRecordService medicalRecordService;
+    private static AppointmentManager appointmentManager;
 
     public static void main(String[] args)
     {
@@ -259,7 +260,7 @@ public class HMSApp
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService, appointmentManager);
             }
             case "pharmacist" ->
             {
