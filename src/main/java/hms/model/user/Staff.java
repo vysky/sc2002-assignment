@@ -19,6 +19,7 @@ public class Staff extends User
         super(id, name, role, gender, password);
         this.age = age;
     }
+    
 
     public int getAge()
     {

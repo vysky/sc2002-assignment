@@ -75,8 +75,180 @@ public class AdministratorServiceImpl extends UserService
 
     private void viewManage(Scanner input)
     {
-        sortMenu(sharedUserService.getStaffList(),input);
-        return;
+        int opt;
+        while(true){
+            try{
+                System.out.println("""
+                        1. Create new staff
+                        2. View all staff
+                        """);
+                opt = Integer.parseInt(input.nextLine());
+                break;
+            }catch(NumberFormatException e) { 
+                System.out.println("Invalid Option! ");
+                
+            } catch(NullPointerException e) {
+                System.out.println("Invalid Option! ");
+            }
+        }
+        if(opt==1){
+            newStaff(input);
+        }
+        else{
+            sortMenu(sharedUserService.getStaffList(),input);
+            return;
+        }
+    }
+        
+    private void newStaff(Scanner input){
+        String id="",i,z,name,role,gender,oopt,c="";
+        int opt,nid,age;
+        System.out.println("Welcome to Staff Maker!");
+        while(true){
+            System.out.println("Enter New Staff Name");
+            name = input.nextLine();
+            System.out.println("Confirm " + name + " is correct?");
+            System.out.println("Key 1 to confirm, 0 to edit, any other key to return to menu");
+            oopt = input.nextLine();
+            if(oopt.equals("1")) {
+                oopt="0";
+                break;
+            }
+            else if(oopt.equals("0")){
+
+            }
+            else {
+                c = "0";break;
+            }
+        }
+        if(c=="0"){
+            return;
+        }
+        while(true){
+            System.out.println("Enter New Staff Role");
+            role = input.nextLine();
+            if(role.equals("doctor")||role.equals("administrator")||role.equals("pharmacist")){
+                System.out.println("Confirm " + role + " is correct?");
+                System.out.println("Key 1 to confirm, 0 to edit, any other key to return to menu");
+                oopt = input.nextLine();
+                if(oopt.equals("1")) {
+                    oopt="0";break;
+                }
+                else if(oopt.equals("0")){}
+                else {
+                    c = "0";
+                    break;
+                }
+            }
+            else{
+                System.out.println("Invalid role entered!");
+            }
+        }
+        if(c=="0"){
+            return;
+        }
+        while(true){
+            System.out.println("Enter New Staff Gender");
+            gender = input.nextLine();
+            if(gender.equals("male")||gender.equals("female")){
+                System.out.println("Confirm " + gender + " is correct?");
+                System.out.println("Key 1 to confirm, 0 to edit, any other key to return to menu");
+                oopt = input.nextLine();
+                if(oopt.equals("1")) {
+                    oopt="0";break;
+                }
+                else if(oopt.equals("0")){}
+                else {
+                    c = "0";
+                    break;
+                }
+            }
+            else{
+                System.out.println("Invalid gender entered!");
+            }
+        }
+        if(c=="0"){
+            return;
+        }
+        gender = gender.substring(0, 1).toUpperCase()+gender.substring(1);
+        while(true){
+            try{
+                System.out.println("Enter New Staff age");
+                age = Integer.parseInt(input.nextLine());
+                
+                System.out.println("Confirm age "+ age + " is correct?");
+                System.out.println("Key 1 to confirm, 0 to edit, any other key to return to menu");
+                oopt = input.nextLine();
+                if(oopt.equals("1")) {
+                    oopt="0";break;
+                }
+                else if(oopt.equals("0")){}
+                else {
+                    c = "0";
+                    break;
+                }
+                if(age<1||age>99){
+                    System.out.println("Invalid age");
+                }
+                else break;
+            }catch(NumberFormatException e) { 
+                System.out.println("Invalid Option! ");
+            
+            }catch(NullPointerException e) {
+                System.out.println("Invalid Option! ");
+            }
+        }
+        if(c=="0"){
+            return;
+        }
+        nid = checkIDSeq(role)+1;
+        i=role.substring(0, 1).toUpperCase();
+        if(nid<10){
+            id = String.format("%03d",nid);
+        }
+        id = i+id;
+        
+        Staff staff = new Staff();
+        switch (role)
+                {
+                    case "administrator" ->
+                    {
+                        
+                            staff = new Administrator(id, name, role, gender, age);
+                        
+                    }
+                    case "doctor" ->
+                    {
+                            staff = new Doctor(id, name, role, gender, age);
+                        
+                    }
+                    case "pharmacist" ->
+                    {
+                            staff = new Pharmacist(id, name, role, gender, age);
+                    }
+                    default -> System.out.printf("Unknown role, skipping user %s.", staff.getRole());
+                }
+        List<Staff> staffList = sharedUserService.getStaffList();
+        staffList.add(staff);
+        
+    }
+
+    public int checkIDSeq(String role){
+        int i=0,nid=-1;
+        if(role.equals(role)){
+            List<Staff> theList = sharedUserService.getStaffList();
+            String tempid ="";
+            for(Staff s : theList){
+                if(s.getRole().equalsIgnoreCase(role)){
+                    tempid.compareToIgnoreCase(tempid);
+                    if(tempid.compareToIgnoreCase(s.getId())<0){
+                        tempid = s.getId();
+                    }
+                }
+            }
+            nid = Integer.parseInt(tempid.substring(1));
+        }
+        return nid;
     }
 
     public void option2(Scanner input)

@@ -93,6 +93,7 @@ public class HMSApp
                     case 3 ->
                     {
                         credentialPair = new CredentialPair("P1001", "password");
+                        performAuthentication(credentialPair, counter, maximumAttempt);
                     }
                     case 4 ->
                     {
@@ -102,10 +103,12 @@ public class HMSApp
                     case 5 ->
                     {
                         credentialPair = new CredentialPair("D001", "password");
+                        performAuthentication(credentialPair, counter, maximumAttempt);
                     }
                     case 6 ->
                     {
                         credentialPair = new CredentialPair("P001", "password");
+                        performAuthentication(credentialPair, counter, maximumAttempt);
                     }
                     case 0 ->
                     {

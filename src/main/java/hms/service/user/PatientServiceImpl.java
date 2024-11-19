@@ -91,7 +91,9 @@ public class PatientServiceImpl extends UserService
 
     public void option2()
     {
+        //(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
         System.out.println("Update Personal Information");
+
     }
 
     public void option3()
