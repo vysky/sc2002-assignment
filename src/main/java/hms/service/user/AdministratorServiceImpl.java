@@ -1,5 +1,6 @@
 package hms.service.user;
 
+import hms.model.appointment.*;
 import hms.model.medicine.Medicine;
 import hms.model.user.*;
 import hms.service.medicine.InventoryServiceImpl;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 
 public class AdministratorServiceImpl extends UserService
 {
+    private AppointmentManager appointmentManager;
     private Administrator authenticatedAdministrator;
     private InventoryServiceImpl inventoryService;
     private SharedUserServiceImpl sharedUserService;
@@ -24,7 +26,7 @@ public class AdministratorServiceImpl extends UserService
     }
 
     public void printMenu()
-    {
+    {   
         // todo: for logout, want to try logout back to main menu. may be an option to logout and an option to end program?
         System.out.print("""
                                  ========== Administrator's Menu ==========
@@ -48,7 +50,7 @@ public class AdministratorServiceImpl extends UserService
             }
             case 2 ->
             {
-                option2();
+                option2(input);
             }
             case 3 ->
             {
@@ -77,11 +79,283 @@ public class AdministratorServiceImpl extends UserService
         return;
     }
 
-    public void option2()
+    public void option2(Scanner input)
     {
-        System.out.println("Option 2");
+        int i;
+        i = showPatient(sharedUserService.getPatientList(),input);
+        if(i== -1){
+            return;
+        }
+        selectPatient(sharedUserService.getPatientList(),i,input);
     }
 
+    private int showPatient(List<Patient> patientList,Scanner input){
+        System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender:");
+        int i=1;
+        for(Patient s : patientList){
+            String id = String.format("%-10s",s.getId());
+            String name = String.format("%-10s",s.getName());
+            String role = String.format("%-10s",s.getRole());
+            String gender = String.format("%-10s",s.getGender());
+            System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender);
+            i++;
+        }
+        return i;
+    }
+
+    private void selectPatient(List<Patient> patientList,int i,Scanner input){
+        String opt;
+        while(true){
+            try{
+                System.out.println("""
+                    Which patient's appointment details would you like to see?
+                    Otherwise Enter '0' (without quotes) to exit to Admin Menu
+                        """);
+                opt = input.nextLine();
+                Integer.parseInt(opt);
+                break;
+            }catch(NumberFormatException e) { 
+                System.out.println("Invalid Option! Exiting...");
+            }catch(NullPointerException e) {
+                System.out.println("Invalid Option! Exiting...");
+            }
+        }
+        int index = Integer.parseInt(opt);
+        if((index <0 || index>i )){
+            System.out.println("Invalid entry! Returning to Admin Menu.");
+            return ;
+        }
+        else if(index ==0){
+            System.out.println("Returning to Admin Menu...");
+            return ;
+        }
+        
+        List<Patient> list = new ArrayList<Patient>(patientList);
+        System.out.println("Viewing Patient "+ list.get(index-1).getName() + " appointment details.");
+        System.out.println("Key 1 to confirm, otherwise any other key to exit.");
+        String choice = input.nextLine();
+        switch (choice) {
+            case "1":
+                listByDoc(list.get(index-1).getId());
+                break;
+        
+            default:
+                return;
+        }
+        
+        
+        return;
+    }
+
+    private void listByDoc(String patientID){
+        appointmentManager = new AppointmentManager();
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+        Appointment existingAppointment;
+        int count = 0;
+        for (int i = 0; i < doctors.size(); i++) {
+            existingAppointment = appointmentManager.getExistingAppointment(patientID, doctors.get(i).getId());
+            //System.out.println("(" + (i + 1) + ") Dr. " + doctors.get(i).getName());
+            if (existingAppointment != null) {
+                System.out.println("Patient have an appointment with Dr. " + doctors.get(i).getName() + " on " +
+                    existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("This patient currently do not have any appointment booked! ");
+        }
+    }
+
+    private int printMedList(Scanner input){
+        int c;
+        while(true){
+            try{
+                inventoryService.printMedicineList();
+                System.out.print("""
+                                        ----- Manage Medication Inventory -----
+                                        (1) Add new medicine
+                                        (2) Remove existing medicine
+                                        (3) Update stock level of existing medicine
+                                        (0) Go back main menu
+                                        """);
+                System.out.print("Select an option: ");
+                c = Integer.parseInt(input.nextLine());
+                break;
+            }catch(NumberFormatException e) { 
+                System.out.println("Non Numberical values entered!");
+            } catch(NullPointerException e) {
+                System.out.println("Invalid Option!");
+            }
+        }
+        return c;
+    }
+    
+    private void addNewMed(Scanner input){
+        String opt,medicineName;
+        boolean test=false;
+        while(true){
+            System.out.print("Enter medicine name: ");
+            medicineName = input.nextLine();
+            if(1==inventoryService.checkDuplicateMedications(medicineName)){
+                System.out.println("""
+                    Medicine exist in system!
+                    Key 1 to enter the name again, otherwise any key to exit""");
+                opt = input.nextLine();
+                switch (opt) {
+                    case "1":  break;                          
+                            default:
+                                test = true;
+                                break;
+                        }
+                        if(test) break;
+                    }
+                    else{
+                        break;
+                    }
+                }
+            if(test){return;}
+            int stockLevel,lowStockLevel;
+            while (true) {        
+                    try{
+                        System.out.print("Enter stock level: ");
+                        stockLevel = Integer.parseInt(input.nextLine());
+                        if(stockLevel <= 0){
+                            System.out.println("Negative or zero values entered!");
+                        }
+                        else  break;
+                    }catch(NumberFormatException e) { 
+                        System.out.println("Non Numberical values entered!");
+                    } catch(NullPointerException e) {
+                        System.out.println("Invalid Option!");
+                    }
+                }
+                    
+                while (true) {
+                    try{
+                            System.out.print("Enter low stock level alert: ");
+                            lowStockLevel = Integer.parseInt(input.nextLine());
+                            if(lowStockLevel < 0){
+                                System.out.println("Negative or zero values entered!");
+                            }
+                            else if(lowStockLevel == 0){
+                                System.out.println("""
+                                    NO alert will be set for this medicine.
+                                    To CONFIRM press 1, Otherwise any key to return.""");
+                                opt = input.nextLine();
+                                switch (opt) {
+                                    case "1":
+                                        System.out.println("No alert is set for this medicine.");
+                                        test=true;
+                                        break;
+                                    default: break;
+                                }
+                                if(test){
+                                    break;
+                                }
+                            }
+                            else  break;
+                        }catch(NumberFormatException e) { 
+                            System.out.println("Non Numberical values entered!");
+                        } catch(NullPointerException e) {
+                            System.out.println("Invalid Option!");
+                        }
+                    }
+                    Medicine newMedicine = new Medicine(medicineName, stockLevel, lowStockLevel);
+                    inventoryService.getMedicineList().add(newMedicine);
+                    System.out.println("New medicine added!");
+    }
+    
+    private void removeMed(Scanner input){
+        int max,index;
+        while(true){
+            try{
+            max = inventoryService.printMedicineList()-1 ;
+            System.out.print("""
+                Select medicine to remove (Enter the No. of medicine)
+                Otherwise key 0 to exit
+                """);
+            index = Integer.parseInt(input.nextLine());
+            if(index > max || index < 0){
+                System.out.println("Invalid index!");
+            }
+            else if(index==0){
+                System.out.println("Exiting..");
+                break;
+            }
+            else{
+                inventoryService.removeMedicine(index);
+                System.out.println("Medicine removed!");
+                break;
+            }
+            }catch(NumberFormatException e) { 
+                System.out.println("Non Numberical values entered!");
+            }catch(NullPointerException e) {
+                System.out.println("Invalid Option!");
+            }
+        }
+    }
+    
+    private void updateStock(Scanner input){
+        int max,index,newcount=-1;
+        String c;
+        while(true){
+            try{
+                max = inventoryService.printMedicineList() -1;
+                System.out.print("""
+                    Select medicine to update stock level (Enter the No. of medicine): 
+                    Otherwise Key 0 to exit.
+                    """);
+                index = Integer.parseInt(input.nextLine());
+                if(index>max || index < 0){
+                    System.out.println("Invalid index!");
+                }
+                else if(index==0){
+                    break;
+                }
+                else{
+                    System.out.print("""
+                        Enter new stock: 
+                        Enter 0 to clear existing stocks, -1 to exit.
+                        """);
+                    newcount = Integer.parseInt(input.nextLine());
+                    if(newcount<-1){
+                        System.out.println("Invalid amount!");
+                    }
+                    else if(newcount== 0){
+                        System.out.println("""
+                            Confirm to clear stock amount to ZERO?
+                            Key 1 to confirm, any key to exit.
+                            """);
+                        c = input.nextLine();
+                        switch (c) {
+                            case "1":
+                                System.out.println("Stock amount cleared to 0.");
+                                inventoryService.updateMedicineStock(index, input.nextInt());
+                                break;
+                        
+                            default:
+                                break;
+                        }
+
+                    }
+                    else if(newcount==-1){
+                        break;
+                    }
+                    else{
+                        inventoryService.updateMedicineStock(index, input.nextInt());
+                        System.out.println("Stock updated!");
+                        break;
+                    }
+                }
+                
+            }catch(NumberFormatException e) { 
+                System.out.println("Non Numberical values entered!");
+            } catch(NullPointerException e) {
+                System.out.println("Invalid Option!");
+            }
+        }
+
+    }
     // View and Manage Medication Inventory
     public void option3(Scanner input)
     {
@@ -89,46 +363,20 @@ public class AdministratorServiceImpl extends UserService
 
         do
         {
-            inventoryService.printMedicineList();
-            System.out.print("""
-                                       ----- Manage Medication Inventory -----
-                                       (1) Add new medicine
-                                       (2) Remove existing medicine
-                                       (3) Update stock level of existing medicine
-                                       (0) Go back main menu
-                                       """);
-            System.out.print("Select an option: ");
-            option = input.nextInt();
-
+            option = printMedList(input);
             switch (option)
             {
                 case 1 ->
                 {
-                    System.out.print("Enter medicine name: ");
-                    String medicineName = input.next();
-                    System.out.print("Enter stock level: ");
-                    int stockLevel = input.nextInt();
-                    System.out.print("Enter low stock level alert: ");
-                    int lowStockLevel = input.nextInt();
-                    Medicine newMedicine = new Medicine(medicineName, stockLevel, lowStockLevel);
-                    inventoryService.getMedicineList().add(newMedicine);
-                    System.out.println("New medicine added!");
+                    addNewMed(input);
                 }
                 case 2 ->
                 {
-                    inventoryService.printMedicineList();
-                    System.out.print("Select medicine to remove (Enter the No. of medicine): ");
-                    inventoryService.removeMedicine(input.nextInt());
-                    System.out.println("Medicine removed!");
+                    removeMed(input);
                 }
                 case 3 ->
                 {
-                    inventoryService.printMedicineList();
-                    System.out.print("Select medicine to update stock level (Enter the No. of medicine): ");
-                    int index = input.nextInt();
-                    System.out.print("Enter new stock: ");
-                    inventoryService.updateMedicineStock(index, input.nextInt());
-                    System.out.println("Stock updated!");
+                    updateStock(input);
                 }
                 case 0 ->
                 {
@@ -145,10 +393,25 @@ public class AdministratorServiceImpl extends UserService
     // Approve Replenishment Requests
     public void option4(Scanner input)
     {
-        int option;
-        inventoryService.printReplenishmentRequestList();
-        System.out.print("Enter replenishment request No. to approve (Enter 0 to go back main menu): ");
-        option = input.nextInt();
+        int option, max;
+        
+        while (true) {        
+            try{
+                max = inventoryService.printReplenishmentRequestList()-1;
+                System.out.print("Enter replenishment request No. to approve (Enter 0 to go back main menu): ");
+                option = Integer.parseInt(input.nextLine());
+                if(option>max || option < 0){
+                    System.out.println("Invalid Option!");
+                }
+                else  break;
+            }catch(NumberFormatException e) { 
+                System.out.println("Invalid Option!");
+            } catch(NullPointerException e) {
+                System.out.println("Invalid Option!");
+            }
+        }
+        //option = Integer.parseInt(input.nextLine());
+        if(option == 0) return;
         inventoryService.approveReplenishmentRequest(option);
     }
 
@@ -229,7 +492,6 @@ public class AdministratorServiceImpl extends UserService
             System.out.println(i+".\t|"+id+"\t\t|"+name+"\t\t|"+role+"\t\t|"+gender+"\t\t|"+age);
             i++;
         }
-        System.out.println(i-1);
         return i-1;
     }
 

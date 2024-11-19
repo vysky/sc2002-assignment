@@ -143,7 +143,7 @@ public class Main
 
         return new CredentialPair(username, password);
     }
-
+    
     private static void printForgetPasswordDialog()
     {
         System.out.println("----- Reset Password -----");

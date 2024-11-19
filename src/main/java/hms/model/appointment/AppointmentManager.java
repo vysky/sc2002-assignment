@@ -102,9 +102,9 @@ public class AppointmentManager {
         return appointment;
     }
 
-    public boolean rescheduleAppointment(String appointmentId) {
+    //public boolean rescheduleAppointment(String appointmentId) {
 
-    }
+    //}
 
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
