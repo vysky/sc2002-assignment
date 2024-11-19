@@ -8,11 +8,21 @@ import hms.model.appointment.AppointmentManager;
 import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
-
+/**
+ * The PatientServiceImpl class provides an implementation for patient-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and managing medical records, scheduling appointments, and managing
+ * personal information.
+ */
 public class PatientServiceImpl extends UserService
 {
     private static AppointmentManager appointmentManager = new AppointmentManager();
     private Patient authenticatedPatient;
+    /**
+     * Constructs a PatientServiceImpl with the authenticated patient.
+     *
+     * @param patient The authenticated patient.
+     */
 
     public PatientServiceImpl(Patient patient)
     {
