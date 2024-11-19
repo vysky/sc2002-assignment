@@ -1,7 +1,17 @@
 package hms.model.user;
 
+/**
+ * The Doctor class represents a doctor in the hospital management system (HMS).
+ * It extends the Staff class, inheriting basic staff properties like id, name, role, gender, and age,
+ * and may include additional functionalities specific to doctors, such as viewing patient records or managing appointments.
+ */
+
 public class Doctor extends Staff
-{
+{    
+     /**
+     * Default constructor that creates a new Doctor object.
+     * This constructor does not initialize any properties.
+     */
     public Doctor()
     {
     }
