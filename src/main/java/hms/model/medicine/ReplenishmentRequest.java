@@ -1,5 +1,10 @@
 package hms.model.medicine;
 
+/**
+ * The ReplenishmentRequest class represents a request to replenish stock for a specific medicine.
+ * It contains details about the medicine that needs to be replenished and the quantity requested.
+ */
+
 public class ReplenishmentRequest
 {
     private Medicine medicine;
