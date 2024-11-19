@@ -12,12 +12,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AppointmentManager {
     private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
     private static final String AVAILABILITY_FILE = "src\\main\\resources\\csv\\Timeslot.csv";
     private static final String APPOINTMENTS_FILE = "src\\main\\resources\\csv\\Appointment_Record.csv";
 
+//General
+    public String inputDate (Scanner input) {
+        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        return input.nextLine();
+    }
+
+    
+
+//Related to Doctor
     public List<Doctor> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
 
@@ -35,6 +45,28 @@ public class AppointmentManager {
         return doctors;
     }
     
+    public void displayDoctor(List<Doctor> doctors) {
+        System.out.println("List of doctors:");
+        for (int i = 0; i < doctors.size(); i++) {
+            Doctor doctor = doctors.get(i);
+            System.out.println("(" + (i + 1) + ") Dr. " + doctor.getName());
+        }
+    }
+
+    public int selectDoctor(Scanner input, int doctorSize) {
+        System.out.println("Select a doctor by numbers:");
+        int doctorNumber = input.nextInt();
+        input.nextLine();
+
+        if (doctorNumber < 1 || doctorNumber > doctorSize) {
+            return -1;
+        }
+
+        return doctorNumber;
+    }
+
+
+//Related to Timeslot
     public List<Timeslot> getAvailableTimeslots(String doctorId, String date) {
         List<Timeslot> availableTimeslots = new ArrayList<>();
     
@@ -50,6 +82,19 @@ public class AppointmentManager {
         }
     
         return availableTimeslots;
+    }
+
+    public int displayAvailableTimeslots(List<Timeslot> availableTimeslots) {
+        if (availableTimeslots.isEmpty()) {
+            System.out.println("No available timeslots for the selected date.");
+            return -1;
+        } else {
+            System.out.println("Available Timeslots:");
+            for (int i = 0; i < availableTimeslots.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + availableTimeslots.get(i).getTime()); 
+            }
+        }
+        return 1;
     }
 
     public boolean isAvailable(String doctorId, String date, String timeslot) {
@@ -71,6 +116,55 @@ public class AppointmentManager {
         return false;
     }
 
+    public void updateAvailability(String doctorId, String date, String timeslot, String availability) {
+
+        try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
+
+            List<String[]> allElements = new ArrayList<>();
+            String[] nextLine;
+
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[0].equals(doctorId) && nextLine[1].equals(date) && nextLine[2].equals(timeslot)) {
+                    nextLine[3] = availability;
+                }
+                allElements.add(nextLine);
+            }
+
+            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(AVAILABILITY_FILE))) {
+                csvWriter.writeAll(allElements);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvValidationException e) {
+           e.printStackTrace();
+        }
+    }
+
+//Timeslot & Appointment
+    public void selectTimeslotAndMakeAppointment(Scanner input, String patientId, String doctorId, String date, List<Timeslot> availableTimeslots) {
+        System.out.println("Select a timeslot by number:");
+        int timeslotNumber = input.nextInt();
+        input.nextLine(); // Consume the newline character
+
+        if (timeslotNumber < 1 || timeslotNumber > availableTimeslots.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        String timeslot = availableTimeslots.get(timeslotNumber - 1).getTime();
+
+        if (isAvailable(doctorId, date, timeslot)) {
+            makeAppointment(patientId, doctorId, date, timeslot);
+        } else {
+            System.out.println("The selected timeslot is not available.");
+        }
+
+        System.out.println("Enter any key to continue");
+        input.nextLine();
+    }
+
+//Related to Appointment    
     public Appointment getExistingAppointment(String patientId, String doctorId) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
@@ -94,14 +188,40 @@ public class AppointmentManager {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[5].equals("Pending") || (nextLine[5].equals("Confirmed"))) {
-                appointment.add(new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]));
+                if (nextLine[1].equals(patientId)) {
+                    if (nextLine[5].equals("Pending") || nextLine[5].equals("Confirmed")) {
+                        appointment.add(new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]));
+                    }
                 }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
         return appointment;
+    }
+
+    public int displayExistingAppointment(List<Appointment> existingAppointments, List<Doctor> doctors) {
+        String doctorName = "";
+
+        if (existingAppointments.isEmpty()) {
+            return -1;
+        } else {
+            System.out.println("Your existing appointment:");
+            for (int i = 0; i < existingAppointments.size(); i++) {
+                Appointment appointment = existingAppointments.get(i);
+                String doctorId = existingAppointments.get(i).getDoctorId();
+                
+                for (int j = 0; j < doctors.size(); j++) {
+                    if (doctors.get(j).getId().equals(doctorId)) {
+                        doctorName = doctors.get(j).getName();       
+                    }    
+                }
+
+                System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());   
+            }
+
+            return 1;
+        }
     }
 
     public boolean rescheduleAppointment(String appointmentId) {
@@ -160,32 +280,7 @@ public class AppointmentManager {
         }
 
         System.out.println("Appointment made successfully. Your appointment ID is " + appointmentID);
-    }
-
-    public void updateAvailability(String doctorId, String date, String timeslot, String availability) {
-
-        try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
-
-            List<String[]> allElements = new ArrayList<>();
-            String[] nextLine;
-
-            while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[0].equals(doctorId) && nextLine[1].equals(date) && nextLine[2].equals(timeslot)) {
-                    nextLine[3] = availability;
-                }
-                allElements.add(nextLine);
-            }
-
-            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(AVAILABILITY_FILE))) {
-                csvWriter.writeAll(allElements);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvValidationException e) {
-           e.printStackTrace();
-        }
-    }
+    } 
 
     public void updateAppointmentStatus(String appointmentID, String Status) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
