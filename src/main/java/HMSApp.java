@@ -286,6 +286,9 @@ public class HMSApp
             userService.handleSelectedOption(input, option);
         } while (option != 0);
 
+        sharedUserService.setPatientList();
+        sharedUserService.setStaffList();
+
         authenticatedUser = null;
     }
 }
