@@ -1,19 +1,27 @@
 package hms.service.medicine;
 
-import hms.model.medicine.Medicine;
-import hms.model.medicine.ReplenishmentRequest;
-import hms.repository.MedicineRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.math.*;
 
+import hms.model.medicine.Medicine;
+import hms.model.medicine.ReplenishmentRequest;
+import hms.repository.MedicineRepository;
+/**
+ * The InventoryServiceImpl class provides the implementation for managing the medicine inventory
+ * and handling replenishment requests in the hospital management system (HMS).
+ * It interacts with the MedicineRepository to persist inventory changes and supports adding,
+ * updating, and removing medicines, as well as managing replenishment requests.
+ */
 public class InventoryServiceImpl
 {
     private static final MedicineRepository medicineRepository = new MedicineRepository();
     private final List<Medicine> medicineList;
     private final List<ReplenishmentRequest> replenishmentRequestList = new ArrayList<>();
-
+    /**
+     * Constructs an InventoryServiceImpl instance.
+     * Initializes the medicine list by importing data from the CSV file and adds test replenishment requests.
+     */
     public InventoryServiceImpl()
     {
         this.medicineList = medicineRepository.importFromCsv();
@@ -32,16 +40,27 @@ public class InventoryServiceImpl
     // medicine
     // ====================================================================================================
 
+    /**
+     * Retrieves the list of medicines.
+     *
+     * @return the list of medicines
+     */
     public List<Medicine> getMedicineList()
     {
         return this.medicineList;
     }
 
+    /**
+     * Updates the medicine list by exporting it to a CSV file.
+     */
     public void updateMedicineList()
     {
         medicineRepository.exportToCsv(this.medicineList);
     }
 
+    /**
+     * Prints the list of medicines.
+     */
     public int printMedicineList()
     {
         int i = 1, maxNL=-1,k=1;
@@ -79,11 +98,22 @@ public class InventoryServiceImpl
         return k;
     }
 
+    /**
+     * Removes a medicine from the list.
+     *
+     * @param index the index of the medicine to remove
+     */
     public void removeMedicine(int index)
     {
         medicineList.remove(index - 1);
     }
 
+    /**
+     * Updates the stock level of a medicine.
+     *
+     * @param index    the index of the medicine to update
+     * @param newStock the new stock level
+     */
     public void updateMedicineStock(int index, int newStock)
     {
         medicineList.get(index - 1).setInitialStock(newStock);
@@ -93,11 +123,19 @@ public class InventoryServiceImpl
     // should we split the replenishment request to another service? in terms of oop and mvc design
     // ====================================================================================================
 
+    /**
+     * Retrieves the list of replenishment requests.
+     *
+     * @return the list of replenishment requests
+     */
     public List<ReplenishmentRequest> getReplenishmentRequestList()
     {
         return this.replenishmentRequestList;
     }
 
+    /**
+     * Prints the list of replenishment requests.
+     */
     public int printReplenishmentRequestList()
     {
         int i = 1;
@@ -115,12 +153,23 @@ public class InventoryServiceImpl
     //  if we use index, if there is any changes to the medicine list, example a medicine is removed
     //  the index in replenishment request will be wrong, example the last medicine is removed
     //  the new length of the medicine list will be -1 which will caused error
+    /**
+     * Creates a new replenishment request.
+     *
+     * @param index             the index of the medicine to replenish
+     * @param requestedQuantity the quantity to replenish
+     */
     public void createReplenishmentRequest(int index, int requestedQuantity)
     {
         ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(medicineList.get(index - 1), requestedQuantity);
         replenishmentRequestList.add(replenishmentRequest);
     }
 
+    /**
+     * Approves a replenishment request.
+     *
+     * @param index the index of the replenishment request to approve
+     */
     public void approveReplenishmentRequest(int index)
     {
         ReplenishmentRequest replenishmentRequest = replenishmentRequestList.get(index - 1);

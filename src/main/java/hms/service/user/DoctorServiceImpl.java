@@ -5,12 +5,26 @@ import java.util.Scanner;
 import hms.model.user.Doctor;
 import hms.service.medicalRecord.MedicalRecordService;
 
+/**
+ * The DoctorServiceImpl class provides an implementation for doctor-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and updating patient medical records, managing appointment schedules,
+ * and recording appointment outcomes.
+ */
 public class DoctorServiceImpl extends UserService
 {
     private Doctor authenticatedDoctor;
     private SharedUserServiceImpl sharedUserService;
     private MedicalRecordService medicalRecordService;
 
+      /**
+     * Constructs a DoctorServiceImpl with the authenticated doctor, shared user service,
+     * and medical record service.
+     *
+     * @param doctor The authenticated doctor.
+     * @param sharedUserService The shared user service for managing appointments and schedules.
+     * @param medicalRecordService The medical record service for accessing and updating patient records.
+     */
     public DoctorServiceImpl(Doctor doctor, SharedUserServiceImpl sharedUserService, MedicalRecordService medicalRecordService)
     {
         this.authenticatedDoctor = doctor;
@@ -18,6 +32,9 @@ public class DoctorServiceImpl extends UserService
         this.medicalRecordService = medicalRecordService;
     }
 
+    /**
+     * Prints the menu options for the doctor.
+     */
     public void printMenu()
     {
         System.out.print("""
@@ -34,6 +51,12 @@ public class DoctorServiceImpl extends UserService
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the doctor.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -78,6 +101,12 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 1: View Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
     public void option1(MedicalRecordService mr, Scanner input)
     {
         String pId;
@@ -96,6 +125,12 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 2: Update Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
     public void option2(MedicalRecordService mr, Scanner input)
     {
         String pId = "";
@@ -157,26 +192,41 @@ public class DoctorServiceImpl extends UserService
         } while (loop);
     }
 
+    /**
+     * Handles option 3: View Personal Schedule.
+     */
     public void option3()
     {
         System.out.println("Option 3");
     }
 
+    /**
+     * Handles option 4: Set Availability for Appointments.
+     */
     public void option4()
     {
         System.out.println("Option 4");
     }
 
+    /**
+     * Handles option 5: Accept or Decline Appointment Requests.
+     */
     public void option5()
     {
         System.out.println("Option 5");
     }
 
+    /**
+     * Handles option 6: View Upcoming Appointments.
+     */
     public void option6()
     {
         System.out.println("Option 6");
     }
 
+    /**
+     * Handles option 7: Record Appointment Outcome.
+     */
     public void option7()
     {
         System.out.println("Option 7");

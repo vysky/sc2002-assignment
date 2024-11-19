@@ -1,24 +1,37 @@
 package hms.service.user;
 
-import hms.model.user.Doctor;
-import hms.model.user.Patient;
-import hms.model.appointment.Appointment;
-import hms.model.appointment.AppointmentManager;
-import hms.model.appointment.Timeslot;
-
 import java.util.List;
 import java.util.Scanner;
 
+import hms.model.appointment.Appointment;
+import hms.model.appointment.AppointmentManager;
+import hms.model.appointment.Timeslot;
+import hms.model.user.Doctor;
+import hms.model.user.Patient;
+/**
+ * The PatientServiceImpl class provides an implementation for patient-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and managing medical records, scheduling appointments, and managing
+ * personal information.
+ */
 public class PatientServiceImpl extends UserService
 {
     private static AppointmentManager appointmentManager = new AppointmentManager();
     private Patient authenticatedPatient;
+    /**
+     * Constructs a PatientServiceImpl with the authenticated patient.
+     *
+     * @param patient The authenticated patient.
+     */
 
     public PatientServiceImpl(Patient patient)
     {
         this.authenticatedPatient = patient;
     }
 
+    /**
+     * Prints the menu options for the patient.
+     */
     public void printMenu()
     {
         System.out.print("""
@@ -36,6 +49,12 @@ public class PatientServiceImpl extends UserService
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the patient.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -84,16 +103,25 @@ public class PatientServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 1: View Medical Record.
+     */
     public void option1()
     {
         System.out.println("View Medical Record");
     }
 
+    /**
+     * Handles option 2: Update Personal Information.
+     */
     public void option2()
     {
         System.out.println("Update Personal Information");
     }
 
+    /**
+     * Handles option 3: View Available Appointment Slots.
+     */
     public void option3()
     {
         Scanner input = new Scanner(System.in);
@@ -146,6 +174,9 @@ public class PatientServiceImpl extends UserService
         if (input.nextInt() == 1) {}
     }
 
+    /**
+     * Handles option 4: Schedule an Appointment.
+     */
     public void option4()
     {
         Scanner input = new Scanner(System.in);
@@ -210,6 +241,9 @@ public class PatientServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 5: Reschedule an Appointment.
+     */
     public void option5()
     {
         Scanner input = new Scanner(System.in);
@@ -279,11 +313,17 @@ public class PatientServiceImpl extends UserService
         //rescheduleAppointment(existingAppointments.getAppointmentId());
     }
 
+    /**
+     * Handles option 6: Cancel an Appointment.
+     */
     public void option6()
     {
         System.out.println("Cancel an Appointment");
     }
 
+    /**
+     * Handles option 7: View Scheduled Appointments.
+     */
     public void option7()
     {
         System.out.println("View Scheduled Appointments");
@@ -313,6 +353,9 @@ public class PatientServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 8: View Past Appointment Outcome Records.
+     */
     public void option8()
     {
         System.out.println("View Past Appointment Outcome Records");

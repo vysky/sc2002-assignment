@@ -11,6 +11,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import hms.model.medicine.Medicine;
+import hms.model.user.Administrator;
+import hms.model.user.Staff;
+import hms.service.medicine.InventoryServiceImpl;
+/**
+ * The AdministratorServiceImpl class provides an implementation for administrator-specific
+ * functionalities in the hospital management system (HMS). It extends the abstract UserService
+ * class and handles operations such as managing staff, appointments, and medication inventory.
+ */
 public class AdministratorServiceImpl extends UserService
 {
     private AppointmentManager appointmentManager;
@@ -18,6 +27,13 @@ public class AdministratorServiceImpl extends UserService
     private InventoryServiceImpl inventoryService;
     private SharedUserServiceImpl sharedUserService;
 
+    /**
+     * Constructs an AdministratorServiceImpl with the specified administrator, inventory service, and shared user service.
+     *
+     * @param administrator the authenticated administrator
+     * @param inventoryService the inventory service
+     * @param sharedUserService the shared user service
+     */
     public AdministratorServiceImpl(Administrator administrator, InventoryServiceImpl inventoryService, SharedUserServiceImpl sharedUserService)
     {
         this.authenticatedAdministrator = administrator;
@@ -25,6 +41,9 @@ public class AdministratorServiceImpl extends UserService
         this.sharedUserService = sharedUserService;
     }
 
+    /**
+     * Prints the menu options for the administrator.
+     */
     public void printMenu()
     {   
         // todo: for logout, want to try logout back to main menu. may be an option to logout and an option to end program?
@@ -39,6 +58,12 @@ public class AdministratorServiceImpl extends UserService
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the administrator.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -73,12 +98,20 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 1: View and Manage Hospital Staff.
+     *
+     * @param input the Scanner object to read user input
+     */
     private void viewManage(Scanner input)
     {
         sortMenu(sharedUserService.getStaffList(),input);
         return;
     }
 
+    /**
+     * Handles option 2: View Appointments details.
+     */
     public void option2(Scanner input)
     {
         int i;
@@ -332,7 +365,6 @@ public class AdministratorServiceImpl extends UserService
                             default:
                                 break;
                         }
-
                     }
                     else if(newcount==-1){
                         break;
@@ -352,6 +384,12 @@ public class AdministratorServiceImpl extends UserService
         }
 
     }
+    
+    /**
+     * Handles option 3: View and Manage Medication Inventory.
+     *
+     * @param input the Scanner object to read user input
+     */
     // View and Manage Medication Inventory
     public void option3(Scanner input)
     {
@@ -386,7 +424,11 @@ public class AdministratorServiceImpl extends UserService
         } while (option != 0);
     }
 
-    // Approve Replenishment Requests
+    /**
+     * Handles option 4: Approve Replenishment Requests.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option4(Scanner input)
     {
         int option, max;
@@ -411,6 +453,12 @@ public class AdministratorServiceImpl extends UserService
         inventoryService.approveReplenishmentRequest(option);
     }
 
+    /**
+     * Displays the sorting menu and allows the user to sort the staff list.
+     *
+     * @param staffs   the list of staff
+     * @param tempscan the Scanner object to read user input
+     */
     private void sortMenu(List<Staff> staffs, Scanner tempscan){
         String opt;
         System.out.println("""
@@ -476,6 +524,12 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Prints the staff list.
+     *
+     * @param theList the list of staff
+     * @return the number of staff
+     */
     private int printStaff(List<Staff> theList){
         int i=1;
         System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender: \t\t|Age:");
@@ -491,6 +545,13 @@ public class AdministratorServiceImpl extends UserService
         return i-1;
     }
 
+    /**
+     * Displays the edit menu and allows the user to edit staff details.
+     *
+     * @param tempScanner the Scanner object to read user input
+     * @param maxPeep     the maximum number of staff
+     * @return the index of the selected staff
+     */
     private int editMenu(Scanner tempScanner,int maxPeep){
         String tempopt;
         System.out.println("Press 1 to edit the details of a staff or any other key to quit.");
@@ -505,9 +566,9 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Choose the index of the staff you want to edit.");
                 try{
                     index = Integer.parseInt(tempScanner.nextLine());
-                }catch(NumberFormatException e) { 
+                }catch(NumberFormatException e) {
                     System.out.println("Invalid Option! Exiting...");
-                    return -1; 
+                    return -1;
                 } catch(NullPointerException e) {
                     System.out.println("Invalid Option! Exiting...");
                     return -1;
@@ -523,6 +584,13 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Edits the details of the selected staff.
+     *
+     * @param theList    the list of staff
+     * @param index      the index of the selected staff
+     * @param tempScanner the Scanner object to read user input
+     */
     private void editDetails(List<Staff> theList,int index,Scanner tempScanner){
         System.out.println("""
             What do you want to edit
@@ -561,7 +629,7 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Enter new age: ");
                 int newAge = tempScanner.nextInt();
                 theList.get(index-1).setAge(newAge);
-                            
+
                 if(tempScanner.hasNextLine()){
                 tempScanner.nextLine();}
                 break;
@@ -578,7 +646,9 @@ public class AdministratorServiceImpl extends UserService
         return;
     }
 
-    
+    /**
+     * Comparator for sorting staff by ID.
+     */
     private class idComparator implements Comparator<Staff> {
         // Method
         // Sorting in ascending order of name
@@ -589,6 +659,9 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Comparator for sorting staff by name.
+     */
     private class nameComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
@@ -599,6 +672,9 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Comparator for sorting staff by gender.
+     */
     private class genderComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
@@ -609,6 +685,9 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Comparator for sorting staff by age.
+     */
     private class ageComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
@@ -619,6 +698,9 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Comparator for sorting staff by role.
+     */
     private class roleComparator implements java.util.Comparator<Staff> {
         @Override
         public int compare(Staff a, Staff b) {
