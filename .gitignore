@@ -204,3 +204,4 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,java,intellij
 /src/main/resources/csv
+*.csv
