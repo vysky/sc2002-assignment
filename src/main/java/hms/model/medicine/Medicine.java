@@ -1,5 +1,10 @@
 package hms.model.medicine;
 
+/**
+ * The Medicine class represents a medicine item in the hospital's inventory.
+ * It contains details about the medicine's name, initial stock, and low stock alert level.
+ */
+
 public class Medicine {
     private String medicineName;
     private int initialStock;
