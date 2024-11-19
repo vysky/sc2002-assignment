@@ -1,9 +1,19 @@
 package hms.model.user;
 
+/**
+ * The Staff class represents a staff member in the hospital management system (HMS).
+ * It extends the User class and includes additional properties such as age, which are common to all hospital staff members.
+ * This class serves as a base class for more specialized staff types (such as doctors, pharmacists, and administrators).
+ */
+
 public class Staff extends User
 {
     private int age;
 
+    /**
+     * Default constructor that creates a new Staff object.
+     * This constructor does not initialize any properties.
+     */
     public Staff()
     {
     }
