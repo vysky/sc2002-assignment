@@ -1,5 +1,11 @@
 package hms.model.appointment;
 
+/**
+ * The Appointment class represents an appointment in the hospital management system.
+ * It contains details about the appointment including the appointment ID, patient ID, doctor ID, date, 
+ * timeslot, and status. The class also provides methods for retrieving and modifying these details.
+ */
+
 public class Appointment {
     private String appointmentId;
     private String patientId;
@@ -75,16 +81,16 @@ public class Appointment {
     }
 
     /**
-     * Gets the date.
-     * @return the date
+     * Gets the appointment date.
+     * @return the appointment date
      */
     public String getDate() {
         return date;
     }
 
     /**
-     * Sets the date.
-     * @param date the date to set
+     * Sets the date for appointment
+     * @param date the new date to set
      */
     public void setDate(String date) {
         this.date = date;
@@ -107,16 +113,16 @@ public class Appointment {
     }
 
     /**
-     * Gets the status.
-     * @return the status
+     * Gets the appointment status.
+     * @return the appointment status
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * Sets the status.
-     * @param status the status to set
+     * Sets the appointment status.
+     * @param status the appointmentstatus to set
      */
     public void setStatus(String status) {
         this.status = status;
