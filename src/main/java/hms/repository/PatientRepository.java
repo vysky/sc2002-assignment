@@ -14,7 +14,10 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import hms.model.user.Patient;
-
+/**
+ * The PatientRepository class provides methods to import and export patient data
+ * from and to a CSV file. It implements the CsvRepository interface for handling patient objects.
+ */
 public class PatientRepository implements CsvRepository<Patient>
 {
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
