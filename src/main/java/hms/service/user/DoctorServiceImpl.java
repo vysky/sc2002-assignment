@@ -9,13 +9,11 @@ import hms.service.medicalRecord.MedicalRecordService;
 public class DoctorServiceImpl extends UserService {
 
     private Doctor authenticatedDoctor;
-    private SharedUserServiceImpl sharedUserService;
     private MedicalRecordService medicalRecordService;
     private AppointmentManager appointmentManager;
 
-    public DoctorServiceImpl(Doctor doctor, SharedUserServiceImpl sharedUserService, MedicalRecordService medicalRecordService, AppointmentManager appointmentManager) {
+    public DoctorServiceImpl(Doctor doctor, MedicalRecordService medicalRecordService, AppointmentManager appointmentManager) {
         this.authenticatedDoctor = doctor;
-        this.sharedUserService = sharedUserService;
         this.medicalRecordService = medicalRecordService;
         this.appointmentManager = appointmentManager;
     }
@@ -48,21 +46,19 @@ public class DoctorServiceImpl extends UserService {
                 option3(appointmentManager, input);
             }
             case 4 -> {
-                option4();
+                option4(appointmentManager, input);
             }
             case 5 -> {
-                option5();
+                option5(appointmentManager, input);
             }
             case 6 -> {
-                option6();
+                option6(appointmentManager, input);
             }
             case 7 -> {
                 option7();
             }
             case 0 -> {
                 System.out.printf("Goodbye %s!", authenticatedDoctor.getName());
-                sharedUserService.setPatientList();
-                //sharedUserService.setStaffList();
             }
             default -> {
                 System.out.println("Invalid option, please select a new option.");
@@ -164,16 +160,20 @@ public class DoctorServiceImpl extends UserService {
         }
     }
 
-    public void option4() { // Set availability for appointments
-        System.out.println("Option 4");
+    public void option4(AppointmentManager am, Scanner input) { // Set availability for appointments
+        System.out.println("Select a date (eg 01 Jan 2000): ");
+        String date = input.nextLine();
+        // System.out.println("Select a time (eg 09:00): ");
+        // String time = input.nextLine();
+        am.setAvailability(authenticatedDoctor.getId(), date, input);
     }
 
-    public void option5() { // Accept or Decline Appointment Requests
-        System.out.println("Option 5");
+    public void option5(AppointmentManager am, Scanner input) { // Accept or Decline Appointment Requests
+        am.acceptAppointment(authenticatedDoctor.getId(), input);
     }
 
-    public void option6() { // View upcoming appointments
-        System.out.println("Option 6");
+    public void option6(AppointmentManager am, Scanner input) { // View upcoming appointments
+        am.getAppointments(authenticatedDoctor.getId());
     }
 
     public void option7() {

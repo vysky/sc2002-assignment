@@ -45,6 +45,7 @@ public class HMSApp
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
+        appointmentManager = new AppointmentManager();
     }
 
     // todo: should set a login limit, if failed to login then kick user back to this menu
@@ -260,7 +261,7 @@ public class HMSApp
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService, appointmentManager);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, medicalRecordService, appointmentManager);
             }
             case "pharmacist" ->
             {
