@@ -94,7 +94,9 @@ public class AppointmentManager {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[5].equals("Pending") || (nextLine[5].equals("Confirmed"))) {
                 appointment.add(new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]));
+                }
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -103,7 +105,18 @@ public class AppointmentManager {
     }
 
     public boolean rescheduleAppointment(String appointmentId) {
+        List<Appointment> appointments = new ArrayList<>();
 
+        try (CSVWriter writer = new CSVWriter(new FileWriter(APPOINTMENTS_FILE, true))) {
+            for (Appointment appointment : appointments) {
+                writer.writeNext(new String[]{appointment.getAppointmentId(), appointment.getPatientId(), appointment.getDoctorId(), appointment.getDate(), appointment.getTimeslot(), "Rescheduled"});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public String generateAppointmentID() {
@@ -167,13 +180,34 @@ public class AppointmentManager {
                 csvWriter.writeAll(allElements);
             }
 
-            System.out.println("Availability updated successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CsvValidationException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
     }
 
+    public void updateAppointmentStatus(String appointmentID, String Status) {
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
 
+            List<String[]> allElements = new ArrayList<>();
+            String[] nextLine;
+
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[0].equals(appointmentID)) {
+                    nextLine[5] = Status;
+                }
+                allElements.add(nextLine);
+            }
+
+            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(APPOINTMENTS_FILE))) {
+                csvWriter.writeAll(allElements);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvValidationException e) {
+           e.printStackTrace();
+        }
+    }
 }

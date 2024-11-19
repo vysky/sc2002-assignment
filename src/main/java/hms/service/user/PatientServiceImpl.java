@@ -131,7 +131,7 @@ public class PatientServiceImpl extends UserService
         }
 
         System.out.println("Enter any key to continue");
-        if (input.nextInt() == 1) {}
+        if (input.nextInt() == 1) {} 
     }
 
     public void option4()
@@ -159,7 +159,7 @@ public class PatientServiceImpl extends UserService
 
         Appointment existingAppointment = appointmentManager.getExistingAppointment(authenticatedPatient.getId(), doctorId);
         if (existingAppointment != null) {
-            System.out.println("You already have an existing appointment with Dr. " + doctors.get(doctorNumber).getName() + " on " +
+            System.out.println("You already have an existing appointment with Dr. " + doctors.get(doctorNumber - 1).getName() + " on " +
                 existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
 
             System.out.println("Enter any key to continue");
@@ -196,6 +196,8 @@ public class PatientServiceImpl extends UserService
                 System.out.println("The selected timeslot is not available.");
             }
         }
+
+
     }
 
     public void option5()
@@ -204,22 +206,23 @@ public class PatientServiceImpl extends UserService
 
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
         List<Doctor> doctors = appointmentManager.getAllDoctors();
-
+        String doctorName = "";
+    
         System.out.println("Your existing appointment:");
         for (int i = 0; i < existingAppointments.size(); i++) {
             Appointment appointment = existingAppointments.get(i);
-            String doctorId = appointment.getDoctorId(); 
-
-            for (Doctor doctor : doctors) {
-                if (doctor.getDoctorId() == doctorId) {
-                    String doctorName = doctor.getName();
-
-                    System.out.println("(" + (i + 1) + ") " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());
-                }
+            String doctorId = existingAppointments.get(i).getDoctorId();
+                
+            for (int j = 0; j < doctors.size(); j++) {
+                if (doctors.get(j).getId().equals(doctorId)) {
+                    doctorName = doctors.get(j).getName();       
+                }    
             }
+
+            System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());   
         }
 
-        System.out.println("Select a timeslot for rescheduling by number:");
+        System.out.println("Select an appointment for rescheduling by number:");
         int appointmentNumber = input.nextInt();
         input.nextLine();
 
@@ -228,9 +231,12 @@ public class PatientServiceImpl extends UserService
             return;
         }
 
+        String oldAppointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
         String doctorId = existingAppointments.get(appointmentNumber - 1).getDoctorId();
+        String oldDate = existingAppointments.get(appointmentNumber - 1).getDate();
+        String oldTimeslot = existingAppointments.get(appointmentNumber - 1).getTimeslot();
 
-        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        System.out.println("Enter a new appointment date (e.g., 04 Nov 2024):");
         String date = input.nextLine();
         
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
@@ -253,28 +259,82 @@ public class PatientServiceImpl extends UserService
 
             String timeslot = availableTimeslots.get(timeslotNumber - 1).getTime();
 
+            appointmentManager.updateAvailability(doctorId, oldDate, oldTimeslot, "Available");
+
+            appointmentManager.updateAppointmentStatus(oldAppointmentId, "Rescheduled");
+
             if (appointmentManager.isAvailable(doctorId, date, timeslot)) {
                 appointmentManager.makeAppointment(authenticatedPatient.getId(), doctorId, date, timeslot);
             } else {
                 System.out.println("The selected timeslot is not available.");
             }
         }
-
-        String appointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
-
-
-
-        rescheduleAppointment(existingAppointment.getAppointmentId());
     }
 
     public void option6()
     {
-        System.out.println("Cancel an Appointment");
+        Scanner input = new Scanner(System.in);
+
+        List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+        String doctorName = "";
+    
+        System.out.println("Your existing appointment:");
+        for (int i = 0; i < existingAppointments.size(); i++) {
+            Appointment appointment = existingAppointments.get(i);
+            String doctorId = existingAppointments.get(i).getDoctorId();
+                
+            for (int j = 0; j < doctors.size(); j++) {
+                if (doctors.get(j).getId().equals(doctorId)) {
+                    doctorName = doctors.get(j).getName();       
+                }    
+            }
+
+            System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());   
+        }
+
+        System.out.println("Select an appointment for canceling by number:");
+        int appointmentNumber = input.nextInt();
+        input.nextLine();
+
+        if (appointmentNumber < 1 || appointmentNumber > existingAppointments.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        String oldAppointmentId = existingAppointments.get(appointmentNumber - 1).getAppointmentId();
+        String doctorId = existingAppointments.get(appointmentNumber - 1).getDoctorId();
+        String oldDate = existingAppointments.get(appointmentNumber - 1).getDate();
+        String oldTimeslot = existingAppointments.get(appointmentNumber - 1).getTimeslot();
+
+        appointmentManager.updateAvailability(doctorId, oldDate, oldTimeslot, "Available");
+
+        appointmentManager.updateAppointmentStatus(oldAppointmentId, "Cancelled");
+
+        System.out.println("Your appointment has been cancelled!");
+
+
     }
 
     public void option7()
     {
-        System.out.println("View Scheduled Appointments");
+        List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+        String doctorName = "";
+    
+        System.out.println("Your existing appointment:");
+        for (int i = 0; i < existingAppointments.size(); i++) {
+            Appointment appointment = existingAppointments.get(i);
+            String doctorId = existingAppointments.get(i).getDoctorId();
+                
+            for (int j = 0; j < doctors.size(); j++) {
+                if (doctors.get(j).getId().equals(doctorId)) {
+                    doctorName = doctors.get(j).getName();       
+                }    
+            }
+
+            System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());   
+        }
     }
 
     public void option8()
