@@ -1,28 +1,53 @@
 package hms.service.medicalRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hms.model.user.Patient;
-import hms.model.user.User;
+import hms.model.user.Doctor;
+import hms.model.appointment.AppointmentManager;
 
 public class MedicalRecordService {
-    private List<Patient> patients;
+    private AppointmentManager appointmentManager = new AppointmentManager();
+    private List<Patient> patients, currentPatients;
 
-    public MedicalRecordService(List<Patient> p) {
-        patients = p;
+    public MedicalRecordService(List<Patient> listPatients) {
+        this.patients = listPatients;
     }
 
-    public Patient getPatientById(String patientId) {
-        for (Patient p : patients) {
-            User temp = p;
-            if (patientId.equals(temp.getId())) {
-                return p;
+    public List<Patient> getPatientsUnderDoctor(String doctorId) {
+        currentPatients = new ArrayList<Patient>();
+        List<String> patientIds = appointmentManager.getPatientsUnderDoctor(doctorId);
+        
+        for (String patientId : patientIds) {
+            Patient patient = getPatientById(patientId);
+            if (patient != null) {
+                currentPatients.add(patient);
             }
         }
-        return null;
+
+        return currentPatients;
+    }
+
+    public void printPatients(Doctor doctor) {
+        System.out.println("\nThe following patients are under Dr " + doctor.getName());
+
+        for (Patient p : getPatientsUnderDoctor(doctor.getId())) {
+            System.out.println(p.getId());
+        }
+    }
+
+    public boolean isPatientUnderDoctor(String patientId) {
+        for (Patient patient : currentPatients) {
+            if (patient.getId().equals(patientId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void getMedicalRecord(String patientId) {
+
         Patient p = getPatientById(patientId);
 
         if (p == null) {
@@ -30,15 +55,25 @@ public class MedicalRecordService {
             return;
         }
 
-        System.out.println("\n-----MEDICAL RECORD OF " + patientId + "----");
-        System.out.println("Name: " + p.getName());
-        System.out.println("Date of Birth: " + p.getDateOfBirth());
-        System.out.println("Gender: " + p.getGender());
-        //System.out.println("Contact Number: " + p.getHpNumber());
-        System.out.println("Email: " + p.getEmail());
-        System.out.println("Blood Type: " + p.getBloodType());
-        System.out.println("Past Diagnoses: " + p.getDiagnoses());
-        System.out.println("Past Treatments: " + p.getTreatments());
+        for (Patient patient : currentPatients) {
+            if (patient.getId().equals(patientId)) {
+                p = patient;
+
+                System.out.println("\n-----MEDICAL RECORD OF " + patientId + "----");
+                System.out.println("Name: " + p.getName());
+                System.out.println("Date of Birth: " + p.getDateOfBirth());
+                System.out.println("Gender: " + p.getGender());
+                //System.out.println("Contact Number: " + p.getHpNumber());
+                System.out.println("Email: " + p.getEmail());
+                System.out.println("Blood Type: " + p.getBloodType());
+                System.out.println("Past Diagnoses: " + p.getDiagnoses());
+                System.out.println("Past Treatments: " + p.getTreatments());
+
+                return;
+            }
+        }
+        
+        System.out.println("Patient of ID: " + patientId + " is not under the care of the doctor.");
     }
 
     public void setNewDiagnosis(String patientId, String diagnosis) {
@@ -52,4 +87,8 @@ public class MedicalRecordService {
     }
 
     // Prescription method goes here too
+
+    private Patient getPatientById(String patientId) {
+        return this.patients.stream().filter(uObject -> uObject.getId().equals(patientId)).findFirst().orElse(null);
+    }
 }

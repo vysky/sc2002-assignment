@@ -2,24 +2,23 @@ package hms.service.user;
 
 import java.util.Scanner;
 
+import hms.model.appointment.AppointmentManager;
 import hms.model.user.Doctor;
 import hms.service.medicalRecord.MedicalRecordService;
 
-public class DoctorServiceImpl extends UserService
-{
-    private Doctor authenticatedDoctor;
-    private SharedUserServiceImpl sharedUserService;
-    private MedicalRecordService medicalRecordService;
+public class DoctorServiceImpl extends UserService {
 
-    public DoctorServiceImpl(Doctor doctor, SharedUserServiceImpl sharedUserService, MedicalRecordService medicalRecordService)
-    {
+    private Doctor authenticatedDoctor;
+    private MedicalRecordService medicalRecordService;
+    private AppointmentManager appointmentManager;
+
+    public DoctorServiceImpl(Doctor doctor, MedicalRecordService medicalRecordService, AppointmentManager appointmentManager) {
         this.authenticatedDoctor = doctor;
-        this.sharedUserService = sharedUserService;
         this.medicalRecordService = medicalRecordService;
+        this.appointmentManager = appointmentManager;
     }
 
-    public void printMenu()
-    {
+    public void printMenu() {
         System.out.print("""
                                  ========== Doctor's Menu ==========
                                  (1) View Patient Medical Records
@@ -35,60 +34,48 @@ public class DoctorServiceImpl extends UserService
     }
 
     @Override
-    public void handleSelectedOption(Scanner input, int option)
-    {
-        switch (option)
-        {
-            case 1 ->
-            {
+    public void handleSelectedOption(Scanner input, int option) {
+        switch (option) {
+            case 1 -> {
                 option1(medicalRecordService, input);
             }
-            case 2 ->
-            {
+            case 2 -> {
                 option2(medicalRecordService, input);
             }
-            case 3 ->
-            {
-                option3();
+            case 3 -> {
+                option3(appointmentManager, input);
             }
-            case 4 ->
-            {
-                option4();
+            case 4 -> {
+                option4(appointmentManager, input);
             }
-            case 5 ->
-            {
-                option5();
+            case 5 -> {
+                option5(appointmentManager, input);
             }
-            case 6 ->
-            {
-                option6();
+            case 6 -> {
+                option6(appointmentManager, input);
             }
-            case 7 ->
-            {
+            case 7 -> {
                 option7();
             }
-            case 0 ->
-            {
+            case 0 -> {
                 System.out.printf("Goodbye %s!", authenticatedDoctor.getName());
             }
-            default ->
-            {
+            default -> {
                 System.out.println("Invalid option, please select a new option.");
             }
         }
     }
 
-    public void option1(MedicalRecordService mr, Scanner input)
-    {
+    public void option1(MedicalRecordService mr, Scanner input) {
         String pId;
 
-        // Actual method needs to find patients under the doctor's care
         while (true) {
+            mr.printPatients(authenticatedDoctor);
             System.out.println("""
                 \nPlease enter Patient ID:
                 (Input 0 to exit)
                 """);
-            pId = input.next();
+            pId = input.nextLine();
             if (pId.equals("0")) {
                 return;
             }
@@ -96,20 +83,25 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
-    public void option2(MedicalRecordService mr, Scanner input)
-    {
+    public void option2(MedicalRecordService mr, Scanner input) {
         String pId = "";
         String description;
         boolean loop = true;
 
         while (pId.equals("")) {
+            mr.printPatients(authenticatedDoctor);
             System.out.println("""
                 \nPlease enter Patient ID:
                 (Input 0 to exit)
                 """);
-            pId = input.next();
+            pId = input.nextLine();
             if (pId.equals("0")) {
                 return;
+            }
+
+            if (!mr.isPatientUnderDoctor(pId)) {
+                System.out.println("Patient is not under your care, please try again");
+                pId = "";
             }
         }
 
@@ -122,7 +114,8 @@ public class DoctorServiceImpl extends UserService
                         (3) Prescription
                             """);
 
-            int choice = input.nextInt();
+            String strChoice = input.nextLine();
+            int choice = Integer.parseInt(strChoice);
 
             switch (choice) {
                 case 0 -> {
@@ -130,7 +123,6 @@ public class DoctorServiceImpl extends UserService
                 }
                 case 1 -> {
                     System.out.println("Please enter diagnosis description:");
-                    input.nextLine();
                     description = input.nextLine();
                     mr.setNewDiagnosis(pId, description);
                     System.out.println("Successfully added diagnosis");
@@ -139,7 +131,6 @@ public class DoctorServiceImpl extends UserService
                 }
                 case 2 -> {
                     System.out.println("Please enter treatment description:");
-                    input.nextLine();
                     description = input.nextLine();
                     mr.setNewTreatment(pId, description);
                     System.out.println("Successfully added treatment");
@@ -157,28 +148,35 @@ public class DoctorServiceImpl extends UserService
         } while (loop);
     }
 
-    public void option3()
-    {
-        System.out.println("Option 3");
+    public void option3(AppointmentManager am, Scanner input) {
+        while (true) {
+            System.out.println("Enter date to view schedule (eg 01 Jan 2000): \n(Input 0 to exit)");
+            String date = input.nextLine();
+            if (date.equals("0")) {
+                return;
+            }
+            System.out.println("Available timeslots for " + date + ": ");
+            am.printAvailableTimeslots(authenticatedDoctor.getId(), date);
+        }
     }
 
-    public void option4()
-    {
-        System.out.println("Option 4");
+    public void option4(AppointmentManager am, Scanner input) { // Set availability for appointments
+        System.out.println("Select a date (eg 01 Jan 2000): ");
+        String date = input.nextLine();
+        // System.out.println("Select a time (eg 09:00): ");
+        // String time = input.nextLine();
+        am.setAvailability(authenticatedDoctor.getId(), date, input);
     }
 
-    public void option5()
-    {
-        System.out.println("Option 5");
+    public void option5(AppointmentManager am, Scanner input) { // Accept or Decline Appointment Requests
+        am.acceptAppointment(authenticatedDoctor.getId(), input);
     }
 
-    public void option6()
-    {
-        System.out.println("Option 6");
+    public void option6(AppointmentManager am, Scanner input) { // View upcoming appointments
+        am.getAppointments(authenticatedDoctor.getId());
     }
 
-    public void option7()
-    {
+    public void option7() {
         System.out.println("Option 7");
     }
 }

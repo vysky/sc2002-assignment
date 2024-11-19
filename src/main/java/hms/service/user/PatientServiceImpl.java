@@ -1,13 +1,13 @@
 package hms.service.user;
 
-import hms.model.user.Doctor;
-import hms.model.user.Patient;
+import java.util.List;
+import java.util.Scanner;
+
 import hms.model.appointment.Appointment;
 import hms.model.appointment.AppointmentManager;
 import hms.model.appointment.Timeslot;
-
-import java.util.List;
-import java.util.Scanner;
+import hms.model.user.Doctor;
+import hms.model.user.Patient;
 
 public class PatientServiceImpl extends UserService
 {
@@ -159,7 +159,7 @@ public class PatientServiceImpl extends UserService
     public void option5()
     {
         Scanner input = new Scanner(System.in);
-
+    
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
         List<Doctor> doctors = appointmentManager.getAllDoctors();
     
@@ -173,7 +173,7 @@ public class PatientServiceImpl extends UserService
         System.out.println("Select an appointment for rescheduling by number:");
         int appointmentNumber = input.nextInt();
         input.nextLine();
-
+        
         if (appointmentNumber < 1 || appointmentNumber > existingAppointments.size()) {
             System.out.println("Invalid selection.");
             return;
