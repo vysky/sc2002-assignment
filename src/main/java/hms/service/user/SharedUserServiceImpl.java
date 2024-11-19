@@ -6,7 +6,11 @@ import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.repository.PatientRepository;
 import hms.repository.StaffRepository;
-
+/**
+ * The SharedUserServiceImpl class provides shared services for managing user-related data,
+ * including patients and staff in the hospital management system (HMS). It handles importing
+ * and exporting user data from and to CSV files using repository classes.
+ */
 public class SharedUserServiceImpl
 {
     // private static final UserRepository userRepository = new UserRepository();
@@ -14,7 +18,10 @@ public class SharedUserServiceImpl
     private static final StaffRepository staffRepository = new StaffRepository();
     private final List<Patient> patientList;
     private final List<Staff> staffList;
-
+    /**
+     * Constructs a SharedUserServiceImpl and initializes the patient and staff lists
+     * by importing data from CSV files using the respective repositories.
+     */
     public SharedUserServiceImpl()
     {
         this.patientList = patientRepository.importFromCsv();
