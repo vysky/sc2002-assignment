@@ -1,7 +1,18 @@
 package hms.model.user;
 
+/**
+ * The Pharmacist class represents a pharmacist in the hospital management system (HMS).
+ * It extends the Staff class, inheriting basic staff properties like id, name, role, gender, and age,
+ * and may include additional functionalities specific to pharmacists, such as managing medication inventory, processing prescriptions, etc.
+ */
+
 public class Pharmacist extends Staff
 {
+    /**
+     * Default constructor that creates a new Pharmacist object.
+     * This constructor does not initialize any properties.
+     */
+    
     public Pharmacist()
     {
     }
