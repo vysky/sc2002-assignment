@@ -145,10 +145,22 @@ public class PatientServiceImpl extends UserService
 
         String doctorId = doctors.get(doctorNumber - 1).getId();
 
-        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        System.out.println("Enter Date (e.g., 01 - 31):");
         String date = input.nextLine();
+        System.out.println("""
+            Enter Date 
+            (e.g., Jan, Mar)
+            Jan - 01, Feb - 02, Mar - 03, 
+            Apr - 04, May - 05, Jun - 06, 
+            Jul - 07, Aug - 08, Sep - 09, 
+            Oct - 10, Nov - 11, Dec - 12:
+                """);
+        String month = input.nextLine();
+        System.out.println("Enter Date (e.g., 04 Nov 2024):");
+        String year = input.nextLine();
+        String fullDate = date + " " + month + " " + year;
 
-        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
+        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, fullDate);
         if (availableTimeslots.isEmpty()) {
             System.out.println("No available timeslots for the selected date.");
         } else {
@@ -194,7 +206,7 @@ public class PatientServiceImpl extends UserService
                 existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
 
             System.out.println("Enter any key to continue");
-            if (input.nextInt() == 1) {}
+            input.next();
             return;
         }
 
@@ -242,7 +254,7 @@ public class PatientServiceImpl extends UserService
         System.out.println("Your existing appointment:");
         for (int i = 0; i < existingAppointments.size(); i++) {
             Appointment appointment = existingAppointments.get(i);
-            String doctorId = appointment.getDoctorId();
+            String doctorId = appointment.getDoctorId(); 
 
             for (Doctor doctor : doctors) {
                 if (doctor.getId() == doctorId) {
@@ -266,7 +278,7 @@ public class PatientServiceImpl extends UserService
 
         System.out.println("Enter Date (e.g., 04 Nov 2024):");
         String date = input.nextLine();
-
+        
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
         if (availableTimeslots.isEmpty()) {
             System.out.println("No available timeslots for the selected date.");
@@ -298,7 +310,7 @@ public class PatientServiceImpl extends UserService
 
 
 
-        // rescheduleAppointment(existingAppointment.getAppointmentId());
+        //rescheduleAppointment(existingAppointments.getAppointmentId());
     }
 
     /**
@@ -315,6 +327,30 @@ public class PatientServiceImpl extends UserService
     public void option7()
     {
         System.out.println("View Scheduled Appointments");
+        Scanner input = new Scanner(System.in);
+
+        List<Doctor> doctors = appointmentManager.getAllDoctors();
+        Doctor doctor;
+        String doctorId;
+        Appointment existingAppointment;
+        System.out.println("List of doctors:");
+        for (int i = 0; i < doctors.size(); i++) {
+            doctor = doctors.get(i);
+            doctorId = doctors.get(i).getId();
+            existingAppointment = appointmentManager.getExistingAppointment(authenticatedPatient.getId(), doctorId);
+            System.out.println("(" + (i + 1) + ") Dr. " + doctor.getName());
+            if (existingAppointment != null) {
+                System.out.println("You already have an existing appointment with Dr. " + doctors.get(i).getName() + " on " +
+                    existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
+    
+                System.out.println("Enter any key to continue");
+                input.next();
+                return;
+            }   
+
+        
+        
+        }
     }
 
     /**

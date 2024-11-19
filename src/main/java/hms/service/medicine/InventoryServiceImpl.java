@@ -2,6 +2,7 @@ package hms.service.medicine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.math.*;
 
 import hms.model.medicine.Medicine;
 import hms.model.medicine.ReplenishmentRequest;
@@ -60,16 +61,41 @@ public class InventoryServiceImpl
     /**
      * Prints the list of medicines.
      */
-    public void printMedicineList()
+    public int printMedicineList()
     {
-        int i = 1;
+        int i = 1, maxNL=-1,k=1;
         System.out.println("---------- CURRENT INVENTORY ----------");
         System.out.println("No.\tMedicine Name\tCurrent Stock\tLow Stock Level Alert");
+        
         for (Medicine medicine : this.medicineList)
         {
-            System.out.printf("%d\t%s\t%d\t%d\n", i, medicine.getMedicineName(), medicine.getInitialStock(), medicine.getLowStockAlert());
+            if(medicine.getMedicineName().length()>maxNL){
+                maxNL = medicine.getMedicineName().length();
+            }
+            k++;
+        }
+        for (Medicine medicine : this.medicineList)
+        {
+            String tabs = "";
+            String ntabs ="\t";
+            int count=0 ;
+            if(medicine.getMedicineName().length() % 9 > 1){
+                count = Math.round((float)medicine.getMedicineName().length()/9);
+            }
+            for(int j=0;i<count;i++){
+                tabs += "\t";
+            }
+            String name = String.format("%-10s",medicine.getMedicineName())+tabs;
+            String initstock = String.format("%-10s",medicine.getInitialStock());
+            String stockalert = String.format("%-10s",medicine.getLowStockAlert());
+            if(medicine.getLowStockAlert()==0){
+                stockalert = "No Alert";
+            }
+            System.out.println(i +ntabs+name+ntabs+initstock+ntabs+stockalert);
+            //System.out.printf("%d\t%s\t\t%d\t\t%d\n", i, name, initstock, stockalert);
             i++;
         }
+        return k;
     }
 
     /**
@@ -110,7 +136,7 @@ public class InventoryServiceImpl
     /**
      * Prints the list of replenishment requests.
      */
-    public void printReplenishmentRequestList()
+    public int printReplenishmentRequestList()
     {
         int i = 1;
 
@@ -119,6 +145,7 @@ public class InventoryServiceImpl
             System.out.printf("%d\t%s\t%d\n", i, replenishmentRequest.getMedicine().getMedicineName(), replenishmentRequest.getRequestedQuantity());
             i++;
         }
+        return i;
     }
 
     // todo
@@ -148,7 +175,16 @@ public class InventoryServiceImpl
         ReplenishmentRequest replenishmentRequest = replenishmentRequestList.get(index - 1);
         Medicine medicine = replenishmentRequest.getMedicine();
         medicine.setInitialStock(medicine.getInitialStock() + replenishmentRequest.getRequestedQuantity());
-        System.out.printf("Replenishment Request approved. New Quantity : %d", medicine.getInitialStock());
+        System.out.printf("Replenishment Request approved. New Quantity : %d\n", medicine.getInitialStock());
         replenishmentRequestList.remove(index - 1);
+    }
+
+    public int checkDuplicateMedications(String a){
+        for(Medicine s: medicineList){
+            if(s.getMedicineName().equals(a)){
+                return 1;
+            }
+        }
+        return 0;
     }
 }
