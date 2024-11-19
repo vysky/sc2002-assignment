@@ -1,19 +1,25 @@
 package hms.repository;
 
-import hms.model.user.Patient;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import hms.model.user.Patient;
 
 public class PatientRepository implements CsvRepository
 {
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
-    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information"};
+    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions"};
 
     public List<Patient> getPatientList()
     {
@@ -35,6 +41,9 @@ public class PatientRepository implements CsvRepository
                 String gender = record.get("Gender");
                 String bloodType = record.get("Blood Type");
                 String email = record.get("Contact Information");
+                String diagnoses = record.get("Diagnoses");
+                String treatments = record.get("Treatments");
+                String prescriptions = record.get("Prescriptions");
                 String password = "";
 
                 try
@@ -48,11 +57,11 @@ public class PatientRepository implements CsvRepository
 
                 if (password == null || password.isEmpty())
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions);
                 }
                 else
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, password);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, password);
                 }
 
                 patientArrayList.add(patient);
@@ -89,7 +98,7 @@ public class PatientRepository implements CsvRepository
 
             for (Patient patient : patientList)
             {
-                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail());
+                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), patient.getDiagnoses(), patient.getTreatments(), patient.getPrescriptions());
             }
 
             csvPrinter.flush();

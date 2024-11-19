@@ -1,6 +1,7 @@
 import java.io.Console;
 import java.util.Scanner;
 
+import hms.model.appointment.AppointmentManager;
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
 import hms.model.user.Doctor;
@@ -35,6 +36,7 @@ public class Main
     private static UserService userService;
 
     private static MedicalRecordService medicalRecordService;
+    private static AppointmentManager appointmentManager;
 
     // private static PatientServiceImpl patientService;
     // private static AdministratorServiceImpl administratorService;
@@ -65,6 +67,7 @@ public class Main
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
+        appointmentManager = new AppointmentManager();
     }
 
     // todo: should set a login limit, if failed to login then kick user back to this menu
@@ -206,7 +209,7 @@ public class Main
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService, appointmentManager);
             }
             case "pharmacist" ->
             {

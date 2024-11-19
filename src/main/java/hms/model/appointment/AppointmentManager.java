@@ -1,17 +1,16 @@
 package hms.model.appointment;
-import hms.model.user.Patient;
-import hms.model.user.Doctor;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import hms.model.user.Doctor;
 
 public class AppointmentManager {
     private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
@@ -50,6 +49,17 @@ public class AppointmentManager {
         }
     
         return availableTimeslots;
+    }
+
+    public void printAvailableTimeslots(String doctorId, String date) {
+        List<Timeslot> availableTimeslots = getAvailableTimeslots(doctorId, date);
+        if (availableTimeslots.isEmpty()) {
+            System.out.println("No available timeslots for the selected date.");
+        } else {
+            for (Timeslot timeslot : availableTimeslots) {
+                System.out.println(timeslot.getTime());
+            }
+        }
     }
 
     public boolean isAvailable(String doctorId, String date, String timeslot) {
@@ -102,9 +112,24 @@ public class AppointmentManager {
         return appointment;
     }
 
-    public boolean rescheduleAppointment(String appointmentId) {
+    public List<String> getPatientsUnderDoctor(String doctorId) {
+        List<String> patientIds = new ArrayList<>();
 
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Confirmed"))
+                    patientIds.add(nextLine[1]);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+        return patientIds;
     }
+
+    // public boolean rescheduleAppointment(String appointmentId) {
+
+    // }
 
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
