@@ -18,6 +18,10 @@ import hms.model.user.Doctor;
 import hms.model.user.Pharmacist;
 import hms.model.user.Staff;
 
+/**
+ * The StaffRepository class provides methods to import and export staff data
+ * from and to a CSV file. It implements the CsvRepository interface for handling staff objects.
+ */
 public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
