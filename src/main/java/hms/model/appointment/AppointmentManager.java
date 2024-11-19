@@ -11,6 +11,13 @@ import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
 import hms.model.user.Doctor;
+import hms.model.user.Patient;
+
+/**
+ * The AppointmentManager class is responsible for managing appointments, including
+ * retrieving doctor and appointment data, checking availability, scheduling, and
+ * updating appointments and availability status.
+ */
 
 public class AppointmentManager {
     private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
@@ -140,7 +147,7 @@ public class AppointmentManager {
 
     /**
      * Generates a new appointment ID.
-     * @return the generated appointment ID
+     * @return the generated new appointment ID
      */
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
