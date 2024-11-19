@@ -1,18 +1,44 @@
 package hms.model.user;
 
-import hms.service.user.PharmacistServiceImpl;
+/**
+ * The Pharmacist class represents a pharmacist in the hospital management system (HMS).
+ * It extends the Staff class, inheriting basic staff properties like id, name, role, gender, and age,
+ * and may include additional functionalities specific to pharmacists, such as managing medication inventory, processing prescriptions, etc.
+ */
 
 public class Pharmacist extends Staff
 {
+    /**
+     * Default constructor that creates a new Pharmacist object.
+     * This constructor does not initialize any properties.
+     */
+    
     public Pharmacist()
     {
     }
 
+    /**
+     * Constructor with parameters.
+     * @param id Pharmacist ID
+     * @param name Pharmacist name
+     * @param role Pharmacist role
+     * @param gender Pharmacist gender
+     * @param age Pharmacist age
+     */
     public Pharmacist(String id, String name, String role, String gender, int age)
     {
         super(id, name, role, gender, age);
     }
 
+    /**
+     * Constructor with parameters including password.
+     * @param id Pharmacist ID
+     * @param name Pharmacist name
+     * @param role Pharmacist role
+     * @param gender Pharmacist gender
+     * @param age Pharmacist age
+     * @param password Pharmacist password
+     */
     public Pharmacist(String id, String name, String role, String gender, int age, String password)
     {
         super(id, name, role, gender, age, password);

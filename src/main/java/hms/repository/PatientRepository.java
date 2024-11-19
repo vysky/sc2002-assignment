@@ -1,20 +1,34 @@
 package hms.repository;
 
-import hms.model.user.Patient;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import hms.model.user.Patient;
+/**
+ * The PatientRepository class provides methods to import and export patient data
+ * from and to a CSV file. It implements the CsvRepository interface for handling patient objects.
+ */
 public class PatientRepository implements CsvRepository<Patient>
 {
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
     String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information"};
 
+    /**
+     * Imports patient data from a CSV file.
+     *
+     * @return a list of patients
+     */
     public List<Patient> importFromCsv()
     {
         ArrayList<Patient> patientArrayList = new ArrayList<>();
@@ -79,6 +93,11 @@ public class PatientRepository implements CsvRepository<Patient>
         return null;
     }
 
+    /**
+     * Exports patient data to a CSV file.
+     *
+     * @param patientList the list of patients to export
+     */
     public void exportToCsv(List<Patient> patientList)
     {
         try

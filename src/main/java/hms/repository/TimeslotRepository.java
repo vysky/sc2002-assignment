@@ -8,13 +8,21 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The TimeslotRepository class provides methods to import and export timeslot data
+ * from and to a CSV file. It implements the CsvRepository interface for handling timeslot objects.
+ */
 public class TimeslotRepository implements CsvRepository<Timeslot>
 {
     static final String CSV_FILE_PATH_TIMESLOT = "src/main/resources/timeslot.csv";
 
     String[] TIMESLOT_HEADERS = {"ID", "Date", "Timeslot", "Status"};
 
+    /**
+     * Imports timeslot data from a CSV file.
+     *
+     * @return a list of timeslots
+     */
     public List<Timeslot> importFromCsv()
     {
         ArrayList<Timeslot> timeslotArrayList = new ArrayList<Timeslot>();
@@ -49,6 +57,11 @@ public class TimeslotRepository implements CsvRepository<Timeslot>
         return null;
     }
 
+    /**
+     * Exports timeslot data to a CSV file.
+     *
+     * @param timeslotList the list of timeslots to export
+     */
     public void exportToCsv(List<Timeslot> timeslotList)
     {
         try
