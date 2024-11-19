@@ -5,6 +5,12 @@ import java.util.List;
 import hms.model.user.Patient;
 import hms.model.user.User;
 
+/**
+ * The MedicalRecordService class provides functionality to manage and retrieve medical records
+ * for patients in the hospital management system. It allows retrieving patient information,
+ * setting new diagnoses, and setting new treatments.
+ */
+
 public class MedicalRecordService {
     private List<Patient> patients;
 
