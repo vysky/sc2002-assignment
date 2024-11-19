@@ -1,7 +1,11 @@
 package hms.model.user;
 
 import java.util.ArrayList;
-
+/**
+ * The Patient class represents a patient in the hospital management system (HMS).
+ * It extends the User class and contains additional information such as date of birth, email, blood type,
+ * and medical details like diagnoses and treatments.
+ */
 public class Patient extends User
 {
     private String dateOfBirth;
