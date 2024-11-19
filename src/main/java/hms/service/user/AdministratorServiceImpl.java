@@ -128,7 +128,6 @@ public class AdministratorServiceImpl extends UserService
             System.out.println("Returning to Admin Menu...");
             return ;
         }
-        
         List<Patient> list = new ArrayList<Patient>(patientList);
         System.out.println("Viewing Patient "+ list.get(oopt-1).getName() + " appointment details.");
         System.out.println("Key 1 to confirm, otherwise any other key to exit.");
@@ -137,13 +136,10 @@ public class AdministratorServiceImpl extends UserService
             case "1":
                 listByDoc(list.get(oopt-1).getId());
                 break;
-        
             default:
                 System.out.println("Exiting..");
                 return;
         }
-        
-        
         return;
     }
 
