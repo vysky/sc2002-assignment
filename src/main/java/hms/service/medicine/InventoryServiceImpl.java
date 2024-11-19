@@ -6,13 +6,21 @@ import java.util.List;
 import hms.model.medicine.Medicine;
 import hms.model.medicine.ReplenishmentRequest;
 import hms.repository.MedicineRepository;
-
+/**
+ * The InventoryServiceImpl class provides the implementation for managing the medicine inventory
+ * and handling replenishment requests in the hospital management system (HMS).
+ * It interacts with the MedicineRepository to persist inventory changes and supports adding,
+ * updating, and removing medicines, as well as managing replenishment requests.
+ */
 public class InventoryServiceImpl
 {
     private static final MedicineRepository medicineRepository = new MedicineRepository();
     private final List<Medicine> medicineList;
     private final List<ReplenishmentRequest> replenishmentRequestList = new ArrayList<>();
-
+    /**
+     * Constructs an InventoryServiceImpl instance.
+     * Initializes the medicine list by importing data from the CSV file and adds test replenishment requests.
+     */
     public InventoryServiceImpl()
     {
         this.medicineList = medicineRepository.importFromCsv();
