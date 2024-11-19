@@ -10,7 +10,11 @@ import hms.model.medicine.Medicine;
 import hms.model.user.Administrator;
 import hms.model.user.Staff;
 import hms.service.medicine.InventoryServiceImpl;
-
+/**
+ * The AdministratorServiceImpl class provides an implementation for administrator-specific
+ * functionalities in the hospital management system (HMS). It extends the abstract UserService
+ * class and handles operations such as managing staff, appointments, and medication inventory.
+ */
 public class AdministratorServiceImpl extends UserService
 {
     private Administrator authenticatedAdministrator;
