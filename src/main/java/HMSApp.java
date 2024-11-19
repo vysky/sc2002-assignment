@@ -1,4 +1,3 @@
-import java.io.Console;
 import java.util.Scanner;
 
 import hms.model.shared.CredentialPair;
@@ -28,13 +27,19 @@ public class HMSApp
     private static UserService userService;
     private static MedicalRecordService medicalRecordService;
 
+    /**
+     * Main method to start the application.
+     * @param args command line arguments
+     */
     public static void main(String[] args)
     {
         initializeInstances();
         runProgram();
     }
 
-    // initialise instances
+    /**
+     * Initializes instances of various services and variables.
+     */
     private static void initializeInstances()
     {
         // csl = System.console();
@@ -46,7 +51,9 @@ public class HMSApp
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
     }
 
-    // todo: should set a login limit, if failed to login then kick user back to this menu
+    /**
+     * Runs the main program loop, handling user login and menu options.
+     */
     private static void runProgram()
     {
         int option;
@@ -133,6 +140,10 @@ public class HMSApp
         }
     }
 
+    /**
+     * Prompts the user to enter their login credentials.
+     * @return a CredentialPair containing the entered user id and password
+     */
     private static CredentialPair printLoginDialog()
     {
         // todo: use hashmap if have time, probably need to refactor
@@ -149,6 +160,9 @@ public class HMSApp
         return new CredentialPair(id, password);
     }
 
+    /**
+     * Handles the process of resetting a user's password.
+     */
     private static void printForgetPasswordDialog()
     {
         boolean passwordVerified = false;
@@ -190,6 +204,12 @@ public class HMSApp
         }
     }
 
+    /**
+     * Authenticates the user based on the provided credentials.
+     * @param credentialPair the credentials entered by the user
+     * @param counter the current attempt number
+     * @param maximumAttempt the maximum number of allowed attempts
+     */
     private static void performAuthentication(CredentialPair credentialPair, int counter, int maximumAttempt)
     {
         authenticatedUser = userAuthenticationService.authenticateUser(credentialPair);
@@ -205,6 +225,9 @@ public class HMSApp
         }
     }
 
+    /**
+     * Prompts the user to change their password on first login.
+     */
     private static void performChangePasswordOnFirstLogin()
     {
         boolean passwordVerified = false;
@@ -242,6 +265,10 @@ public class HMSApp
         }
     }
 
+    /**
+     * Creates the appropriate user service based on the authenticated user's role.
+     * @return the user service corresponding to the authenticated user's role
+     */
     private static UserService postLoginCreateService()
     {
         switch (authenticatedUser.getRole())
@@ -273,6 +300,9 @@ public class HMSApp
         }
     }
 
+    /**
+     * Runs the user service, displaying the menu and handling selected options.
+     */
     private static void runUserService()
     {
         int option;

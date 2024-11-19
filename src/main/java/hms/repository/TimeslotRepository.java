@@ -15,6 +15,11 @@ public class TimeslotRepository implements CsvRepository<Timeslot>
 
     String[] TIMESLOT_HEADERS = {"ID", "Date", "Timeslot", "Status"};
 
+    /**
+     * Imports timeslot data from a CSV file.
+     *
+     * @return a list of timeslots
+     */
     public List<Timeslot> importFromCsv()
     {
         ArrayList<Timeslot> timeslotArrayList = new ArrayList<Timeslot>();
@@ -49,6 +54,11 @@ public class TimeslotRepository implements CsvRepository<Timeslot>
         return null;
     }
 
+    /**
+     * Exports timeslot data to a CSV file.
+     *
+     * @param timeslotList the list of timeslots to export
+     */
     public void exportToCsv(List<Timeslot> timeslotList)
     {
         try

@@ -1,23 +1,26 @@
 package hms.model.appointment;
-import hms.model.user.Patient;
-import hms.model.user.Doctor;
-
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
+
+import hms.model.user.Doctor;
+
 public class AppointmentManager {
     private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
     private static final String AVAILABILITY_FILE = "src\\main\\resources\\csv\\Timeslot.csv";
     private static final String APPOINTMENTS_FILE = "src\\main\\resources\\csv\\Appointment_Record.csv";
 
+    /**
+     * Retrieves all doctors from the staff file.
+     * @return a list of all doctors
+     */
     public List<Doctor> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
 
@@ -35,6 +38,12 @@ public class AppointmentManager {
         return doctors;
     }
 
+    /**
+     * Retrieves available timeslots for a specific doctor on a specific date.
+     * @param doctorId the ID of the doctor
+     * @param date the date to check for availability
+     * @return a list of available timeslots
+     */
     public List<Timeslot> getAvailableTimeslots(String doctorId, String date) {
         List<Timeslot> availableTimeslots = new ArrayList<>();
 
@@ -52,6 +61,13 @@ public class AppointmentManager {
         return availableTimeslots;
     }
 
+    /**
+     * Checks if a specific timeslot is available for a doctor on a specific date.
+     * @param doctorId the ID of the doctor
+     * @param date the date to check
+     * @param timeslot the timeslot to check
+     * @return true if the timeslot is available, false otherwise
+     */
     public boolean isAvailable(String doctorId, String date, String timeslot) {
 
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
@@ -71,6 +87,12 @@ public class AppointmentManager {
         return false;
     }
 
+    /**
+     * Retrieves an existing appointment for a specific patient and doctor.
+     * @param patientId the ID of the patient
+     * @param doctorId the ID of the doctor
+     * @return the existing appointment, or null if none found
+     */
     public Appointment getExistingAppointment(String patientId, String doctorId) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
@@ -88,6 +110,11 @@ public class AppointmentManager {
         return null;
     }
 
+    /**
+     * Retrieves all existing appointments for a specific patient.
+     * @param patientId the ID of the patient
+     * @return a list of existing appointments
+     */
     public List<Appointment> getExistingAppointment(String patientId) {
         List<Appointment> appointment = new ArrayList<>();
 
@@ -102,10 +129,19 @@ public class AppointmentManager {
         return appointment;
     }
 
+    /**
+     * Reschedules an appointment.
+     * @param appointmentId the ID of the appointment to reschedule
+     * @return true if the appointment was successfully rescheduled, false otherwise
+     */
     public boolean rescheduleAppointment(String appointmentId) {
         return false;
     }
 
+    /**
+     * Generates a new appointment ID.
+     * @return the generated appointment ID
+     */
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
         if (lastAppointmentID == null) {
@@ -117,6 +153,10 @@ public class AppointmentManager {
         return String.format("A%05d", newNumericPart);
     }
 
+    /**
+     * Retrieves the last appointment ID from the appointments file.
+     * @return the last appointment ID, or null if none found
+     */
     private String getLastAppointmentID() {
         String lastAppointmentID = null;
 
@@ -132,6 +172,13 @@ public class AppointmentManager {
         return lastAppointmentID;
     }
 
+    /**
+     * Makes a new appointment.
+     * @param patientId the ID of the patient
+     * @param doctorId the ID of the doctor
+     * @param date the date of the appointment
+     * @param timeslot the timeslot of the appointment
+     */
     public void makeAppointment(String patientId, String doctorId, String date, String timeslot) {
 
         updateAvailability(doctorId, date, timeslot, "Not Available");
@@ -149,6 +196,13 @@ public class AppointmentManager {
         System.out.println("Appointment made successfully. Your appointment ID is " + appointmentID);
     }
 
+    /**
+     * Updates the availability of a timeslot for a specific doctor on a specific date.
+     * @param doctorId the ID of the doctor
+     * @param date the date of the timeslot
+     * @param timeslot the timeslot to update
+     * @param availability the new availability status
+     */
     public void updateAvailability(String doctorId, String date, String timeslot, String availability) {
 
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {

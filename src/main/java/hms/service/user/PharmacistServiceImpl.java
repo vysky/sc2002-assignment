@@ -1,9 +1,9 @@
 package hms.service.user;
 
+import java.util.Scanner;
+
 import hms.model.user.Pharmacist;
 import hms.service.medicine.InventoryServiceImpl;
-
-import java.util.Scanner;
 
 // public class PharmacistServiceImpl implements Menu
 public class PharmacistServiceImpl extends UserService
@@ -17,6 +17,9 @@ public class PharmacistServiceImpl extends UserService
         this.inventoryService = inventoryService;
     }
 
+    /**
+     * Prints the menu options for the pharmacist.
+     */
     public void printMenu()
     {
         System.out.print("""
@@ -30,6 +33,12 @@ public class PharmacistServiceImpl extends UserService
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the pharmacist.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -62,21 +71,35 @@ public class PharmacistServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 1: View Appointment Outcome Record.
+     */
     public void option1()
     {
         System.out.println("Option 1");
     }
 
+    /**
+     * Handles option 2: Update Prescription Status.
+     */
     public void option2()
     {
         System.out.println("Option 2");
     }
 
+    /**
+     * Handles option 3: View Medication Inventory.
+     */
     public void option3()
     {
         inventoryService.printMedicineList();
     }
 
+    /**
+     * Handles option 4: Submit Replenishment Request.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option4(Scanner input)
     {
         inventoryService.printMedicineList();

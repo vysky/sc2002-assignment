@@ -15,6 +15,11 @@ public class AppointmentRepository implements CsvRepository<Appointment>
 
     String[] APPOINTMENT_HEADERS = {"Appointment ID", "Patient", "Doctor", "Date", "Timeslot", "Appointment_Status", "Service", "Medication", "Notes", "Prescription_Status"};
 
+    /**
+     * Imports appointment data from a CSV file.
+     *
+     * @return a list of appointments
+     */
     public List<Appointment> importFromCsv()
     {
         ArrayList<Appointment> appointmentArrayList = new ArrayList<Appointment>();
@@ -51,6 +56,11 @@ public class AppointmentRepository implements CsvRepository<Appointment>
         return null;
     }
 
+    /**
+     * Exports appointment data to a CSV file.
+     *
+     * @param appointmentList the list of appointments to export
+     */
     public void exportToCsv(List<Appointment> appointmentList)
     {
         try

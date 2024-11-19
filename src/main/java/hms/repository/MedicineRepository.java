@@ -1,13 +1,19 @@
 package hms.repository;
 
-import hms.model.medicine.Medicine;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import hms.model.medicine.Medicine;
 
 public class MedicineRepository implements CsvRepository<Medicine>
 {
@@ -15,6 +21,11 @@ public class MedicineRepository implements CsvRepository<Medicine>
 
     String[] MEDICINE_HEADERS = {"Medicine Name", "Initial Stock", "Low Stock Level Alert"};
 
+    /**
+     * Imports medicine data from a CSV file.
+     *
+     * @return a list of medicines
+     */
     public List<Medicine> importFromCsv()
     {
         ArrayList<Medicine> medicineArrayList = new ArrayList<>();
@@ -54,6 +65,11 @@ public class MedicineRepository implements CsvRepository<Medicine>
         return null;
     }
 
+    /**
+     * Exports medicine data to a CSV file.
+     *
+     * @param medicineList the list of medicines to export
+     */
     public void exportToCsv(List<Medicine> medicineList)
     {
         try

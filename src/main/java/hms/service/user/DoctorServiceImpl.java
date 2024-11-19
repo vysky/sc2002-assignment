@@ -18,6 +18,9 @@ public class DoctorServiceImpl extends UserService
         this.medicalRecordService = medicalRecordService;
     }
 
+    /**
+     * Prints the menu options for the doctor.
+     */
     public void printMenu()
     {
         System.out.print("""
@@ -34,6 +37,12 @@ public class DoctorServiceImpl extends UserService
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the doctor.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -78,6 +87,12 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 1: View Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
     public void option1(MedicalRecordService mr, Scanner input)
     {
         String pId;
@@ -96,6 +111,12 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 2: Update Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
     public void option2(MedicalRecordService mr, Scanner input)
     {
         String pId = "";
@@ -157,26 +178,41 @@ public class DoctorServiceImpl extends UserService
         } while (loop);
     }
 
+    /**
+     * Handles option 3: View Personal Schedule.
+     */
     public void option3()
     {
         System.out.println("Option 3");
     }
 
+    /**
+     * Handles option 4: Set Availability for Appointments.
+     */
     public void option4()
     {
         System.out.println("Option 4");
     }
 
+    /**
+     * Handles option 5: Accept or Decline Appointment Requests.
+     */
     public void option5()
     {
         System.out.println("Option 5");
     }
 
+    /**
+     * Handles option 6: View Upcoming Appointments.
+     */
     public void option6()
     {
         System.out.println("Option 6");
     }
 
+    /**
+     * Handles option 7: Record Appointment Outcome.
+     */
     public void option7()
     {
         System.out.println("Option 7");
