@@ -1,7 +1,18 @@
 package hms.model.user;
 
+/**
+ * The Administrator class represents an administrator in the hospital management system (HMS).
+ * It extends the Staff class, inheriting the basic properties of a staff member (e.g., id, name, role, gender, and age),
+ * and may also include additional administrator-specific functionalities.
+ */
+
 public class Administrator extends Staff
 {
+    /**
+     * Default constructor that creates a new Administrator object.
+     * This constructor does not initialize any properties.
+     */
+
     public Administrator()
     {
     }
