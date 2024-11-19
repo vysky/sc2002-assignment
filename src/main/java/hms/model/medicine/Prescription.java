@@ -1,5 +1,10 @@
 package hms.model.medicine;
 
+/**
+ * The Prescription class represents a prescription for a specific medicine with a specified quantity.
+ * It contains the details of the medicine prescribed to a patient and the quantity of the medicine.
+ */
+
 public class Prescription
 {
     private Medicine medicine;
