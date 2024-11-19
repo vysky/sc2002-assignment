@@ -1,4 +1,5 @@
 package hms.model.user;
+import hms.service.user.AdministratorServiceImpl;
 
 /**
  * The Administrator class represents an administrator in the hospital management system (HMS).
