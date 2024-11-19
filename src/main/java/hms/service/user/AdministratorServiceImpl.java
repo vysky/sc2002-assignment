@@ -129,10 +129,15 @@ public class AdministratorServiceImpl extends UserService
             return;
         }
     }
-        
+    
+    /**
+     * Creates new staff.
+     *
+     * @param input the Scanner object to read user input.
+     */
     private void newStaff(Scanner input){
-        String id="",i,z,name,role,gender,oopt,c="";
-        int opt,nid,age;
+        String id="",i,name,role,gender,oopt,c="";
+        int nid,age;
         System.out.println("Welcome to Staff Maker!");
         while(true){
             System.out.println("Enter New Staff Name");
@@ -263,6 +268,11 @@ public class AdministratorServiceImpl extends UserService
         
     }
 
+    /**
+     * Check existing staff number sequence based on role.
+     *
+     * @param role the selected role
+     */
     public int checkIDSeq(String role){
         int i=0,nid=-1;
         if(role.equals(role)){
@@ -294,6 +304,12 @@ public class AdministratorServiceImpl extends UserService
         selectPatient(sharedUserService.getPatientList(),i,input);
     }
 
+    /**
+     * Check existing staff number sequence based on role.
+     *
+     * @param patientList the List of the staff objects
+     * @param input the Scanner object to read user input.
+     */
     private int showPatient(List<Patient> patientList,Scanner input){
         System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender:");
         int i=1;
@@ -308,8 +324,14 @@ public class AdministratorServiceImpl extends UserService
         return i;
     }
 
+    /**
+     * Check existing staff number sequence based on role.
+     *
+     * @param patientList the List of the staff objects
+     * @param i the maximum index of list
+     * @param input the Scanner object to read user input.
+     */
     private void selectPatient(List<Patient> patientList,int i,Scanner input){
-        String opt;
         int oopt;
         while(true){
             try{
@@ -348,6 +370,12 @@ public class AdministratorServiceImpl extends UserService
         return;
     }
 
+
+    /**
+     * Check all appointment with all doctors.
+     *
+     * @param patientID the List of the staff objects
+     */
     private void listByDoc(String patientID){
         appointmentManager = new AppointmentManager();
         List<Doctor> doctors = appointmentManager.getAllDoctors();
@@ -367,6 +395,12 @@ public class AdministratorServiceImpl extends UserService
         }
     }
 
+
+    /**
+     * Print out medication list
+     *
+     *  @param input the Scanner object to read user input.
+     */
     private int printMedList(Scanner input){
         int c;
         while(true){
@@ -391,6 +425,11 @@ public class AdministratorServiceImpl extends UserService
         return c;
     }
     
+    /**
+     * Add new medication to list
+     *
+     *  @param input the Scanner object to read user input.
+     */
     private void addNewMed(Scanner input){
         String opt,medicineName;
         boolean test=false;
@@ -466,6 +505,11 @@ public class AdministratorServiceImpl extends UserService
                     System.out.println("New medicine added!");
     }
     
+    /**
+     * Remove existing medication from list
+     *
+     *  @param input the Scanner object to read user input.
+     */
     private void removeMed(Scanner input){
         int max,index;
         while(true){
@@ -496,6 +540,11 @@ public class AdministratorServiceImpl extends UserService
         }
     }
     
+    /**
+     * update existing medication stock on the list
+     *
+     *  @param input the Scanner object to read user input.
+     */
     private void updateStock(Scanner input){
         int max,index,newcount=-1;
         String c;
