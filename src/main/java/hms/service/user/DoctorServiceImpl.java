@@ -5,12 +5,26 @@ import java.util.Scanner;
 import hms.model.user.Doctor;
 import hms.service.medicalRecord.MedicalRecordService;
 
+/**
+ * The DoctorServiceImpl class provides an implementation for doctor-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and updating patient medical records, managing appointment schedules,
+ * and recording appointment outcomes.
+ */
 public class DoctorServiceImpl extends UserService
 {
     private Doctor authenticatedDoctor;
     private SharedUserServiceImpl sharedUserService;
     private MedicalRecordService medicalRecordService;
 
+      /**
+     * Constructs a DoctorServiceImpl with the authenticated doctor, shared user service,
+     * and medical record service.
+     *
+     * @param doctor The authenticated doctor.
+     * @param sharedUserService The shared user service for managing appointments and schedules.
+     * @param medicalRecordService The medical record service for accessing and updating patient records.
+     */
     public DoctorServiceImpl(Doctor doctor, SharedUserServiceImpl sharedUserService, MedicalRecordService medicalRecordService)
     {
         this.authenticatedDoctor = doctor;
