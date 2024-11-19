@@ -16,6 +16,11 @@ import hms.service.user.SharedUserServiceImpl;
 import hms.service.user.UserAuthenticationServiceImpl;
 import hms.service.user.UserService;
 
+/**
+ * Main application class for the Hospital Management System (HMS).
+ * This class manages user authentication and services for different user roles
+ * like patient, administrator, doctor, and pharmacist.
+ */
 public class HMSApp
 {
     // private static Console csl;
@@ -37,8 +42,9 @@ public class HMSApp
         runProgram();
     }
 
-    /**
-     * Initializes instances of various services and variables.
+   /**
+     * Initializes required instances for services and variables.
+     * This includes user authentication, inventory service, and medical record service.
      */
     private static void initializeInstances()
     {
@@ -52,7 +58,8 @@ public class HMSApp
     }
 
     /**
-     * Runs the main program loop, handling user login and menu options.
+     * Runs the main program loop, presenting options to the user for login, password reset, and role-based login.
+     * After successful authentication, the relevant user service is run.
      */
     private static void runProgram()
     {
@@ -162,6 +169,7 @@ public class HMSApp
 
     /**
      * Handles the process of resetting a user's password.
+     * Allows up to 3 attempts to successfully change the password
      */
     private static void printForgetPasswordDialog()
     {
@@ -206,6 +214,7 @@ public class HMSApp
 
     /**
      * Authenticates the user based on the provided credentials.
+     * Increases the counter for failed login attempts and exits if the maximum attempts are exceeded.
      * @param credentialPair the credentials entered by the user
      * @param counter the current attempt number
      * @param maximumAttempt the maximum number of allowed attempts
@@ -227,6 +236,7 @@ public class HMSApp
 
     /**
      * Prompts the user to change their password on first login.
+     * Allows up to 3 attempts to change the password successfully.
      */
     private static void performChangePasswordOnFirstLogin()
     {
@@ -267,7 +277,7 @@ public class HMSApp
 
     /**
      * Creates the appropriate user service based on the authenticated user's role.
-     * @return the user service corresponding to the authenticated user's role
+     * @return the user service corresponding to the authenticated user's role, or null if role is unknown
      */
     private static UserService postLoginCreateService()
     {
