@@ -1,4 +1,0 @@
-﻿Appointment ID,Patient,Doctor,Date,Timeslot,Appointment_Status,Service,Medication,Notes,Prescription_Status
-A00001,P1001,D001,31-Oct-24,14:00 - 15:00,Completed,,,,
-A00002,P1001,D001,31-Oct-24,11:00 - 12:00,Confirmed,,,,
-A00002,P1003,D001,31-Oct-24,11:00 - 12:00,Confirmed,,,,
