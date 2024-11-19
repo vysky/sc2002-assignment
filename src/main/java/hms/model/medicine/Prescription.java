@@ -5,10 +5,6 @@ public class Prescription
     private Medicine medicine;
     private int quantity;
 
-    public Prescription()
-    {
-    }
-
     public Prescription(Medicine medicine, int quantity)
     {
         this.medicine = medicine;

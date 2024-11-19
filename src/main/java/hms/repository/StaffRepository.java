@@ -12,20 +12,20 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffRepository implements CsvRepository
+public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
     String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age"};
 
-    public List<Staff> getStaffList()
+    public List<Staff> importFromCsv()
     {
-        ArrayList<Staff> staffArrayList = new ArrayList<Staff>();
+        ArrayList<Staff> staffArrayList = new ArrayList<>();
 
         try
         {
-            Reader in = new FileReader(CSV_FILE_PATH_STAFF);
-            Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
+            Reader reader = new FileReader(CSV_FILE_PATH_STAFF);
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader);
 
             for (CSVRecord record : records)
             {
@@ -36,6 +36,7 @@ public class StaffRepository implements CsvRepository
                 String gender = record.get("Gender");
                 int age = Integer.parseInt(record.get("Age"));
                 String password = "";
+                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 
                 try
                 {
@@ -107,14 +108,14 @@ public class StaffRepository implements CsvRepository
         return null;
     }
 
-    public void updateStaffCsv(List<Staff> staffList)
+    public void exportToCsv(List<Staff> staffList)
     {
         try
         {
-            Writer out = new FileWriter(CSV_FILE_PATH_STAFF);
+            Writer writer = new FileWriter(CSV_FILE_PATH_STAFF);
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(STAFF_HEADERS).build();
 
-            final CSVPrinter csvPrinter = new CSVPrinter(out, csvFormat);
+            CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
 
             for (Staff staff : staffList)
             {
