@@ -6,7 +6,11 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
-
+/**
+ * The UserAuthenticationServiceImpl class provides an implementation for the
+ * UserAuthenticationService interface. It handles user authentication and password
+ * management for patients and staff in the hospital management system (HMS).
+ */
 public class UserAuthenticationServiceImpl implements UserAuthenticationService
 {
     private final List<Patient> patientList;
