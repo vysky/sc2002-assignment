@@ -105,14 +105,14 @@ public class AdministratorServiceImpl extends UserService
 
     private void selectPatient(List<Patient> patientList,int i,Scanner input){
         String opt;
+        int oopt;
         while(true){
             try{
                 System.out.println("""
                     Which patient's appointment details would you like to see?
                     Otherwise Enter '0' (without quotes) to exit to Admin Menu
                         """);
-                opt = input.nextLine();
-                Integer.parseInt(opt);
+                oopt = Integer.parseInt(input.nextLine());
                 break;
             }catch(NumberFormatException e) { 
                 System.out.println("Invalid Option! Exiting...");
@@ -120,26 +120,26 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Invalid Option! Exiting...");
             }
         }
-        int index = Integer.parseInt(opt);
-        if((index <0 || index>i )){
+        if((oopt <0 || oopt>(i-1))){
             System.out.println("Invalid entry! Returning to Admin Menu.");
             return ;
         }
-        else if(index ==0){
+        else if(oopt ==0){
             System.out.println("Returning to Admin Menu...");
             return ;
         }
         
         List<Patient> list = new ArrayList<Patient>(patientList);
-        System.out.println("Viewing Patient "+ list.get(index-1).getName() + " appointment details.");
+        System.out.println("Viewing Patient "+ list.get(oopt-1).getName() + " appointment details.");
         System.out.println("Key 1 to confirm, otherwise any other key to exit.");
         String choice = input.nextLine();
         switch (choice) {
             case "1":
-                listByDoc(list.get(index-1).getId());
+                listByDoc(list.get(oopt-1).getId());
                 break;
         
             default:
+                System.out.println("Exiting..");
                 return;
         }
         
