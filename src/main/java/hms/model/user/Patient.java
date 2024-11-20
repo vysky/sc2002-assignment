@@ -182,4 +182,8 @@ public class Patient extends User
     {
         prescriptions.add(newPrescription);
     }
+
+    public void setPrescriptions(String newPresc) {
+        prescriptions.add(newPresc);
+    }
 }

@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import hms.model.appointment.AppointmentManager;
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
 import hms.model.user.Doctor;
@@ -31,6 +32,7 @@ public class HMSApp
     private static UserAuthenticationServiceImpl userAuthenticationService;
     private static UserService userService;
     private static MedicalRecordService medicalRecordService;
+    private static AppointmentManager appointmentManager;
 
     /**
      * Main method to start the application.
@@ -56,6 +58,7 @@ public class HMSApp
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
+        appointmentManager = new AppointmentManager();
     }
 
     /**
@@ -294,7 +297,7 @@ public class HMSApp
             case "patient" ->
             {
                 assert authenticatedUser instanceof Patient;
-                return new PatientServiceImpl((Patient) authenticatedUser);
+                return new PatientServiceImpl((Patient) authenticatedUser, appointmentManager, medicalRecordService);
             }
             case "administrator" ->
             {
@@ -304,7 +307,7 @@ public class HMSApp
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, medicalRecordService, appointmentManager);
             }
             case "pharmacist" ->
             {
