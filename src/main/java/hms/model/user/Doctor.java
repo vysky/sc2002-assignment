@@ -43,8 +43,8 @@ public class Doctor extends Staff
      * @param age Doctor age
      * @param password Doctor password
      */
-    public Doctor(String id, String name, String role, String gender, int age, String password, boolean active)
+    public Doctor(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, age, password, active);
+        super(id, name, role, gender, age, hash, active);
     }
 }

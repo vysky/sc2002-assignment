@@ -44,9 +44,9 @@ public class Patient extends User
      * @param email Patient email
      * @param password Patient password
      */
-    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
+    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String hash, boolean active)
     {
-        super(id, name, role, gender, password);
+        super(id, name, role, gender, hash);
         this.dateOfBirth = dateOfBirth;
         this.bloodType = bloodType;
         this.email = email;

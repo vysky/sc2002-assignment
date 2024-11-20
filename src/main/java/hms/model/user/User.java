@@ -16,6 +16,7 @@ public class User
     private String gender;
     private String password = "password";
     private boolean active = true;
+    private String hash;
 
     /**
      * Default constructor that creates a new User object.
@@ -51,13 +52,13 @@ public class User
      * @param gender The gender of the user.
      * @param password The password of the user.
      */
-    public User(String id, String name, String role, String gender, String password)
+    public User(String id, String name, String role, String gender, String hash)
     {
         this.id = id;
         this.name = name;
         this.role = role;
         this.gender = gender;
-        this.password = password;
+        this.hash = hash;
     }
 
     public User(String id, String name, String role, String gender, boolean active)
@@ -67,16 +68,16 @@ public class User
         this.role = role;
         this.gender = gender;
         this.active = active;
-        this.password = BCrypt.hashpw("password" , BCrypt.gensalt());
+        this.hash = BCrypt.hashpw("password" , BCrypt.gensalt());
     }
 
-    public User(String id, String name, String role, String gender, String password, boolean active)
+    public User(String id, String name, String role, String gender, String hash, boolean active)
     {
         this.id = id;
         this.name = name;
         this.role = role;
         this.gender = gender;
-        this.password = password;
+        this.hash = hash;
         this.active = active;
     }
 
@@ -178,6 +179,14 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public String getHash(){
+        return this.hash;
+    }
+
+    public void setHash(String hash){
+         this.hash = hash;
     }
 
     public boolean getActive(){

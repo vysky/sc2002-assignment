@@ -95,13 +95,13 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
             if (isIdFromPatient(id))
             {
                 
-                getPatientById(id).setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                getPatientById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
 
             if (isIdFromStaff(id))
             {
-                getStaffById(id).setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                getStaffById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
         }
@@ -146,10 +146,10 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     {  
         for(int i = 0; i < this.patientList.size();i++){
             if(id.equals(this.patientList.get(i).getId())){
-                return BCrypt.checkpw(password, this.patientList.get(i).getPassword());
+                return BCrypt.checkpw(password, this.patientList.get(i).getHash());
             }
             else if(password.equals(this.patientList.get(i).getPassword())){
-                this.patientList.get(i).setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
             }
         }
         return false;
@@ -170,11 +170,11 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         for(int i = 0; i < this.staffList.size();i++){
             if(id.equals(this.staffList.get(i).getId())){
                 if (this.staffList.get(i).getActive()) {
-                    return BCrypt.checkpw(password, this.staffList.get(i).getPassword());
+                    return BCrypt.checkpw(password, this.staffList.get(i).getHash());
                 }
             }
-            else if(password.equals(this.patientList.get(i).getPassword())){
-                this.patientList.get(i).setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            else if(password.equals(this.patientList.get(i).getHash())){
+                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
             }
         }
         return false;

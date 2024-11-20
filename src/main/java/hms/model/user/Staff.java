@@ -48,9 +48,9 @@ public class Staff extends User
      * @param age Staff age
      * @param password Staff password
      */
-    public Staff(String id, String name, String role, String gender, int age, String password, boolean active)
+    public Staff(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, password,active);
+        super(id, name, role, gender, hash,active);
         this.age = age;
     }
     

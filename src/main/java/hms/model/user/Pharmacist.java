@@ -33,8 +33,8 @@ public class Pharmacist extends Staff
      * @param age Pharmacist age
      * @param password Pharmacist password
      */
-    public Pharmacist(String id, String name, String role, String gender, int age, String password, boolean active)
+    public Pharmacist(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, age, password, active);
+        super(id, name, role, gender, age, hash, active);
     }
 }

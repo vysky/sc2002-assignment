@@ -40,8 +40,8 @@ public class Administrator extends Staff
      * @param age Administrator age
      * @param password Administrator password
      */
-    public Administrator(String id, String name, String role, String gender, int age, String password, boolean active)
+    public Administrator(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, age, password, active);
+        super(id, name, role, gender, age, hash, active);
     }
 }

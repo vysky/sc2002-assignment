@@ -26,7 +26,7 @@ public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
-    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age","Password","Active"};
+    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age","Password","Hash","Active"};
 
     /**
      * Imports staff data from a CSV file.
@@ -49,6 +49,7 @@ public class StaffRepository implements CsvRepository<Staff>
                 String name = record.get("Name");
                 String role = record.get("Role").toLowerCase(); // User.Role role = User.Role.valueOf(record.get("Role").toUpperCase());
                 String gender = record.get("Gender");
+                String hash = record.get("Hash");
                 boolean active = false;
                 int age = Integer.parseInt(record.get("Age"));
                 if(Integer.parseInt(record.get("Active"))==1){
@@ -77,7 +78,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Administrator(id, name, role, gender, age, password, active);
+                            staff = new Administrator(id, name, role, gender, age, hash, active);
                         }
                     }
                     case "doctor" ->
@@ -88,7 +89,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Doctor(id, name, role, gender, age, password, active);
+                            staff = new Doctor(id, name, role, gender, age, hash, active);
                         }
                     }
                     case "pharmacist" ->
@@ -99,7 +100,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Pharmacist(id, name, role, gender, age, password, active);
+                            staff = new Pharmacist(id, name, role, gender, age, hash, active);
                         }
                     }
                     default -> System.out.printf("Unknown role, skipping user %s.", staff.getRole());
@@ -145,9 +146,9 @@ public class StaffRepository implements CsvRepository<Staff>
             for (Staff staff : staffList)
             {
                 if(staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(), 1);
+                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(),staff.getHash(), 1);
                 else if(!staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(), 0);
+                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(),staff.getHash(), 0);
             }
 
             csvPrinter.flush();
