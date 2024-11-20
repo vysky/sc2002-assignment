@@ -1,4 +1,4 @@
 Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Diagnoses,Treatments,Prescriptions,Password,Hash,Active
-P1001,Alice Brown,1980-05-14,Female,A+,alice.brown@example.com,,,,123
-P1002,Bob Stone,1975-11-22,Male,B+,bob.stone@example.com,,,,qwe
-P1003,Charlie White,1990-07-08,Male,O-,charlie.white@example.com,,,,password
+P1001,Alice Brown,5/14/1980,Female,A+,alice.brown@example.com,,,,password,,1
+P1002,Bob Stone,11/22/1975,Male,B+,bob.stone@example.com,,,,password,,1
+P1003,Charlie White,7/8/1990,Male,O-,charlie.white@example.com,,,,password,,1
