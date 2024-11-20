@@ -1,5 +1,6 @@
 package hms.service.user;
 
+import java.util.Arrays;
 import java.util.List;
 
 import hms.model.shared.CredentialPair;
@@ -16,6 +17,10 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 {
     private final List<Patient> patientList;
     private final List<Staff> staffList;
+<<<<<<< Updated upstream
+=======
+    private static SharedUserServiceImpl sharedUserService = new SharedUserServiceImpl();
+>>>>>>> Stashed changes
 
     /**
      * Constructor for UserAuthenticationServiceImpl.
@@ -146,7 +151,9 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     {  
         for(int i = 0; i < this.patientList.size();i++){
             if(id.equals(this.patientList.get(i).getId())){
-                return BCrypt.checkpw(password, this.patientList.get(i).getHash());
+                if (this.patientList.get(i).getActive()) {
+                    return BCrypt.checkpw(password, this.patientList.get(i).getHash());
+                }
             }
             else if(password.equals(this.patientList.get(i).getPassword())){
                 this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));

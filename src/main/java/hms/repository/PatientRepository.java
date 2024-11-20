@@ -61,7 +61,7 @@ public class PatientRepository implements CsvRepository<Patient>
                 ArrayList<String> diagnoses = null;
                 ArrayList<String> treatments = null;
                 ArrayList<String> prescriptions = null;
-                String password = "";
+                String password = record.get("Password");
                 // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 
                 try

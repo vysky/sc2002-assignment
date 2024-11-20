@@ -102,7 +102,7 @@ public class PatientServiceImpl extends UserService
             {
                 authenticatedPatient.setDiagnoses("test diagnoses");
                 authenticatedPatient.setTreatments("test treatments");
-                authenticatedPatient.setPrescriptions("test prescriptions");
+                //authenticatedPatient.setPrescriptions("test prescriptions");
             }
             case 0 ->
             {
@@ -130,7 +130,7 @@ public class PatientServiceImpl extends UserService
     /**
      * Handles option 3: View Available Appointment Slots.
      */
-    public void option3()
+    public void option3(AppointmentManager appointmentManager , Scanner input)
     {
         List<Doctor> doctors = appointmentManager.getAllDoctors();
         appointmentManager.displayDoctor(doctors);

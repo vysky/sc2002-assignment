@@ -179,12 +179,12 @@ public class Patient extends User
      *
      * @param newPrescription New treatment
      */
-    public void setPrescriptions(String newPrescription)
+    /*public void setPrescriptions(String newPrescription)
     {
         prescriptions.add(newPrescription);
     }
 
     public void setPrescriptions(String newPresc) {
         prescriptions.add(newPresc);
-    }
+    }*/
 }

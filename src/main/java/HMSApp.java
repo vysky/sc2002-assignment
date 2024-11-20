@@ -221,6 +221,8 @@ public class HMSApp
                 if (userAuthenticationService.changePassword(id, password))
                 {
                     System.out.println("Password changed successfully, please login using your new password.");
+                    sharedUserService.setPatientList();
+                    sharedUserService.setStaffList();
                     passwordVerified = true;
                 }
                 else

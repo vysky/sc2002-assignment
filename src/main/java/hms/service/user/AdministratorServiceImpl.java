@@ -882,7 +882,14 @@ public class AdministratorServiceImpl extends UserService
                     }
                 }
                 break;
+<<<<<<< Updated upstream
 
+=======
+            case "7":
+                theList.get(index-1).setHash("");;
+                System.out.println("Hash removed!");
+                break;
+>>>>>>> Stashed changes
             default:
                 break;
         }
