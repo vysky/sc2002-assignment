@@ -13,7 +13,11 @@ Our group consists of:
   4.  Quek Wei Pang, @C230071
   5.  Teo Wilson, @wteo026
 
+
+
 ## Features 
+The HMS is designed to caters to four categories of users: Patients, Doctors, Pharmacist and Administrators. Each category has its own unique set of functionalities tailored to their roles:
+
 1. Patients
    - Information Access: View medical records
    - Appointment Management: Schedule, reschedule, and cancel appointments.
