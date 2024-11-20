@@ -6,8 +6,14 @@ import hms.model.appointment.AppointmentManager;
 import hms.model.user.Doctor;
 import hms.service.medicalRecord.MedicalRecordService;
 
-public class DoctorServiceImpl extends UserService {
-
+/**
+ * The DoctorServiceImpl class provides an implementation for doctor-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and updating patient medical records, managing appointment schedules,
+ * and recording appointment outcomes.
+ */
+public class DoctorServiceImpl extends UserService
+{
     private Doctor authenticatedDoctor;
     private MedicalRecordService medicalRecordService;
     private AppointmentManager appointmentManager;
@@ -18,7 +24,11 @@ public class DoctorServiceImpl extends UserService {
         this.appointmentManager = appointmentManager;
     }
 
-    public void printMenu() {
+    /**
+     * Prints the menu options for the doctor.
+     */
+    public void printMenu()
+    {
         System.out.print("""
                                  ========== Doctor's Menu ==========
                                  (1) View Patient Medical Records
@@ -33,6 +43,12 @@ public class DoctorServiceImpl extends UserService {
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the doctor.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option) {
         switch (option) {
@@ -65,8 +81,15 @@ public class DoctorServiceImpl extends UserService {
             }
         }
     }
-
-    public void option1(MedicalRecordService mr, Scanner input) {
+    
+    /**
+     * Handles option 1: View Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
+    public void option1(MedicalRecordService mr, Scanner input)
+    {
         String pId;
 
         while (true) {
@@ -83,7 +106,14 @@ public class DoctorServiceImpl extends UserService {
         }
     }
 
-    public void option2(MedicalRecordService mr, Scanner input) {
+    /**
+     * Handles option 2: Update Patient Medical Records.
+     *
+     * @param mr    the MedicalRecordService object
+     * @param input the Scanner object to read user input
+     */
+    public void option2(MedicalRecordService mr, Scanner input)
+    {
         String pId = "";
         String description;
         boolean loop = true;

@@ -10,12 +10,23 @@ import hms.model.user.Doctor;
 import hms.model.user.Patient;
 import hms.service.medicalRecord.MedicalRecordService;
 
+/**
+ * The PatientServiceImpl class provides an implementation for patient-specific functionalities
+ * in the hospital management system (HMS). It extends the abstract UserService class and handles
+ * operations such as viewing and managing medical records, scheduling appointments, and managing
+ * personal information.
+ */
 public class PatientServiceImpl extends UserService
 {
     private Patient authenticatedPatient;
     private AppointmentManager appointmentManager;
     private MedicalRecordService medicalRecordService; 
-
+    
+    /**
+     * Constructs a PatientServiceImpl with the authenticated patient.
+     *
+     * @param patient The authenticated patient.
+     */
     public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService)
     {
         this.authenticatedPatient = patient;
@@ -23,6 +34,9 @@ public class PatientServiceImpl extends UserService
         this.medicalRecordService = medicalRecordService;
     }
 
+    /**
+     * Prints the menu options for the patient.
+     */
     public void printMenu()
     {
         System.out.print("""
@@ -36,10 +50,17 @@ public class PatientServiceImpl extends UserService
                                  (7) View Scheduled Appointments
                                  (8) View Past Appointment Outcome Records
                                  (0) Logout
+                                 (11) (DEV) Add diagnose
                                  """);
         System.out.print("Select an option: ");
     }
 
+    /**
+     * Handles the selected option from the patient.
+     *
+     * @param input  the Scanner object to read user input
+     * @param option the selected option
+     */
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
@@ -77,6 +98,12 @@ public class PatientServiceImpl extends UserService
             {
                 option8();
             }
+            case 11 ->
+            {
+                authenticatedPatient.setDiagnoses("test diagnoses");
+                authenticatedPatient.setTreatments("test treatments");
+                authenticatedPatient.setPrescriptions("test prescriptions");
+            }
             case 0 ->
             {
                 System.out.printf("Goodbye %s!", authenticatedPatient.getName());
@@ -95,10 +122,15 @@ public class PatientServiceImpl extends UserService
 
     public void option2(Scanner input)
     {
+        //(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
         System.out.println("Update Personal Information");
-    }
 
-    public void option3(AppointmentManager appointmentManager, Scanner input)
+    }
+    
+    /**
+     * Handles option 3: View Available Appointment Slots.
+     */
+    public void option3()
     {
         List<Doctor> doctors = appointmentManager.getAllDoctors();
         appointmentManager.displayDoctor(doctors);
@@ -113,6 +145,7 @@ public class PatientServiceImpl extends UserService
 
         String selectedDoctorId = doctors.get(doctorNumber - 1).getId();
         String selectedDate = appointmentManager.inputDate(input);
+
 
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(selectedDoctorId, selectedDate);
         appointmentManager.displayAvailableTimeslots(availableTimeslots);
@@ -258,6 +291,9 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
+    /**
+     * Handles option 8: View Past Appointment Outcome Records.
+     */
     public void option8()
     {
         System.out.println("View Past Appointment Outcome Records");

@@ -7,6 +7,12 @@ import hms.model.user.Patient;
 import hms.model.user.Doctor;
 import hms.model.appointment.AppointmentManager;
 
+/**
+ * The MedicalRecordService class provides functionality to manage and retrieve medical records
+ * for patients in the hospital management system. It allows retrieving patient information,
+ * setting new diagnoses, and setting new treatments.
+ */
+
 public class MedicalRecordService {
     private AppointmentManager appointmentManager = new AppointmentManager();
     private List<Patient> patients, currentPatients;
@@ -23,6 +29,18 @@ public class MedicalRecordService {
             Patient patient = getPatientById(patientId);
             if (patient != null) {
                 currentPatients.add(patient);
+              
+    /**
+     * Retrieves a patient by their ID.
+     *
+     * @param patientId the ID of the patient
+     * @return the patient with the specified ID
+     */
+    public Patient getPatientById(String patientId) {
+        for (Patient p : patients) {
+            User temp = p;
+            if (patientId.equals(temp.getId())) {
+                return p;
             }
         }
 
@@ -46,6 +64,11 @@ public class MedicalRecordService {
         return false;
     }
 
+    /**
+     * Retrieves and prints the medical record of a patient.
+     *
+     * @param patientId the ID of the patient
+     */
     public void getMedicalRecord(String patientId) {
 
         Patient p = getPatientById(patientId);
@@ -92,18 +115,30 @@ public class MedicalRecordService {
         return;
     }
 
+    /**
+     * Sets a new diagnosis for a patient.
+     *
+     * @param patientId the ID of the patient
+     * @param diagnosis the diagnosis to set
+     */
     public void setNewDiagnosis(String patientId, String diagnosis) {
         Patient p = getPatientById(patientId);
         p.setDiagnoses(diagnosis);
     }
 
+    /**
+     * Sets a new treatment for a patient.
+     *
+     * @param patientId the ID of the patient
+     * @param treatment the treatment to set
+     */
     public void setNewTreatment(String patientId, String treatment) {
         Patient p = getPatientById(patientId);
         p.setTreatments(treatment);
     }
 
     // Prescription method goes here too
-
+              
     private Patient getPatientById(String patientId) {
         return this.patients.stream().filter(uObject -> uObject.getId().equals(patientId)).findFirst().orElse(null);
     }

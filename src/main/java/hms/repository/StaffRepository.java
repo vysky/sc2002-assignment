@@ -1,23 +1,38 @@
 package hms.repository;
 
-import hms.model.user.Administrator;
-import hms.model.user.Doctor;
-import hms.model.user.Pharmacist;
-import hms.model.user.Staff;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import hms.model.user.Administrator;
+import hms.model.user.Doctor;
+import hms.model.user.Pharmacist;
+import hms.model.user.Staff;
 
+/**
+ * The StaffRepository class provides methods to import and export staff data
+ * from and to a CSV file. It implements the CsvRepository interface for handling staff objects.
+ */
 public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
     String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age"};
 
+    /**
+     * Imports staff data from a CSV file.
+     *
+     * @return a list of staff members
+     */
     public List<Staff> importFromCsv()
     {
         ArrayList<Staff> staffArrayList = new ArrayList<>();
@@ -108,6 +123,11 @@ public class StaffRepository implements CsvRepository<Staff>
         return null;
     }
 
+    /**
+     * Exports staff data to a CSV file.
+     *
+     * @param staffList the list of staff members to export
+     */
     public void exportToCsv(List<Staff> staffList)
     {
         try

@@ -16,6 +16,11 @@ import hms.model.user.Doctor;
 import hms.model.user.Patient;
 import hms.service.user.SharedUserServiceImpl;
 
+/**
+ * The AppointmentManager class is responsible for managing appointments, including
+ * retrieving doctor and appointment data, checking availability, scheduling, and
+ * updating appointments and availability status.
+ */
 public class AppointmentManager {
 
     private List<Patient> patients;
@@ -37,6 +42,10 @@ public class AppointmentManager {
    
 
 //Related to Doctor
+    /**
+     * Retrieves all doctors from the staff file.
+     * @return a list of all doctors
+     */
     public List<Doctor> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
 
@@ -76,6 +85,12 @@ public class AppointmentManager {
 
 
 //Related to Timeslot
+    /**
+     * Retrieves available timeslots for a specific doctor on a specific date.
+     * @param doctorId the ID of the doctor
+     * @param date the date to check for availability
+     * @return a list of available timeslots
+     */
     public List<Timeslot> getAvailableTimeslots(String doctorId, String date) {
         List<Timeslot> availableTimeslots = new ArrayList<>();
 
@@ -135,6 +150,13 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Checks if a specific timeslot is available for a doctor on a specific date.
+     * @param doctorId the ID of the doctor
+     * @param date the date to check
+     * @param timeslot the timeslot to check
+     * @return true if the timeslot is available, false otherwise
+     */
     public boolean isAvailable(String doctorId, String date, String timeslot) {
 
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
@@ -227,6 +249,12 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Retrieves an existing appointment for a specific patient and doctor.
+     * @param patientId the ID of the patient
+     * @param doctorId the ID of the doctor
+     * @return the existing appointment, or null if none found
+     */
     public Appointment getExistingAppointment(String patientId, String doctorId) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
@@ -244,6 +272,11 @@ public class AppointmentManager {
         return null;
     }
 
+    /**
+     * Retrieves all existing appointments for a specific patient.
+     * @param patientId the ID of the patient
+     * @return a list of existing appointments
+     */
     public List<Appointment> getExistingAppointment(String patientId) {
         List<Appointment> appointment = new ArrayList<>();
 
@@ -302,6 +335,10 @@ public class AppointmentManager {
         return patientIds;
     }
 
+    /**
+     * Generates a new appointment ID.
+     * @return the generated new appointment ID
+     */
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
         if (lastAppointmentID == null) {
@@ -313,6 +350,10 @@ public class AppointmentManager {
         return String.format("A%05d", newNumericPart);
     }
 
+    /**
+     * Retrieves the last appointment ID from the appointments file.
+     * @return the last appointment ID, or null if none found
+     */
     private String getLastAppointmentID() {
         String lastAppointmentID = null;
 
@@ -328,6 +369,13 @@ public class AppointmentManager {
         return lastAppointmentID;
     }
 
+    /**
+     * Makes a new appointment.
+     * @param patientId the ID of the patient
+     * @param doctorId the ID of the doctor
+     * @param date the date of the appointment
+     * @param timeslot the timeslot of the appointment
+     */
     public void makeAppointment(String patientId, String doctorId, String date, String timeslot) {
 
         updateAvailability(doctorId, date, timeslot, "Not Available");
@@ -350,7 +398,6 @@ public class AppointmentManager {
 
             List<String[]> allElements = new ArrayList<>();
             String[] nextLine;
-
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[5].equals("Pending") && nextLine[2].equals(doctorId)) {
                     boolean loop = true;
