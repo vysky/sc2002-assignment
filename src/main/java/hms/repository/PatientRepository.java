@@ -19,7 +19,7 @@ public class PatientRepository implements CsvRepository<Patient>
 {
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
-    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions"};
+    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Password"};
 
     public List<Patient> importFromCsv()
     {
@@ -41,9 +41,9 @@ public class PatientRepository implements CsvRepository<Patient>
                 String gender = record.get("Gender");
                 String bloodType = record.get("Blood Type");
                 String email = record.get("Contact Information");
-                String diagnoses = record.get("Diagnoses");
-                String treatments = record.get("Treatments");
-                String prescriptions = record.get("Prescriptions");
+                String diagnoses = "";
+                String treatments = "";
+                String prescriptions = "";
                 String password = "";
                 // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 

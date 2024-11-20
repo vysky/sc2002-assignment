@@ -76,6 +76,22 @@ public class MedicalRecordService {
         System.out.println("Patient of ID: " + patientId + " is not under the care of the doctor.");
     }
 
+    public void patientGetMedicalRecord(String patientId) {
+        Patient p = getPatientById(patientId);
+
+        System.out.println("\n-----MEDICAL RECORD OF " + patientId + "----");
+        System.out.println("Name: " + p.getName());
+        System.out.println("Date of Birth: " + p.getDateOfBirth());
+        System.out.println("Gender: " + p.getGender());
+        //System.out.println("Contact Number: " + p.getHpNumber());
+        System.out.println("Email: " + p.getEmail());
+        System.out.println("Blood Type: " + p.getBloodType());
+        System.out.println("Past Diagnoses: " + p.getDiagnoses());
+        System.out.println("Past Treatments: " + p.getTreatments());
+
+        return;
+    }
+
     public void setNewDiagnosis(String patientId, String diagnosis) {
         Patient p = getPatientById(patientId);
         p.setDiagnoses(diagnosis);

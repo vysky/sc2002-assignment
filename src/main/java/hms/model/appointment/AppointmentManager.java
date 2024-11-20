@@ -13,20 +13,29 @@ import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
 import hms.model.user.Doctor;
+import hms.model.user.Patient;
+import hms.service.user.SharedUserServiceImpl;
 
 public class AppointmentManager {
 
+    private List<Patient> patients;
     private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
     private static final String AVAILABILITY_FILE = "src\\main\\resources\\csv\\Timeslot.csv";
     private static final String APPOINTMENTS_FILE = "src\\main\\resources\\csv\\Appointment_Record.csv";
 
 //General
+    private Patient getPatientById(String patientId) {
+        return this.patients.stream().filter(uObject -> uObject.getId().equals(patientId)).findFirst().orElse(null);
+    }
+
     public String inputDate (Scanner input) {
         System.out.println("Enter Date (e.g., 04 Nov 2024):");
         return input.nextLine();
     }
 
-  
+//Patient
+   
+
 //Related to Doctor
     public List<Doctor> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
@@ -188,9 +197,6 @@ public class AppointmentManager {
         } else {
             System.out.println("The selected timeslot is not available.");
         }
-
-        System.out.println("Enter any key to continue");
-        input.nextLine();
     }
 
 //Related to Appointment    

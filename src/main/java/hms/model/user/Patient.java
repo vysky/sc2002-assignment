@@ -40,13 +40,13 @@ public class Patient extends User
         this.prescriptions.remove(0);
         
     }
-
+    
     public String getDateOfBirth()
     {
         return dateOfBirth;
     }
 
-    private void setDateOfBirth(String dateOfBirth)
+    public void setDateOfBirth(String dateOfBirth)
     {
         this.dateOfBirth = dateOfBirth;
     }
@@ -66,7 +66,7 @@ public class Patient extends User
         return email;
     }
 
-    private void setEmail(String email)
+    public void setEmail(String email)
     {
         this.email = email;
     }
