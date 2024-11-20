@@ -61,16 +61,24 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 
             if (isCredentialFromStaff(credentialPair.id(), credentialPair.password()))
             {
+                //if(this.getActivebyStaffId(credentialPair)){
                 return this.getStaffById(credentialPair.id());
             }
         }
         catch (Exception ex)
         {
-            System.out.println("Invalid credentials.");
+            System.out.println("""
+                Invalid credentials or Inactive account.
+                Contact your Administrator for more information.
+                """);
         }
 
         return null;
     }
+
+    /*public User checkEnabled(CredentialPair credentialPair){
+
+    }*/
 
     /**
      * Changes the password for a user.
@@ -170,4 +178,9 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     {
         return this.staffList.stream().filter(uObject -> uObject.getId().equals(id)).findFirst().orElse(null);
     }
+
+    /*private boolean getActivebyStaffId(String id)
+    {
+        return this.staffList.stream().filter(uObject -> uObject.getId().equals(id) && (uObject.getActive()==true));
+    }*/
 }

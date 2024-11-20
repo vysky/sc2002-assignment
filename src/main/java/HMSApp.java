@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import javax.swing.*;
+import java.io.Console;
 
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
@@ -23,7 +25,7 @@ import hms.service.user.UserService;
  */
 public class HMSApp
 {
-    // private static Console csl;
+    private static Console csl;
     private static Scanner input;
     private static User authenticatedUser;
     private static InventoryServiceImpl inventoryService;
@@ -48,7 +50,7 @@ public class HMSApp
      */
     private static void initializeInstances()
     {
-        // csl = System.console();
+        csl = System.console();
         input = new Scanner(System.in);
         authenticatedUser = null;
         inventoryService = new InventoryServiceImpl();
@@ -96,7 +98,7 @@ public class HMSApp
 
                             // use the credential pair to authenticate patient and staff, then return the authenticated user
                             performAuthentication(credentialPair, counter, maximumAttempt);
-
+                            
                             counter++;
                         }
                     }
@@ -161,14 +163,33 @@ public class HMSApp
         System.out.println("----- Enter your user id and password to login -----");
         System.out.print("User id: ");
         String id = input.nextLine();
-        System.out.print("Password: ");
-        String password = input.nextLine();
+        String password;
+        //System.out.print("Password: ");
+        //String password = input.nextLine();
 
-        // char[] ch = csl.readPassword(
-        //     "Enter password : ");
-        // String password = new String(ch);
+        
+        if (csl == null) {
+            password = getPasswordWithoutConsole("Enter password: ");
+        } else {
+            
+            char[] ch = csl.readPassword(
+                "Enter password : ");
+            password = new String(ch);
+        }
+        
 
         return new CredentialPair(id, password);
+    }
+
+    public static String getPasswordWithoutConsole(String prompt) {
+
+        final JPasswordField passwordField = new JPasswordField();
+        return JOptionPane.showConfirmDialog(
+                null,
+                passwordField,
+                prompt,
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(passwordField.getPassword()) : "";
     }
 
     /**

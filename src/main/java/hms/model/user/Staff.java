@@ -9,6 +9,7 @@ package hms.model.user;
 public class Staff extends User
 {
     private int age;
+    private boolean active = true;
 
     /**
      * Default constructor that creates a new Staff object.
@@ -26,11 +27,26 @@ public class Staff extends User
      * @param gender Staff gender
      * @param age Staff age
      */
-    public Staff(String id, String name, String role, String gender, int age)
+    public Staff(String id, String name, String role, String gender, int age, boolean active)
     {
         super(id, name, role, gender);
         this.age = age;
-    }
+        this.active = active;
+    }    
+    
+    /**
+    * Constructor with parameters.
+    * @param id Staff ID
+    * @param name Staff name
+    * @param role Staff role
+    * @param gender Staff gender
+    * @param age Staff age
+    */
+   public Staff(String id, String name, String role, String gender, int age)
+   {
+       super(id, name, role, gender);
+       this.age = age;
+   }
 
     /**
      * Constructor with parameters including password.
@@ -41,10 +57,11 @@ public class Staff extends User
      * @param age Staff age
      * @param password Staff password
      */
-    public Staff(String id, String name, String role, String gender, int age, String password)
+    public Staff(String id, String name, String role, String gender, int age, String password, boolean active)
     {
         super(id, name, role, gender, password);
         this.age = age;
+        this.active = active;
     }
     
 
@@ -64,5 +81,13 @@ public class Staff extends User
     public void setAge(int age)
     {
         this.age = age;
+    }
+
+    public boolean getActive(){
+        return this.active;
+    }
+
+    public void setActive(boolean tf){
+        this.active = tf;
     }
 }

@@ -25,9 +25,9 @@ public class Pharmacist extends Staff
      * @param gender Pharmacist gender
      * @param age Pharmacist age
      */
-    public Pharmacist(String id, String name, String role, String gender, int age)
+    public Pharmacist(String id, String name, String role, String gender, int age, boolean active)
     {
-        super(id, name, role, gender, age);
+        super(id, name, role, gender, age, active);
     }
 
     /**
@@ -39,8 +39,8 @@ public class Pharmacist extends Staff
      * @param age Pharmacist age
      * @param password Pharmacist password
      */
-    public Pharmacist(String id, String name, String role, String gender, int age, String password)
+    public Pharmacist(String id, String name, String role, String gender, int age, String password, boolean active)
     {
-        super(id, name, role, gender, age, password);
+        super(id, name, role, gender, age, password, active);
     }
 }

@@ -24,6 +24,19 @@ public class Doctor extends Staff
      * @param gender Doctor gender
      * @param age Doctor age
      */
+    public Doctor(String id, String name, String role, String gender, int age, boolean active)
+    {
+        super(id, name, role, gender, age, active);
+    }
+
+        /**
+     * Constructor with parameters.
+     * @param id Doctor ID
+     * @param name Doctor name
+     * @param role Doctor role
+     * @param gender Doctor gender
+     * @param age Doctor age
+     */
     public Doctor(String id, String name, String role, String gender, int age)
     {
         super(id, name, role, gender, age);
@@ -38,8 +51,8 @@ public class Doctor extends Staff
      * @param age Doctor age
      * @param password Doctor password
      */
-    public Doctor(String id, String name, String role, String gender, int age, String password)
+    public Doctor(String id, String name, String role, String gender, int age, String password, boolean active)
     {
-        super(id, name, role, gender, age, password);
+        super(id, name, role, gender, age, password, active);
     }
 }
