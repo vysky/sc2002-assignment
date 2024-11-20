@@ -16,21 +16,28 @@ public class Staff extends User
      */
     public Staff()
     {
-    }
-
+    }  
+    
     /**
-     * Constructor with parameters.
-     * @param id Staff ID
-     * @param name Staff name
-     * @param role Staff role
-     * @param gender Staff gender
-     * @param age Staff age
-     */
-    public Staff(String id, String name, String role, String gender, int age)
-    {
-        super(id, name, role, gender);
-        this.age = age;
-    }
+    * Constructor with parameters.
+    * @param id Staff ID
+    * @param name Staff name
+    * @param role Staff role
+    * @param gender Staff gender
+    * @param age Staff age
+    */
+   public Staff(String id, String name, String role, String gender, int age)
+   {
+       super(id, name, role, gender);
+       this.age = age;
+   }
+
+   
+   public Staff(String id, String name, String role, String gender, int age, boolean active)
+   {
+       super(id, name, role, gender, active);
+       this.age = age;
+   }
 
     /**
      * Constructor with parameters including password.
@@ -41,9 +48,9 @@ public class Staff extends User
      * @param age Staff age
      * @param password Staff password
      */
-    public Staff(String id, String name, String role, String gender, int age, String password)
+    public Staff(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, password);
+        super(id, name, role, gender, hash,active);
         this.age = age;
     }
     
@@ -65,4 +72,5 @@ public class Staff extends User
     {
         this.age = age;
     }
+
 }

@@ -17,18 +17,12 @@ public class Pharmacist extends Staff
     {
     }
 
-    /**
-     * Constructor with parameters.
-     * @param id Pharmacist ID
-     * @param name Pharmacist name
-     * @param role Pharmacist role
-     * @param gender Pharmacist gender
-     * @param age Pharmacist age
-     */
-    public Pharmacist(String id, String name, String role, String gender, int age)
+
+    public Pharmacist(String id, String name, String role, String gender, int age, boolean active)
     {
-        super(id, name, role, gender, age);
+        super(id, name, role, gender, age, active);
     }
+
 
     /**
      * Constructor with parameters including password.
@@ -39,8 +33,8 @@ public class Pharmacist extends Staff
      * @param age Pharmacist age
      * @param password Pharmacist password
      */
-    public Pharmacist(String id, String name, String role, String gender, int age, String password)
+    public Pharmacist(String id, String name, String role, String gender, int age, String hash, boolean active)
     {
-        super(id, name, role, gender, age, password);
+        super(id, name, role, gender, age, hash, active);
     }
 }

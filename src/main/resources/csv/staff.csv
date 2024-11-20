@@ -1,5 +1,10 @@
-Staff ID,Name,Role,Gender,Age,Password
-D001,John Smith,doctor,Male,45,
-D002,Emily Clarke,doctor,Female,38,
-P001,Mark Lee,pharmacist,Male,29,
-A001,Sarah Lee,administrator,Female,40,
+Staff ID,Name,Role,Gender,Age,Password,Hash,Active
+D001,John Smith,doctor,Male,45,password,$2a$10$SgXG71HvbUx.52Decn5ts.6pTUTzZFLvsAU7npPeQgAbl7JmHDUQS,1
+D002,Emily Clarke,doctor,Female,38,password,$2a$10$7RIhk.ieVLRtmSnHn9WAM.EFJzUCbTFpFvRP73HcJIjw346GM/Sry,1
+P001,Mark Lee,pharmacist,Male,29,password,$2a$10$6bXzrYzChjMMnvv9dyouQOt.yiEzGki7repUUkyENF.Dzkp00q4Z6,1
+A001,Sarah Lee,administrator,Female,40,password,$2a$10$ARQHAW85KuJGod96.BawtON.TgPRYzYCvbuMozRFYBH1I6Yd81/t.,1
+A002,Test User 1,administrator,Male,24,password,$2a$10$3l8sq9qHKIcY.MRO5a2obulCB7OxZKOOy8vzi/gPnZlNQX9GMtUHi,1
+A003,Test User 2,administrator,Female,20,password,$2a$10$LykUC/NFTAaVJ3Z8Dt5Sgea7gV/6MVd4fH9bJiQ0Re1npV02ZdbhC,0
+D003,Test User 3,doctor,Male,42,password,password,1
+P002,Test User 4,pharmacist,Female,29,password,$2a$10$xrMzGJjT.P0UVAKI7dqhv.64jf5lDB65V2EJyFhT52sNcIga7GOga,1
+

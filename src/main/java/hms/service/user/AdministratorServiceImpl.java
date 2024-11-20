@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import hms.model.medicine.Medicine;
-import hms.model.user.Administrator;
-import hms.model.user.Staff;
+import hms.repository.StaffRepository;
 import hms.service.medicine.InventoryServiceImpl;
 /**
  * The AdministratorServiceImpl class provides an implementation for administrator-specific
@@ -26,6 +25,7 @@ public class AdministratorServiceImpl extends UserService
     private Administrator authenticatedAdministrator;
     private InventoryServiceImpl inventoryService;
     private SharedUserServiceImpl sharedUserService;
+    
 
     /**
      * Constructs an AdministratorServiceImpl with the specified administrator, inventory service, and shared user service.
@@ -67,6 +67,7 @@ public class AdministratorServiceImpl extends UserService
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
+        List<Staff> staffList = sharedUserService.getStaffList();
         switch (option)
         {
             case 1 ->
@@ -75,20 +76,21 @@ public class AdministratorServiceImpl extends UserService
             }
             case 2 ->
             {
-                option2(input);
+                apptDetails(input);
             }
             case 3 ->
             {
                 // View and Manage Medication Inventory
-                option3(input);
+                medInven(input);
             }
             case 4 ->
             {
                 // Approve Replenishment Requests
-                option4(input);
+                medTopup(input);
             }
             case 0 ->
             {
+                sharedUserService.setStaffList();
                 System.out.printf("Goodbye %s!", authenticatedAdministrator.getName());
             }
             default ->
@@ -242,24 +244,24 @@ public class AdministratorServiceImpl extends UserService
             id = String.format("%03d",nid);
         }
         id = i+id;
-        
+        boolean active = true;
         Staff staff = new Staff();
         switch (role)
                 {
                     case "administrator" ->
                     {
                         
-                            staff = new Administrator(id, name, role, gender, age);
+                            staff = new Administrator(id, name, role, gender, age, active);
                         
                     }
                     case "doctor" ->
                     {
-                            staff = new Doctor(id, name, role, gender, age);
+                            staff = new Doctor(id, name, role, gender, age, active);
                         
                     }
                     case "pharmacist" ->
                     {
-                            staff = new Pharmacist(id, name, role, gender, age);
+                            staff = new Pharmacist(id, name, role, gender, age, active);
                     }
                     default -> System.out.printf("Unknown role, skipping user %s.", staff.getRole());
                 }
@@ -294,7 +296,7 @@ public class AdministratorServiceImpl extends UserService
     /**
      * Handles option 2: View Appointments details.
      */
-    public void option2(Scanner input)
+    public void apptDetails(Scanner input)
     {
         int i;
         i = showPatient(sharedUserService.getPatientList(),input);
@@ -612,7 +614,7 @@ public class AdministratorServiceImpl extends UserService
      * @param input the Scanner object to read user input
      */
     // View and Manage Medication Inventory
-    public void option3(Scanner input)
+    public void medInven(Scanner input)
     {
         int option;
 
@@ -650,7 +652,7 @@ public class AdministratorServiceImpl extends UserService
      *
      * @param input the Scanner object to read user input
      */
-    public void option4(Scanner input)
+    public void medTopup(Scanner input)
     {
         int option, max;
         
@@ -820,9 +822,10 @@ public class AdministratorServiceImpl extends UserService
             3) Gender
             4) Age
             5) Password
+            6) Active
         """);
         String tempopt = tempScanner.nextLine();
-        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5"))
+        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5")&&!tempopt.equals("6"))
         {
             System.out.println("Invalid option! Exiting...");
             return;
@@ -850,15 +853,34 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Enter new age: ");
                 int newAge = tempScanner.nextInt();
                 theList.get(index-1).setAge(newAge);
-
                 if(tempScanner.hasNextLine()){
                 tempScanner.nextLine();}
                 break;
 
             case "5":
-                System.out.println("Enter new age: ");
+                System.out.println("Enter new password: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setPassword(tempopt);
+                break;
+
+            case "6":
+                while(true){
+                    System.out.println("""
+                        Enter account active status:
+                        (Enter T for true/enable, F for false/disable)
+                        """);
+                    tempopt = tempScanner.nextLine();
+                    if(tempopt.equals("t")||tempopt.equals("T")){
+                        theList.get(index-1).setActive(true);
+                        break;
+                    }
+                    else if(tempopt.equals("f")||tempopt.equals("F")){
+                        theList.get(index-1).setActive(false);
+                        break;
+                    }else{
+
+                    }
+                }
                 break;
 
             default:

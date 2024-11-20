@@ -1,5 +1,7 @@
 package hms.model.user;
 
+import org.springframework.security.crypto.bcrypt.*;
+
 /**
  * The User class represents a user in the hospital management system (HMS).
  * This class holds basic user details such as ID, name, role, gender, and password.
@@ -13,6 +15,8 @@ public class User
     private String role;
     private String gender;
     private String password = "password";
+    private boolean active = true;
+    private String hash;
 
     /**
      * Default constructor that creates a new User object.
@@ -48,13 +52,33 @@ public class User
      * @param gender The gender of the user.
      * @param password The password of the user.
      */
-    public User(String id, String name, String role, String gender, String password)
+    public User(String id, String name, String role, String gender, String hash)
     {
         this.id = id;
         this.name = name;
         this.role = role;
         this.gender = gender;
-        this.password = password;
+        this.hash = hash;
+    }
+
+    public User(String id, String name, String role, String gender, boolean active)
+    {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.gender = gender;
+        this.active = active;
+        this.hash = BCrypt.hashpw("password" , BCrypt.gensalt());
+    }
+
+    public User(String id, String name, String role, String gender, String hash, boolean active)
+    {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.gender = gender;
+        this.hash = hash;
+        this.active = active;
     }
 
     /**
@@ -155,5 +179,21 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public String getHash(){
+        return this.hash;
+    }
+
+    public void setHash(String hash){
+         this.hash = hash;
+    }
+
+    public boolean getActive(){
+        return this.active;
+    }
+
+    public void setActive(boolean tf){
+        this.active = tf;
     }
 }

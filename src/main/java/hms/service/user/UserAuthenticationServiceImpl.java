@@ -6,6 +6,7 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
+import org.springframework.security.crypto.bcrypt.*;
 /**
  * The UserAuthenticationServiceImpl class provides an implementation for the
  * UserAuthenticationService interface. It handles user authentication and password
@@ -61,16 +62,24 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 
             if (isCredentialFromStaff(credentialPair.id(), credentialPair.password()))
             {
+                //if(this.getActivebyStaffId(credentialPair)){
                 return this.getStaffById(credentialPair.id());
             }
         }
         catch (Exception ex)
         {
-            System.out.println("Invalid credentials.");
+            System.out.println("""
+                Invalid credentials or Inactive account.
+                Contact your Administrator for more information.
+                """);
         }
 
         return null;
     }
+
+    /*public User checkEnabled(CredentialPair credentialPair){
+
+    }*/
 
     /**
      * Changes the password for a user.
@@ -85,13 +94,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         {
             if (isIdFromPatient(id))
             {
-                getPatientById(id).setPassword(newPassword);
+                
+                getPatientById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
 
             if (isIdFromStaff(id))
             {
-                getStaffById(id).setPassword(newPassword);
+                getStaffById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
         }
@@ -133,8 +143,19 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
      * @return true if the credentials belong to a patient, false otherwise.
      */
     private boolean isCredentialFromPatient(String id, String password)
-    {
-        return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+    {  
+        for(int i = 0; i < this.patientList.size();i++){
+            if(id.equals(this.patientList.get(i).getId())){
+                return BCrypt.checkpw(password, this.patientList.get(i).getHash());
+            }
+            else if(password.equals(this.patientList.get(i).getPassword())){
+                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+            }
+        }
+        return false;
+        
+        
+        //return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
     }
 
     /**
@@ -146,7 +167,18 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
      */
     private boolean isCredentialFromStaff(String id, String password)
     {
-        return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+        for(int i = 0; i < this.staffList.size();i++){
+            if(id.equals(this.staffList.get(i).getId())){
+                if (this.staffList.get(i).getActive()) {
+                    return BCrypt.checkpw(password, this.staffList.get(i).getHash());
+                }
+            }
+            else if(password.equals(this.patientList.get(i).getHash())){
+                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
+            }
+        }
+        return false;
+        //return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
     }
 
     /**
@@ -170,4 +202,15 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     {
         return this.staffList.stream().filter(uObject -> uObject.getId().equals(id)).findFirst().orElse(null);
     }
+
+    /*private boolean getActivebyStaffId(String id)
+    {
+        for(int i = 0; i < this.staffList.size();i++){
+                if(id.equals(this.staffList.get(i).getId())){
+                    return this.staffList.get(i).getActive();
+                }
+            }
+            return false;
+        //return this.staffList.stream().filter(uObject -> uObject.getId().equals(id) && (uObject.getActive()==true));
+    }*/
 }
