@@ -2,6 +2,7 @@ import java.util.Scanner;
 import javax.swing.*;
 import java.io.Console;
 
+import hms.model.appointment.AppointmentManager;
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
 import hms.model.user.Doctor;
@@ -33,9 +34,11 @@ public class HMSApp
     private static UserAuthenticationServiceImpl userAuthenticationService;
     private static UserService userService;
     private static MedicalRecordService medicalRecordService;
+    private static AppointmentManager appointmentManager;
 
     /**
      * Main method to start the application.
+     *
      * @param args command line arguments
      */
     public static void main(String[] args)
@@ -44,7 +47,7 @@ public class HMSApp
         runProgram();
     }
 
-   /**
+    /**
      * Initializes required instances for services and variables.
      * This includes user authentication, inventory service, and medical record service.
      */
@@ -57,6 +60,7 @@ public class HMSApp
         sharedUserService = new SharedUserServiceImpl();
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
+        appointmentManager = new AppointmentManager();
     }
 
     /**
@@ -155,6 +159,7 @@ public class HMSApp
 
     /**
      * Prompts the user to enter their login credentials.
+     *
      * @return a CredentialPair containing the entered user id and password
      */
     private static CredentialPair printLoginDialog()
@@ -239,8 +244,9 @@ public class HMSApp
     /**
      * Authenticates the user based on the provided credentials.
      * Increases the counter for failed login attempts and exits if the maximum attempts are exceeded.
+     *
      * @param credentialPair the credentials entered by the user
-     * @param counter the current attempt number
+     * @param counter        the current attempt number
      * @param maximumAttempt the maximum number of allowed attempts
      */
     private static void performAuthentication(CredentialPair credentialPair, int counter, int maximumAttempt)
@@ -301,6 +307,7 @@ public class HMSApp
 
     /**
      * Creates the appropriate user service based on the authenticated user's role.
+     *
      * @return the user service corresponding to the authenticated user's role, or null if role is unknown
      */
     private static UserService postLoginCreateService()
@@ -310,7 +317,7 @@ public class HMSApp
             case "patient" ->
             {
                 assert authenticatedUser instanceof Patient;
-                return new PatientServiceImpl((Patient) authenticatedUser);
+                return new PatientServiceImpl((Patient) authenticatedUser, appointmentManager, medicalRecordService);
             }
             case "administrator" ->
             {
@@ -320,7 +327,7 @@ public class HMSApp
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, sharedUserService, medicalRecordService);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, medicalRecordService, appointmentManager);
             }
             case "pharmacist" ->
             {
@@ -348,6 +355,9 @@ public class HMSApp
             option = Integer.parseInt(input.nextLine());
             userService.handleSelectedOption(input, option);
         } while (option != 0);
+
+        sharedUserService.setPatientList();
+        sharedUserService.setStaffList();
 
         authenticatedUser = null;
     }
