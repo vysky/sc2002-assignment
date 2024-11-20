@@ -1,6 +1,7 @@
 package hms.model.user;
 
 import java.util.ArrayList;
+
 /**
  * The Patient class represents a patient in the hospital management system (HMS).
  * It extends the User class and contains additional information such as date of birth, email, blood type,
@@ -14,55 +15,67 @@ public class Patient extends User
 
     private ArrayList<String> diagnoses = new ArrayList<>();
     private ArrayList<String> treatments = new ArrayList<>();
+    private ArrayList<String> prescriptions = new ArrayList<>();
 
     /**
      * Constructor with parameters.
-     * @param id Patient ID
-     * @param name Patient name
-     * @param role Patient role
+     *
+     * @param id          Patient ID
+     * @param name        Patient name
+     * @param role        Patient role
      * @param dateOfBirth Patient date of birth
-     * @param gender Patient gender
-     * @param bloodType Patient blood type
-     * @param email Patient email
+     * @param gender      Patient gender
+     * @param bloodType   Patient blood type
+     * @param email       Patient email
      */
-    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email)
+    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions)
     {
         super(id, name, role, gender);
         this.dateOfBirth = dateOfBirth;
         this.bloodType = bloodType;
         this.email = email;
+        this.diagnoses = diagnoses;
+        this.treatments = treatments;
+        this.prescriptions = prescriptions;
     }
 
     /**
      * Constructor with parameters including password.
-     * @param id Patient ID
-     * @param name Patient name
-     * @param role Patient role
+     *
+     * @param id          Patient ID
+     * @param name        Patient name
+     * @param role        Patient role
      * @param dateOfBirth Patient date of birth
-     * @param gender Patient gender
-     * @param bloodType Patient blood type
-     * @param email Patient email
-     * @param password Patient password
+     * @param gender      Patient gender
+     * @param bloodType   Patient blood type
+     * @param email       Patient email
+     * @param password    Patient password
      */
-    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
+
+    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions, String password)
     {
         super(id, name, role, gender, password);
         this.dateOfBirth = dateOfBirth;
         this.bloodType = bloodType;
         this.email = email;
+        this.diagnoses = diagnoses;
+        this.treatments = treatments;
+        this.prescriptions = prescriptions;
     }
 
     /**
      * Gets the date of birth of the patient.
+     *
      * @return Patient date of birth
      */
     public String getDateOfBirth()
     {
-        return dateOfBirth;
+        return this.dateOfBirth;
     }
 
     /**
      * Sets the date of birth of the patient.
+     *
      * @param dateOfBirth Patient date of birth
      */
     private void setDateOfBirth(String dateOfBirth)
@@ -72,15 +85,17 @@ public class Patient extends User
 
     /**
      * Gets the blood type of the patient.
+     *
      * @return Patient blood type
      */
     public String getBloodType()
     {
-        return bloodType;
+        return this.bloodType;
     }
 
     /**
      * Sets the blood type of the patient.
+     *
      * @param bloodType Patient blood type
      */
     private void setBloodType(String bloodType)
@@ -90,15 +105,17 @@ public class Patient extends User
 
     /**
      * Gets the email of the patient.
+     *
      * @return Patient email
      */
     public String getEmail()
     {
-        return email;
+        return this.email;
     }
 
     /**
      * Sets the email of the patient.
+     *
      * @param email Patient email
      */
     private void setEmail(String email)
@@ -108,39 +125,61 @@ public class Patient extends User
 
     /**
      * Gets the diagnoses of the patient.
+     *
      * @return Patient diagnoses as a comma-separated string
      */
-    public String getDiagnoses()
+    public ArrayList<String> getDiagnoses()
     {
-        StringBuilder resultStr = new StringBuilder();
-        diagnoses.forEach(diag -> resultStr.append(diag).append(", "));
-        return resultStr.toString().trim();
+        return this.diagnoses;
     }
 
     /**
      * Gets the treatments of the patient.
+     *
      * @return Patient treatments as a comma-separated string
      */
-    public String getTreatments()
+    public ArrayList<String> getTreatments()
     {
-        StringBuilder resultStr = new StringBuilder();
-        treatments.forEach(treat -> resultStr.append(treat).append(", "));
-        return resultStr.toString().trim();
+        return this.treatments;
+    }
+
+    /**
+     * Gets the prescriptions of the patient.
+     *
+     * @return Patient prescriptions as a comma-separated string
+     */
+    public ArrayList<String> getPrescriptions()
+    {
+        return this.prescriptions;
     }
 
     /**
      * Adds a new diagnosis to the patient's diagnoses.
-     * @param newDiag New diagnosis
+     *
+     * @param newDiagnosis New diagnosis
      */
-    public void setDiagnoses(String newDiag) {
-        diagnoses.add(newDiag);
+    public void setDiagnoses(String newDiagnosis)
+    {
+        this.diagnoses.add(newDiagnosis);
     }
 
     /**
      * Adds a new treatment to the patient's treatments.
-     * @param newTreat New treatment
+     *
+     * @param newTreatment New treatment
      */
-    public void setTreatments(String newTreat) {
-        treatments.add(newTreat);
+    public void setTreatments(String newTreatment)
+    {
+        this.treatments.add(newTreatment);
+    }
+
+    /**
+     * Adds a new treatment to the patient's treatments.
+     *
+     * @param newPrescription New treatment
+     */
+    public void setPrescriptions(String newPrescription)
+    {
+        prescriptions.add(newPrescription);
     }
 }

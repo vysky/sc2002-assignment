@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -14,6 +15,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import hms.model.user.Patient;
+
 /**
  * The PatientRepository class provides methods to import and export patient data
  * from and to a CSV file. It implements the CsvRepository interface for handling patient objects.
@@ -22,7 +24,7 @@ public class PatientRepository implements CsvRepository<Patient>
 {
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
-    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information"};
+    String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password"};
 
     /**
      * Imports patient data from a CSV file.
@@ -49,8 +51,44 @@ public class PatientRepository implements CsvRepository<Patient>
                 String gender = record.get("Gender");
                 String bloodType = record.get("Blood Type");
                 String email = record.get("Contact Information");
+                ArrayList<String> diagnoses = null;
+                ArrayList<String> treatments = null;
+                ArrayList<String> prescriptions = null;
                 String password = "";
                 // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
+
+                try
+                {
+                    String arrayListString = record.get("Diagnoses");
+                    String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
+                    diagnoses = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                }
+                catch (Exception e)
+                {
+                    diagnoses = new ArrayList<>();
+                }
+
+                try
+                {
+                    String arrayListString = record.get("Treatments");
+                    String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
+                    treatments = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                }
+                catch (Exception e)
+                {
+                    treatments = new ArrayList<>();
+                }
+
+                try
+                {
+                    String arrayListString = record.get("Prescriptions");
+                    String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
+                    prescriptions = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                }
+                catch (Exception e)
+                {
+                    prescriptions = new ArrayList<>();
+                }
 
                 try
                 {
@@ -63,11 +101,11 @@ public class PatientRepository implements CsvRepository<Patient>
 
                 if (password == null || password.isEmpty())
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions);
                 }
                 else
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, password);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, password);
                 }
 
                 patientArrayList.add(patient);
@@ -76,7 +114,11 @@ public class PatientRepository implements CsvRepository<Patient>
             // todo: delete, for dev only
             for (Patient patient : patientArrayList)
             {
-                System.out.println(patient.getName());
+                System.out.print(patient.getName());
+                System.out.print("\tD: " + patient.getDiagnoses());
+                System.out.print("\tT: " + patient.getTreatments());
+                System.out.print("\tP: " + patient.getPrescriptions());
+                System.out.println();
             }
 
             return patientArrayList;
@@ -109,7 +151,7 @@ public class PatientRepository implements CsvRepository<Patient>
 
             for (Patient patient : patientList)
             {
-                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail());
+                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), patient.getDiagnoses(), patient.getTreatments(), patient.getPrescriptions(), patient.getPassword());
             }
 
             csvPrinter.flush();

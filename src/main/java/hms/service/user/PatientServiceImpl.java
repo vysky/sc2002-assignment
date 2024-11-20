@@ -8,6 +8,7 @@ import hms.model.appointment.AppointmentManager;
 import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
+
 /**
  * The PatientServiceImpl class provides an implementation for patient-specific functionalities
  * in the hospital management system (HMS). It extends the abstract UserService class and handles
@@ -45,6 +46,7 @@ public class PatientServiceImpl extends UserService
                                  (7) View Scheduled Appointments
                                  (8) View Past Appointment Outcome Records
                                  (0) Logout
+                                 (11) (DEV) Add diagnose
                                  """);
         System.out.print("Select an option: ");
     }
@@ -92,6 +94,12 @@ public class PatientServiceImpl extends UserService
             {
                 option8();
             }
+            case 11 ->
+            {
+                authenticatedPatient.setDiagnoses("test diagnoses");
+                authenticatedPatient.setTreatments("test treatments");
+                authenticatedPatient.setPrescriptions("test prescriptions");
+            }
             case 0 ->
             {
                 System.out.printf("Goodbye %s!", authenticatedPatient.getName());
@@ -109,6 +117,9 @@ public class PatientServiceImpl extends UserService
     public void option1()
     {
         System.out.println("View Medical Record");
+        System.out.println("Diagnoses: " + authenticatedPatient.getDiagnoses());
+        System.out.println("Treatments: " + authenticatedPatient.getTreatments());
+        System.out.println("Prescriptions: " + authenticatedPatient.getPrescriptions());
     }
 
     /**
@@ -256,7 +267,7 @@ public class PatientServiceImpl extends UserService
         System.out.println("Your existing appointment:");
         for (int i = 0; i < existingAppointments.size(); i++) {
             Appointment appointment = existingAppointments.get(i);
-            String doctorId = appointment.getDoctorId(); 
+            String doctorId = appointment.getDoctorId();
 
             for (Doctor doctor : doctors) {
                 if (doctor.getId() == doctorId) {
@@ -280,7 +291,7 @@ public class PatientServiceImpl extends UserService
 
         System.out.println("Enter Date (e.g., 04 Nov 2024):");
         String date = input.nextLine();
-        
+
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, date);
         if (availableTimeslots.isEmpty()) {
             System.out.println("No available timeslots for the selected date.");
@@ -344,14 +355,11 @@ public class PatientServiceImpl extends UserService
             if (existingAppointment != null) {
                 System.out.println("You already have an existing appointment with Dr. " + doctors.get(i).getName() + " on " +
                     existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
-    
+
                 System.out.println("Enter any key to continue");
                 input.next();
                 return;
-            }   
-
-        
-        
+            }
         }
     }
 
