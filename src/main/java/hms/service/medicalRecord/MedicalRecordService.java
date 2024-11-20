@@ -3,9 +3,9 @@ package hms.service.medicalRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-import hms.model.user.Patient;
-import hms.model.user.Doctor;
 import hms.model.appointment.AppointmentManager;
+import hms.model.user.Doctor;
+import hms.model.user.Patient;
 
 /**
  * The MedicalRecordService class provides functionality to manage and retrieve medical records
@@ -29,18 +29,6 @@ public class MedicalRecordService {
             Patient patient = getPatientById(patientId);
             if (patient != null) {
                 currentPatients.add(patient);
-              
-    /**
-     * Retrieves a patient by their ID.
-     *
-     * @param patientId the ID of the patient
-     * @return the patient with the specified ID
-     */
-    public Patient getPatientById(String patientId) {
-        for (Patient p : patients) {
-            User temp = p;
-            if (patientId.equals(temp.getId())) {
-                return p;
             }
         }
 
@@ -138,7 +126,13 @@ public class MedicalRecordService {
     }
 
     // Prescription method goes here too
-              
+
+    /**
+     * Retrieves a patient by their ID.
+     *
+     * @param patientId the ID of the patient
+     * @return the patient with the specified ID
+     */
     private Patient getPatientById(String patientId) {
         return this.patients.stream().filter(uObject -> uObject.getId().equals(patientId)).findFirst().orElse(null);
     }
