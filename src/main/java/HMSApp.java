@@ -98,7 +98,7 @@ public class HMSApp
 
                             // use the credential pair to authenticate patient and staff, then return the authenticated user
                             performAuthentication(credentialPair, counter, maximumAttempt);
-                            
+
                             counter++;
                         }
                     }
@@ -166,7 +166,6 @@ public class HMSApp
         String password;
         //System.out.print("Password: ");
         //String password = input.nextLine();
-
         
         if (csl == null) {
             password = getPasswordWithoutConsole("Enter password: ");

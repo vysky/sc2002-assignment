@@ -1,5 +1,7 @@
 package hms.model.user;
 
+import org.springframework.security.crypto.bcrypt.*;
+
 /**
  * The User class represents a user in the hospital management system (HMS).
  * This class holds basic user details such as ID, name, role, gender, and password.
@@ -13,6 +15,7 @@ public class User
     private String role;
     private String gender;
     private String password = "password";
+    private boolean active = true;
 
     /**
      * Default constructor that creates a new User object.
@@ -55,6 +58,26 @@ public class User
         this.role = role;
         this.gender = gender;
         this.password = password;
+    }
+
+    public User(String id, String name, String role, String gender, boolean active)
+    {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.gender = gender;
+        this.active = active;
+        this.password = BCrypt.hashpw("password" , BCrypt.gensalt());
+    }
+
+    public User(String id, String name, String role, String gender, String password, boolean active)
+    {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.gender = gender;
+        this.password = password;
+        this.active = active;
     }
 
     /**
@@ -155,5 +178,13 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public boolean getActive(){
+        return this.active;
+    }
+
+    public void setActive(boolean tf){
+        this.active = tf;
     }
 }

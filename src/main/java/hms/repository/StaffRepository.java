@@ -26,7 +26,7 @@ public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
-    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age","Active"};
+    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age","Password","Active"};
 
     /**
      * Imports staff data from a CSV file.
@@ -145,9 +145,9 @@ public class StaffRepository implements CsvRepository<Staff>
             for (Staff staff : staffList)
             {
                 if(staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), 1);
+                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(), 1);
                 else if(!staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), 0);
+                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(), 0);
             }
 
             csvPrinter.flush();

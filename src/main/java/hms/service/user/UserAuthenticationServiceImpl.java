@@ -6,6 +6,7 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
+import org.springframework.security.crypto.bcrypt.*;
 /**
  * The UserAuthenticationServiceImpl class provides an implementation for the
  * UserAuthenticationService interface. It handles user authentication and password
@@ -93,13 +94,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         {
             if (isIdFromPatient(id))
             {
-                getPatientById(id).setPassword(newPassword);
+                
+                getPatientById(id).setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
 
             if (isIdFromStaff(id))
             {
-                getStaffById(id).setPassword(newPassword);
+                getStaffById(id).setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
                 return true;
             }
         }
@@ -141,8 +143,19 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
      * @return true if the credentials belong to a patient, false otherwise.
      */
     private boolean isCredentialFromPatient(String id, String password)
-    {
-        return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+    {  
+        for(int i = 0; i < this.patientList.size();i++){
+            if(id.equals(this.patientList.get(i).getId())){
+                return BCrypt.checkpw(password, this.patientList.get(i).getPassword());
+            }
+            else if(password.equals(this.patientList.get(i).getPassword())){
+                this.patientList.get(i).setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            }
+        }
+        return false;
+        
+        
+        //return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
     }
 
     /**
@@ -154,7 +167,18 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
      */
     private boolean isCredentialFromStaff(String id, String password)
     {
-        return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+        for(int i = 0; i < this.staffList.size();i++){
+            if(id.equals(this.staffList.get(i).getId())){
+                if (this.staffList.get(i).getActive()) {
+                    return BCrypt.checkpw(password, this.staffList.get(i).getPassword());
+                }
+            }
+            else if(password.equals(this.patientList.get(i).getPassword())){
+                this.patientList.get(i).setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            }
+        }
+        return false;
+        //return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
     }
 
     /**
@@ -181,6 +205,12 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 
     /*private boolean getActivebyStaffId(String id)
     {
-        return this.staffList.stream().filter(uObject -> uObject.getId().equals(id) && (uObject.getActive()==true));
+        for(int i = 0; i < this.staffList.size();i++){
+                if(id.equals(this.staffList.get(i).getId())){
+                    return this.staffList.get(i).getActive();
+                }
+            }
+            return false;
+        //return this.staffList.stream().filter(uObject -> uObject.getId().equals(id) && (uObject.getActive()==true));
     }*/
 }
