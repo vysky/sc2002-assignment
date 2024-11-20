@@ -7,6 +7,7 @@ import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
 import org.springframework.security.crypto.bcrypt.*;
+
 /**
  * The UserAuthenticationServiceImpl class provides an implementation for the
  * UserAuthenticationService interface. It handles user authentication and password
@@ -16,6 +17,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 {
     private final List<Patient> patientList;
     private final List<Staff> staffList;
+    private static SharedUserServiceImpl sharedUserService;
 
     /**
      * Constructor for UserAuthenticationServiceImpl.
@@ -96,12 +98,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
             {
                 
                 getPatientById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                sharedUserService.setPatientList();
                 return true;
             }
 
             if (isIdFromStaff(id))
             {
                 getStaffById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                sharedUserService.setStaffList();
                 return true;
             }
         }

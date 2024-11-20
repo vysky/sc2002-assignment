@@ -15,7 +15,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import hms.model.user.Patient;
-
 /**
  * The PatientRepository class provides methods to import and export patient data
  * from and to a CSV file. It implements the CsvRepository interface for handling patient objects.
@@ -25,7 +24,6 @@ public class PatientRepository implements CsvRepository<Patient>
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
     String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"};
-
 
     /**
      * Imports patient data from a CSV file.
@@ -96,6 +94,7 @@ public class PatientRepository implements CsvRepository<Patient>
                 {
                     prescriptions = new ArrayList<>();
                 }
+                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 
                 try
                 {
@@ -112,7 +111,7 @@ public class PatientRepository implements CsvRepository<Patient>
                 }
                 else
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, , hash, active);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, hash, active);
                 }
 
                 patientArrayList.add(patient);

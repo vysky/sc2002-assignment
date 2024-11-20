@@ -11,9 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-import hms.model.medicine.Medicine;
-import hms.repository.StaffRepository;
-import hms.service.medicine.InventoryServiceImpl;
 /**
  * The AdministratorServiceImpl class provides an implementation for administrator-specific
  * functionalities in the hospital management system (HMS). It extends the abstract UserService
@@ -67,7 +64,6 @@ public class AdministratorServiceImpl extends UserService
     @Override
     public void handleSelectedOption(Scanner input, int option)
     {
-        List<Staff> staffList = sharedUserService.getStaffList();
         switch (option)
         {
             case 1 ->
@@ -276,7 +272,7 @@ public class AdministratorServiceImpl extends UserService
      * @param role the selected role
      */
     public int checkIDSeq(String role){
-        int i=0,nid=-1;
+        int nid=-1;
         if(role.equals(role)){
             List<Staff> theList = sharedUserService.getStaffList();
             String tempid ="";
@@ -823,9 +819,10 @@ public class AdministratorServiceImpl extends UserService
             4) Age
             5) Password
             6) Active
+            7) Stored Hash
         """);
         String tempopt = tempScanner.nextLine();
-        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5")&&!tempopt.equals("6"))
+        if(!tempopt.equals("1")&&!tempopt.equals("2")&&!tempopt.equals("3")&&!tempopt.equals("4")&&!tempopt.equals("5")&&!tempopt.equals("6")&&!tempopt.equals("7"))
         {
             System.out.println("Invalid option! Exiting...");
             return;
@@ -882,7 +879,11 @@ public class AdministratorServiceImpl extends UserService
                     }
                 }
                 break;
-
+            case "7":
+                System.out.println("Enter new password: ");
+                tempopt = tempScanner.nextLine();
+                theList.get(index-1).setPassword(tempopt);
+                break;
             default:
                 break;
         }

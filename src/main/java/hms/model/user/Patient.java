@@ -52,8 +52,7 @@ public class Patient extends User
      * @param password    Patient password
      */
 
-    public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions, String password, String hash, boolean active)
-
+     public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions, String hash, boolean active)
     {
         super(id, name, role, gender, hash);
         this.dateOfBirth = dateOfBirth;
