@@ -1,14 +1,16 @@
-import java.util.Scanner;
-import javax.swing.*;
 import java.io.Console;
+import java.util.Scanner;
 
-import hms.model.appointment.AppointmentManager;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+
 import hms.model.shared.CredentialPair;
 import hms.model.user.Administrator;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
 import hms.model.user.Pharmacist;
 import hms.model.user.User;
+import hms.service.appointment.AppointmentManager;
 import hms.service.medicalRecord.MedicalRecordService;
 import hms.service.medicine.InventoryServiceImpl;
 import hms.service.user.AdministratorServiceImpl;

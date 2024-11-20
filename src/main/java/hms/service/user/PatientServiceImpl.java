@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import hms.model.appointment.Appointment;
-import hms.model.appointment.AppointmentManager;
 import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
+import hms.service.appointment.AppointmentManager;
 import hms.service.medicalRecord.MedicalRecordService;
 
 /**
@@ -135,24 +135,24 @@ public class PatientServiceImpl extends UserService
         List<Doctor> doctors = appointmentManager.getAllDoctors();
         appointmentManager.displayDoctor(doctors);
 
-        int doctorNumber = appointmentManager.selectDoctor(input, doctors.size());
-        if (doctorNumber == -1) {
-            System.out.println("Invalid selection.");
-            System.out.println("Enter any key to continue");
-            input.nextLine();
-            return;
-        }
+    //     int doctorNumber = appointmentManager.selectDoctor(input, doctors.size());
+    //     if (doctorNumber == -1) {
+    //         System.out.println("Invalid selection.");
+    //         System.out.println("Enter any key to continue");
+    //         input.nextLine();
+    //         return;
+    //     }
 
-        String selectedDoctorId = doctors.get(doctorNumber - 1).getId();
-        String selectedDate = appointmentManager.inputDate(input);
+    //     String selectedDoctorId = doctors.get(doctorNumber - 1).getId();
+    //     String selectedDate = appointmentManager.inputDate(input);
 
 
-        List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(selectedDoctorId, selectedDate);
-        appointmentManager.displayAvailableTimeslots(availableTimeslots);
+    //     List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(selectedDoctorId, selectedDate);
+    //     appointmentManager.displayAvailableTimeslots(availableTimeslots);
 
-        System.out.println("Enter any key to continue");
-        input.nextLine();
-    }
+    //     System.out.println("Enter any key to continue");
+    //     input.nextLine();
+    // }
 
     public void option4(Scanner input)
     {

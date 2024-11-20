@@ -2,8 +2,8 @@ package hms.service.user;
 
 import java.util.Scanner;
 
-import hms.model.appointment.AppointmentManager;
 import hms.model.user.Doctor;
+import hms.service.appointment.AppointmentManager;
 import hms.service.medicalRecord.MedicalRecordService;
 
 /**

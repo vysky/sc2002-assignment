@@ -1,4 +1,4 @@
-package hms.model.appointment;
+package hms.service.appointment;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,9 +12,10 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
+import hms.model.appointment.Appointment;
+import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
-import hms.service.user.SharedUserServiceImpl;
 
 /**
  * The AppointmentManager class is responsible for managing appointments, including
