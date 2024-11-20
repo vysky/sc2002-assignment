@@ -435,7 +435,7 @@ public class AppointmentManager {
         }
     }
 
-    public void updateAppointmentStatus(String appointmentID, String Status) {
+    public void updateAppointmentStatus(String appointmentID, String status) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
 
             List<String[]> allElements = new ArrayList<>();
@@ -443,7 +443,7 @@ public class AppointmentManager {
 
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals(appointmentID)) {
-                    nextLine[5] = Status;
+                    nextLine[5] = status;
                 }
                 allElements.add(nextLine);
             }
@@ -474,5 +474,34 @@ public class AppointmentManager {
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
+    }
+
+    public Appointment chooseAppointment(Scanner input, String doctorId) {
+        Appointment selectedAppointment = null;
+
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            List<Appointment> appointments = new ArrayList<>();
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                    appointments.add(new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]));
+                }
+            }
+
+            if (appointments.isEmpty()) {
+                System.out.println("No pending appointments.");
+                return null;
+            }
+
+            getAppointments(doctorId);
+            System.out.println("Select an appointment by number:");
+
+            int appointmentNumber = Integer.parseInt(input.nextLine());
+            selectedAppointment =  appointments.get(appointmentNumber - 1);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return selectedAppointment;
     }
 }

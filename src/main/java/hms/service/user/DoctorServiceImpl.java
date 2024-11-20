@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import hms.model.user.Doctor;
 import hms.service.appointment.AppointmentManager;
+import hms.service.appointment.RecordManager;
 import hms.service.medicalRecord.MedicalRecordService;
 
 /**
@@ -17,11 +18,13 @@ public class DoctorServiceImpl extends UserService
     private Doctor authenticatedDoctor;
     private MedicalRecordService medicalRecordService;
     private AppointmentManager appointmentManager;
+    private RecordManager recordManager;
 
-    public DoctorServiceImpl(Doctor doctor, MedicalRecordService medicalRecordService, AppointmentManager appointmentManager) {
+    public DoctorServiceImpl(Doctor doctor, MedicalRecordService medicalRecordService, AppointmentManager appointmentManager, RecordManager recordManager) {
         this.authenticatedDoctor = doctor;
         this.medicalRecordService = medicalRecordService;
         this.appointmentManager = appointmentManager;
+        this.recordManager = recordManager;
     }
 
     /**
@@ -71,7 +74,7 @@ public class DoctorServiceImpl extends UserService
                 option6(appointmentManager, input);
             }
             case 7 -> {
-                option7();
+                option7(appointmentManager, recordManager, input);
             }
             case 0 -> {
                 System.out.printf("Goodbye %s!", authenticatedDoctor.getName());
@@ -206,7 +209,9 @@ public class DoctorServiceImpl extends UserService
         am.getAppointments(authenticatedDoctor.getId());
     }
 
-    public void option7() {
-        System.out.println("Option 7");
+    public void option7(AppointmentManager am, RecordManager rm, Scanner input) { // Record Appointment Outcome
+        am.getAppointments(authenticatedDoctor.getId());
+        String appointmentID = input.nextLine();
+        rm.recordAppointmentOutcome(appointmentID, input);
     }
 }
