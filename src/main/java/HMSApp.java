@@ -67,7 +67,7 @@ public class HMSApp
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
         appointmentManager = new AppointmentManager();
-        appointmentOutcomeManager = new AppointmentOutcomeManager();
+        appointmentOutcomeManager = new AppointmentOutcomeManager(inventoryService);
         recordManager = new RecordManager(appointmentManager, appointmentOutcomeManager);
     }
 

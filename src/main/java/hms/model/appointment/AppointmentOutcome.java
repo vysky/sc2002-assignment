@@ -1,20 +1,25 @@
 package hms.model.appointment;
 
+import hms.model.medicine.Prescription;
+
 public class AppointmentOutcome {
     private String appointmentOutcomeId;
     private String appointmentId;
     private String service;
-    private String medicine;
     private String notes;
-    private String prescriptionStatus;
+    private Prescription prescription;
+    // private String medicine;
+    // private String prescriptionStatus;
 
-    public AppointmentOutcome(String appointmentOutcomeId, String appointmentId, String service, String medicine, String notes, String prescriptionStatus) {
+    // public AppointmentOutcome(String appointmentOutcomeId, String appointmentId, String service, String medicine, String notes, String prescriptionStatus) {
+    public AppointmentOutcome(String appointmentOutcomeId, String appointmentId, String service, String notes, Prescription prescription) {
         this.appointmentOutcomeId = appointmentOutcomeId;
         this.appointmentId = appointmentId;
         this.service = service;
-        this.medicine = medicine;
         this.notes = notes;
-        this.prescriptionStatus = prescriptionStatus;
+        this.prescription = prescription;
+        // this.medicine = medicine;
+        // this.prescriptionStatus = prescriptionStatus;
     }
 
     public String getAppointmentOutcomeId() {
@@ -41,14 +46,6 @@ public class AppointmentOutcome {
         this.service = service;
     }
 
-    public String getMedicine() {
-        return medicine;
-    }
-
-    public void setMedicine(String medicine) {
-        this.medicine = medicine;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -57,22 +54,40 @@ public class AppointmentOutcome {
         this.notes = notes;
     }
 
-    public String getPrescriptionStatus() {
-        return prescriptionStatus;
+    public Prescription getPrescription()
+    {
+        return this.prescription;
     }
 
-    public void setPrescriptionStatus(String prescriptionStatus) {
-        this.prescriptionStatus = prescriptionStatus;
+    public void setPrescription(Prescription prescription)
+    {
+        this.prescription = prescription;
     }
+
+    // public String getMedicine() {
+    //     return medicine;
+    // }
+    //
+    // public void setMedicine(String medicine) {
+    //     this.medicine = medicine;
+    // }
+
+    // public String getPrescriptionStatus() {
+    //     return prescriptionStatus;
+    // }
+    //
+    // public void setPrescriptionStatus(String prescriptionStatus) {
+    //     this.prescriptionStatus = prescriptionStatus;
+    // }
 
     @Override public String toString() {
         return "AppointmentOutcome{" +
                 "appointmentOutcomeId='" + appointmentOutcomeId + '\'' +
                 ", appointmentId='" + appointmentId + '\'' +
                 ", service='" + service + '\'' +
-                ", medicine='" + medicine + '\'' +
                 ", notes='" + notes + '\'' +
-                ", prescriptionStatus='" + prescriptionStatus + '\'' +
+                ", medicine='" + this.prescription.getMedicineQuantityPair() + '\'' +
+                ", prescriptionStatus='" + this.prescription.getStatus() + '\'' +
                 '}';
     }
 }
