@@ -351,7 +351,7 @@ public class HMSApp
             case "patient" ->
             {
                 assert authenticatedUser instanceof Patient;
-                return new PatientServiceImpl((Patient) authenticatedUser, appointmentManager, medicalRecordService, recordManager);
+                return new PatientServiceImpl((Patient) authenticatedUser, sharedUserService, appointmentManager, medicalRecordService, recordManager);
             }
             case "administrator" ->
             {

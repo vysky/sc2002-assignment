@@ -1,9 +1,9 @@
 package hms.service.user;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 
 import hms.model.appointment.Appointment;
 import hms.model.appointment.Timeslot;
@@ -22,6 +22,7 @@ import hms.service.medicalRecord.MedicalRecordService;
 public class PatientServiceImpl extends UserService
 {
     private Patient authenticatedPatient;
+    private SharedUserServiceImpl sharedUserServiceImpl;    
     private AppointmentManager appointmentManager;
     private MedicalRecordService medicalRecordService;
     private RecordManager recordManager;
@@ -31,9 +32,10 @@ public class PatientServiceImpl extends UserService
      *
      * @param patient The authenticated patient.
      */
-    public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService, RecordManager recordManager)
+    public PatientServiceImpl(Patient patient, SharedUserServiceImpl sharedUserServiceImpl, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService, RecordManager recordManager)
     {
         this.authenticatedPatient = patient;
+        this.sharedUserServiceImpl = sharedUserServiceImpl;
         this.appointmentManager = appointmentManager;
         this.medicalRecordService = medicalRecordService;
         this.recordManager = recordManager;
