@@ -135,6 +135,9 @@ public class PatientServiceImpl extends UserService
     public void option1(Scanner input)
     {
         medicalRecordService.patientGetMedicalRecord(authenticatedPatient.getId());
+
+        System.out.println("Enter any key to continue");
+        input.nextLine();
     }
 
     /**
@@ -218,6 +221,8 @@ public class PatientServiceImpl extends UserService
 
         if(!availableTimeslots.isEmpty()) {
             appointmentManager.selectTimeslotAndMakeAppointment(input, authenticatedPatient.getId(), selectedDoctorId, selectedDate, availableTimeslots);
+            System.out.println("Enter any key to continue");
+            input.nextLine();
         }
     }
 
@@ -344,5 +349,7 @@ public class PatientServiceImpl extends UserService
     public void option8(RecordManager rm, Scanner input)
     {
         rm.printPatientHistory(authenticatedPatient.getId());
+        System.out.println("Enter any key to continue");
+        input.nextLine();
     }
 }
