@@ -6,7 +6,6 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.*;
 
 /**
@@ -18,7 +17,6 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 {
     private final List<Patient> patientList;
     private final List<Staff> staffList;
-    private static SharedUserServiceImpl sharedUserService;
 
     /**
      * Constructor for UserAuthenticationServiceImpl.

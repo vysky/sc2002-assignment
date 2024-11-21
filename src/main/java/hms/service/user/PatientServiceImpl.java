@@ -2,6 +2,8 @@ package hms.service.user;
 
 import java.util.List;
 import java.util.Scanner;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 import hms.model.appointment.Appointment;
 import hms.model.appointment.Timeslot;
@@ -42,6 +44,11 @@ public class PatientServiceImpl extends UserService
      */
     public void printMenu()
     {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formatDateTime = dateTime.format(myFormatObj);
+        System.out.println("Welcome to HMS Hospital "+ authenticatedPatient.getName() + "!");
+        System.out.println("Today is " + formatDateTime);
         System.out.print("""
                                  ========== Patient's Menu ==========
                                  (1) View Medical Record
@@ -53,7 +60,6 @@ public class PatientServiceImpl extends UserService
                                  (7) View Scheduled Appointments
                                  (8) View Past Appointment Outcome Records
                                  (0) Logout
-                                 (11) (DEV) Add diagnose
                                  """);
         System.out.print("Select an option: ");
     }
@@ -125,9 +131,9 @@ public class PatientServiceImpl extends UserService
 
     public void option2(Scanner input)
     {
-        //(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
-        System.out.println("Update Personal Information");
+        List<Patient> allPatients = sharedUserServiceImpl.getPatientList();
 
+        appointmentManager.updateInformation(authenticatedPatient.getId(), allPatients, input);
     }
 
     /**

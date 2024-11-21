@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -28,18 +29,153 @@ public class AppointmentManager {
     private static final String STAFF_FILE = "src/main/resources/csv/staff.csv";
     private static final String AVAILABILITY_FILE = "src/main/resources/csv/Timeslot.csv";
     private static final String APPOINTMENTS_FILE = "src/main/resources/csv/Appointment_Record.csv";
+    private static final String PATIENT_FILE = "src/main/resources/csv/patient.csv";
 
 //General
-    private Patient getPatientById(String patientId) {
-        return this.patients.stream().filter(uObject -> uObject.getId().equals(patientId)).findFirst().orElse(null);
-    }
-
     public String inputDate (Scanner input) {
         System.out.println("Enter Date (e.g., 04 Nov 2024):");
         return input.nextLine();
     }
 
 //Patient
+
+public void updateInformation (String patientId, List<Patient> allPatients, Scanner input) {
+
+    Patient currentPatient = null;
+
+    for (int i = 0; i < allPatients.size(); i++)
+    {
+        if (allPatients.get(i).getId().equals(patientId)) {
+            currentPatient = allPatients.get(i);
+            break;
+        }
+    }
+
+    String newName = currentPatient.getName();
+    String newDob = currentPatient.getDateOfBirth();
+    String newEmail = currentPatient.getEmail();
+
+    while (true) {
+        System.out.println("Select the information you want to update:");
+        System.out.println("(1) Name");
+        System.out.println("(2) Date Of Birth");
+        System.out.println("(3) Email");
+        System.out.println("(4) Confirm the changes");
+        System.out.println("(5) Discard changes and exit");
+        int choice = input.nextInt();
+        input.nextLine();
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter new name: ");
+                newName = input.nextLine();
+                currentPatient.setName(newName);
+                break;
+
+            case 2:
+                System.out.print("Enter new date of birth: ");
+                newDob = input.nextLine();
+                currentPatient.setDateOfBirth(newDob);
+                break;
+
+            case 3:
+                System.out.print("Enter new email: ");
+                newEmail = input.nextLine();
+                currentPatient.setEmail(newEmail);
+                break;
+
+            case 4:
+
+                try (CSVWriter writer = new CSVWriter(new FileWriter(PATIENT_FILE))) {
+                // Write header
+                    String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"}; // Replace with actual field names
+                    writer.writeNext(header);
+
+                // Write patient data
+                    for (Patient patient : allPatients) {
+                        String[] patientData = convertPatientToStringArray(patient);
+                        writer.writeNext(patientData);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Changes confirmed and saved.");
+                return;
+
+            case 5:
+                System.out.println("No changes has been made");
+                System.out.println("Enter any key to continue");
+                input.nextLine();
+                return;
+
+            default:
+                System.out.println("Invalid choice. Please try again");
+                break;
+        }
+    }
+}
+
+private String[] convertPatientToStringArray(Patient patient) {
+    // Convert patient fields to a String array
+    // Replace getId(), getName(), getDateOfBirth(), getEmail() with actual getter methods
+    ArrayList<String> diagnoses = patient.getDiagnoses();
+    ArrayList<String> treatments = patient.getTreatments();
+    ArrayList<String> prescriptions = patient.getPrescriptions();
+    boolean active = patient.getActive();
+    String activeStatus = "";
+
+    StringBuilder stringBuilder = new StringBuilder("[");
+
+    for (int i = 0; i < diagnoses.size(); i++)
+    {
+        stringBuilder.append(diagnoses.get(i));
+        if (i < diagnoses.size() - 1) {
+            stringBuilder.append(",");
+        }
+    }
+
+    stringBuilder.append("]");
+    String diagnosesString = stringBuilder.toString();
+
+    stringBuilder.setLength(0);
+    stringBuilder.append("[");
+    for (int i = 0; i < treatments.size(); i++)
+    {
+        stringBuilder.append(treatments.get(i));
+        if (i < treatments.size() - 1) {
+            stringBuilder.append(",");
+        }
+    }
+    stringBuilder.append("]");
+    String treatmentsString = stringBuilder.toString();
+
+    stringBuilder.setLength(0);
+    stringBuilder.append("[");
+    for (int i = 0; i < prescriptions.size(); i++)
+    {
+        stringBuilder.append(prescriptions.get(i));
+        if (i < prescriptions.size() - 1) {
+            stringBuilder.append(",");
+        }
+    }
+
+    stringBuilder.append("]");
+    String prescriptionsString = stringBuilder.toString();
+
+    stringBuilder.setLength(0);
+
+    if (active == true){
+        activeStatus = "true";
+    }
+
+    else {
+        activeStatus = "false";
+    }
+
+    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(),
+    diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), activeStatus};
+}
 
 
 //Related to Doctor

@@ -6,11 +6,14 @@ import hms.model.user.*;
 import hms.service.appointment.AppointmentManager;
 import hms.service.medicine.InventoryServiceImpl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The AdministratorServiceImpl class provides an implementation for administrator-specific
@@ -44,6 +47,11 @@ public class AdministratorServiceImpl extends UserService
     public void printMenu()
     {   
         // todo: for logout, want to try logout back to main menu. may be an option to logout and an option to end program?
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formatDateTime = dateTime.format(myFormatObj);
+        System.out.println("Welcome to HMS Hospital "+ authenticatedAdministrator.getName() + "!");
+        System.out.println("Today is " + formatDateTime);
         System.out.print("""
                                  ========== Administrator's Menu ==========
                                  (1) View and Manage Hospital Staff
