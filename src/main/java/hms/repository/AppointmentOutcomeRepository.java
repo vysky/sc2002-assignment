@@ -19,7 +19,7 @@ import java.util.List;
 public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOutcome>
 {
     private InventoryServiceImpl inventoryService;
-    static final String CSV_FILE_PATH_APPOINTMENT_OUTCOME = "src/main/resources/appointment_outcome.csv";
+    static final String CSV_FILE_PATH_APPOINTMENT_OUTCOME = "src/main/resources/csv/appointment_outcome.csv";
 
     String[] APPOINTMENT_OUTCOME_HEADERS = {"Appointment Outcome ID", "Appointment ID", "Service", "Notes", "Medicine", "Medicine Quantity", "Prescription Status"};
 
@@ -82,6 +82,15 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
 
                 appointmentOutcome = new AppointmentOutcome(appointmentOutcomeId, appointmentId, service, notes, prescription);
                 appointmentOutcomeArrayList.add(appointmentOutcome);
+            }
+
+            System.out.println("appointment outcome");
+            for (AppointmentOutcome appointmentOutcome : appointmentOutcomeArrayList)
+            {
+                System.out.println(appointmentOutcome.getAppointmentOutcomeId());
+                System.out.println(appointmentOutcome.getPrescription().getMedicineQuantityPair().medicine().getMedicineName());
+                System.out.println(appointmentOutcome.getPrescription().getMedicineQuantityPair().quantity());
+                System.out.println(appointmentOutcome.getPrescription().getStatus());
             }
 
             return appointmentOutcomeArrayList;

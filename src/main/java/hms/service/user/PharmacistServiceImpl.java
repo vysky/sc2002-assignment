@@ -3,7 +3,9 @@ package hms.service.user;
 import java.util.Scanner;
 
 import hms.model.user.Pharmacist;
+import hms.service.appointment.AppointmentOutcomeManager;
 import hms.service.medicine.InventoryServiceImpl;
+
 /**
  * The PharmacistServiceImpl class provides an implementation for pharmacist-specific functionalities
  * in the hospital management system (HMS). It extends the abstract UserService class and handles
@@ -16,16 +18,19 @@ public class PharmacistServiceImpl extends UserService
 {
     private Pharmacist authenticatedPharmacist;
     private InventoryServiceImpl inventoryService;
+    private AppointmentOutcomeManager appointmentOutcomeManager;
+
     /**
      * Constructs a PharmacistServiceImpl with the authenticated pharmacist and inventory service.
      *
-     * @param pharmacist The authenticated pharmacist.
+     * @param pharmacist       The authenticated pharmacist.
      * @param inventoryService The inventory service for managing medicines and replenishment requests.
      */
-    public PharmacistServiceImpl(Pharmacist pharmacist, InventoryServiceImpl inventoryService)
+    public PharmacistServiceImpl(Pharmacist pharmacist, InventoryServiceImpl inventoryService, AppointmentOutcomeManager appointmentOutcomeManager)
     {
         this.authenticatedPharmacist = pharmacist;
         this.inventoryService = inventoryService;
+        this.appointmentOutcomeManager = appointmentOutcomeManager;
     }
 
     /**
