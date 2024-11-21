@@ -152,7 +152,16 @@ public class MedicalRecordService {
         p.setTreatments(treatment);
     }
 
-    // Prescription method goes here too
+    /**
+     * Sets a new prescription for a patient.
+     *
+     * @param patientId the ID of the patient
+     * @param prescription the prescription to set
+     */
+    public void setNewPrescription(String patientId, String prescription) {
+        Patient p = getPatientById(patientId);
+        p.setPrescriptions(prescription);
+    }
 
     /**
      * Retrieves a patient by their ID.

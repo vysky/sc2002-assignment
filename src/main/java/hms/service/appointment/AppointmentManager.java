@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -720,7 +719,7 @@ public class AppointmentManager {
             String[] nextLine;
             int index = 1;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Confirmed")) {
                     System.out.println((index++) + ":");
                     System.out.println("Appointment ID: " + nextLine[0]);
                     System.out.println("Patient ID: " + nextLine[1]);
