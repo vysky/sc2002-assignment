@@ -3,7 +3,7 @@ package hms.service.medicalRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-import hms.model.appointment.AppointmentManager;
+import hms.service.appointment.AppointmentManager;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
 

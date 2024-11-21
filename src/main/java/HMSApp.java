@@ -11,6 +11,8 @@ import hms.model.user.Patient;
 import hms.model.user.Pharmacist;
 import hms.model.user.User;
 import hms.service.appointment.AppointmentManager;
+import hms.service.appointment.AppointmentOutcomeManager;
+import hms.service.appointment.RecordManager;
 import hms.service.medicalRecord.MedicalRecordService;
 import hms.service.medicine.InventoryServiceImpl;
 import hms.service.user.AdministratorServiceImpl;
@@ -20,7 +22,6 @@ import hms.service.user.PharmacistServiceImpl;
 import hms.service.user.SharedUserServiceImpl;
 import hms.service.user.UserAuthenticationServiceImpl;
 import hms.service.user.UserService;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  * Main application class for the Hospital Management System (HMS).
@@ -38,6 +39,8 @@ public class HMSApp
     private static UserService userService;
     private static MedicalRecordService medicalRecordService;
     private static AppointmentManager appointmentManager;
+    private static AppointmentOutcomeManager appointmentOutcomeManager;
+    private static RecordManager recordManager;
 
     /**
      * Main method to start the application.
@@ -64,6 +67,8 @@ public class HMSApp
         userAuthenticationService = new UserAuthenticationServiceImpl(sharedUserService.getPatientList(), sharedUserService.getStaffList());
         medicalRecordService = new MedicalRecordService(sharedUserService.getPatientList());
         appointmentManager = new AppointmentManager();
+        appointmentOutcomeManager = new AppointmentOutcomeManager();
+        recordManager = new RecordManager(appointmentManager, appointmentOutcomeManager);
     }
 
     /**
@@ -327,7 +332,7 @@ public class HMSApp
             case "doctor" ->
             {
                 assert authenticatedUser instanceof Doctor;
-                return new DoctorServiceImpl((Doctor) authenticatedUser, medicalRecordService, appointmentManager);
+                return new DoctorServiceImpl((Doctor) authenticatedUser, medicalRecordService, appointmentManager, recordManager);
             }
             case "pharmacist" ->
             {
