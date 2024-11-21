@@ -63,7 +63,10 @@ public class AppointmentOutcomeManager {
                 System.out.println("Appointment ID: " + outcome.getAppointmentId());
                 System.out.println("Service: " + outcome.getService());
                 System.out.println("Notes: " + outcome.getNotes());
-                System.out.println("Prescription: " + outcome.getPrescription().getMedicineQuantityPair());
+                System.out.println("Medicine: " + outcome.getPrescription().getMedicineQuantityPair().medicine().getMedicineName());
+                System.out.println("Quantity: " + outcome.getPrescription().getMedicineQuantityPair().quantity());
+                String status = outcome.getPrescription().getStatus() ? "Dispensed" : "Pending";
+                System.out.println("Prescription Status: " + status);
                 System.out.println();
             }
         }

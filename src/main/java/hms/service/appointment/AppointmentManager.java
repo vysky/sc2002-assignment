@@ -25,9 +25,9 @@ import hms.model.user.Patient;
 public class AppointmentManager {
 
     private List<Patient> patients;
-    private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
-    private static final String AVAILABILITY_FILE = "src\\main\\resources\\csv\\Timeslot.csv";
-    private static final String APPOINTMENTS_FILE = "src\\main\\resources\\csv\\Appointment_Record.csv";
+    private static final String STAFF_FILE = "src/main/resources/csv/staff.csv";
+    private static final String AVAILABILITY_FILE = "src/main/resources/csv/Timeslot.csv";
+    private static final String APPOINTMENTS_FILE = "src/main/resources/csv/Appointment_Record.csv";
 
 //General
     private Patient getPatientById(String patientId) {
@@ -539,7 +539,7 @@ public class AppointmentManager {
                     appointmentIds.add(nextLine[0]);
                 }
             }
-            
+
             if (!appointmentIds.isEmpty()) {
                 System.out.print("Enter the index of the appointment: ");
                 int userIndex = Integer.parseInt(input.nextLine());
