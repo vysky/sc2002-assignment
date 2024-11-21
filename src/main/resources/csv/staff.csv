@@ -1,9 +1,9 @@
 Staff ID,Name,Role,Gender,Age,Password,Hash,Active
-D001,John Smith,doctor,Male,45,password,$2a$10$zXK9Mhe93PicAuSiysMjz.6iLrsVqBd46tVJEsz5KN.ASgYiEk6Ca,TRUE
-D002,Emily Clarke,doctor,Female,38,password,$2a$10$pgFC9XztAP/CvceJ.6Sfj.IDDmt8JCdT6pqfNkC8xCmP1PKVxYH82,TRUE
-P001,Mark Lee,pharmacist,Male,29,password,$2a$10$bcZfItjzyZhUp.T5pYABtOPL9j2KrwFLoOuonJtLg9UwWHpoFHqXG,TRUE
-A001,Sarah Lee,administrator,Female,40,password,$2a$10$WK5FOMvSyWgpFN9PNclvO.qFUIRaHJouY4SlFjkqa.DVSjU0n9WQO,TRUE
-A002,Test User 1,administrator,Male,24,password,$2a$10$VkfQa8WcWZgb59oPYTP79eADvYyPDdKXIjPcDcZfEtLYkCDloy7fK,TRUE
-A003,Test User 2,administrator,Female,20,password,$2a$10$bOJUBp.6twiliC5rNzsRUuTR/4QoB5vlMJpXSayMSgZaBtB7ZB72i,TRUE
-D003,Test User 3,doctor,Male,42,password,$2a$10$/FoY5HQMp1lxGi1QsMl7Zu4XT8WimURFpgnIch.YhABRb14KtWprm,TRUE
-P002,Test User 4,pharmacist,Female,29,password,$2a$10$D.3VO0XwMWAaSj70vsCmzuc1EJ/1YE3rEDjtcf4uzClo65sUwVJ2u,TRUE
+D001,John Smith,doctor,Male,45,password,$2a$10$vX9O13raemt1.M9DKmFciu1.Y9TuI9Bc0VjfjLD3KUd76UtZNgn2i,true
+D002,Emily Clarke,doctor,Female,38,password,$2a$10$j/YIEcte17PffFORJFXCBOXzqAc0LBLyEr95JR38SG7NQDFku1fly,true
+P001,Mark Lee,pharmacist,Male,29,password,$2a$10$bcZfItjzyZhUp.T5pYABtOPL9j2KrwFLoOuonJtLg9UwWHpoFHqXG,true
+A001,Sarah Lee,administrator,Female,40,a,$2a$10$VZynfxal3VENk5S1Nlha6u6Ch3oW7aV59QnnUaBywLf2a2igV/n/u,true
+A002,Test User 1,administrator,Male,24,password,$2a$10$N3H4W/hC5u5V9udJggNuie7NhGnBHSRtuxEpDkPpeBcnkoOa5b61.,true
+A003,Test User 2,administrator,Female,20,password,$2a$10$bOJUBp.6twiliC5rNzsRUuTR/4QoB5vlMJpXSayMSgZaBtB7ZB72i,true
+D003,Test User 3,doctor,Male,42,password,$2a$10$6EWZPJ9xO.2yN4WAB6jU2u0oJMfmXf5Plr8uHxV4DvCGNKmRS0lxS,true
+P002,Test User 4,pharmacist,Female,29,password,$2a$10$D.3VO0XwMWAaSj70vsCmzuc1EJ/1YE3rEDjtcf4uzClo65sUwVJ2u,true

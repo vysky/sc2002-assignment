@@ -69,4 +69,9 @@ public class Staff extends User
         this.age = age;
     }
 
+    /*public void changePassword(String id, String tempopt) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+    }*/
+
 }
