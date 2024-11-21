@@ -16,18 +16,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Repository class for managing appointment outcomes.
+ */
 public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOutcome>
 {
+    /**
+     * Inventory service used to manage medicine data.
+     */
     private InventoryServiceImpl inventoryService;
+
+    /**
+     * Path to the CSV file where appointment outcomes are stored.
+     */
     static final String CSV_FILE_PATH_APPOINTMENT_OUTCOME = "src/main/resources/csv/appointment_outcome.csv";
 
+    /**
+     * Headers for the CSV file.
+     */
     String[] APPOINTMENT_OUTCOME_HEADERS = {"Appointment Outcome ID", "Appointment ID", "Service", "Notes", "Medicine", "Medicine Quantity", "Prescription Status"};
 
+    /**
+     * Constructs an AppointmentOutcomeRepository with the specified inventory service.
+     * @param inventoryService the inventory service implementation
+     */
     public AppointmentOutcomeRepository(InventoryServiceImpl inventoryService)
     {
         this.inventoryService = inventoryService;
     }
 
+    /**
+     * Imports appointment outcomes from a CSV file.
+     * @return a list of appointment outcomes
+     */
     @Override
     public List<AppointmentOutcome> importFromCsv()
     {
@@ -89,15 +110,6 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
                 appointmentOutcomeArrayList.add(appointmentOutcome);
             }
 
-            System.out.println("appointment outcome");
-            for (AppointmentOutcome appointmentOutcome : appointmentOutcomeArrayList)
-            {
-                System.out.println(appointmentOutcome.getAppointmentOutcomeId());
-                System.out.println(appointmentOutcome.getPrescription().getMedicineQuantityPair().medicine().getMedicineName());
-                System.out.println(appointmentOutcome.getPrescription().getMedicineQuantityPair().quantity());
-                System.out.println(appointmentOutcome.getPrescription().getStatus());
-            }
-
             return appointmentOutcomeArrayList;
         }
         catch (FileNotFoundException e)
@@ -112,6 +124,10 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
         return null;
     }
 
+    /**
+     * Exports appointment outcomes to a CSV file.
+     * @param appointmentOutcomes the list of appointment outcomes to export
+     */
     @Override
     public void exportToCsv(List<AppointmentOutcome> appointmentOutcomes)
     {

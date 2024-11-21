@@ -21,11 +21,12 @@ public class Administrator extends Staff
     /**
      * Constructor with parameters.
      *
-     * @param id     Administrator ID
-     * @param name   Administrator name
-     * @param role   Administrator role
-     * @param gender Administrator gender
-     * @param age    Administrator age
+     * @param id     Administrator ID.
+     * @param name   Administrator name.
+     * @param role   Administrator role.
+     * @param gender Administrator gender.
+     * @param age    Administrator age.
+     * @param active Administrator active status.
      */
     public Administrator(String id, String name, String role, String gender, int age, boolean active)
     {
@@ -35,12 +36,14 @@ public class Administrator extends Staff
     /**
      * Constructor with parameters including password.
      *
-     * @param id       Administrator ID
-     * @param name     Administrator name
-     * @param role     Administrator role
-     * @param gender   Administrator gender
-     * @param age      Administrator age
-     * @param password Administrator password
+     * @param id       Administrator ID.
+     * @param name     Administrator name.
+     * @param role     Administrator role.
+     * @param gender   Administrator gender.
+     * @param age      Administrator age.
+     * @param password Administrator password.
+     * @param hash     Administrator hashed password.
+     * @param active   Administrator active status.
      */
     public Administrator(String id, String name, String role, String gender, int age, String password, String hash, boolean active)
     {

@@ -22,8 +22,14 @@ import hms.model.user.Patient;
  */
 public class PatientRepository implements CsvRepository<Patient>
 {
+    /**
+     * Path to the CSV file where patient data is stored.
+     */
     static final String CSV_FILE_PATH_PATIENT = "src/main/resources/csv/patient.csv";
 
+    /**
+     * Headers for the CSV file.
+     */
     String[] PATIENT_HEADERS = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"};
 
     /**
@@ -118,18 +124,6 @@ public class PatientRepository implements CsvRepository<Patient>
                 }
 
                 patientArrayList.add(patient);
-            }
-
-            // todo: delete, for dev only
-            for (Patient patient : patientArrayList)
-            {
-                System.out.print(patient.getName());
-                System.out.print("\tD: " + patient.getDiagnoses());
-                System.out.print("\tT: " + patient.getTreatments());
-                System.out.print("\tP: " + patient.getPrescriptions());
-                System.out.print("\tPassword: " + patient.getPassword());
-                System.out.print("\tActive: " + patient.getActive());
-                System.out.println();
             }
 
             return patientArrayList;

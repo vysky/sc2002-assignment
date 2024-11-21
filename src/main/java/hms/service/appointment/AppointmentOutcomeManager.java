@@ -11,12 +11,21 @@ import hms.model.shared.MedicineQuantityPair;
 import hms.repository.AppointmentOutcomeRepository;
 import hms.service.medicine.InventoryServiceImpl;
 
+/**
+ * The AppointmentOutcomeManager class handles operations related to appointment outcomes,
+ * including creation, retrieval, and management of appointment outcome records.
+ */
 public class AppointmentOutcomeManager {
     InventoryServiceImpl inventoryService;
     AppointmentOutcomeRepository appointmentOutcomeRepository;
     private static int counter = 1;
     List<AppointmentOutcome> appointmentOutcomes;
 
+    /**
+     * Constructs an AppointmentOutcomeManager with the provided InventoryServiceImpl.
+     *
+     * @param inventoryService the inventory service implementation
+     */
     public AppointmentOutcomeManager(InventoryServiceImpl inventoryService) {
         this.inventoryService = inventoryService;
         this.appointmentOutcomeRepository = new AppointmentOutcomeRepository(inventoryService);
@@ -29,6 +38,12 @@ public class AppointmentOutcomeManager {
         }
     }
 
+    /**
+     * Creates a new appointment outcome based on user input.
+     *
+     * @param appointmentId the ID of the appointment
+     * @param input         the scanner for user input
+     */
     public void createAppointmentOutcome(String appointmentId, Scanner input) {
 
         System.out.print("Enter service: ");
@@ -51,6 +66,11 @@ public class AppointmentOutcomeManager {
         appointmentOutcomes.add(newOutcome);
     }
 
+    /**
+     * Prints the appointment history for a list of appointment IDs.
+     *
+     * @param appointmentIds the list of appointment IDs
+     */
     public void printPatientHistory(List<String> appointmentIds) {
         if (appointmentIds.isEmpty()) {
             System.out.println("No appointment history found for the patient.");
@@ -72,6 +92,11 @@ public class AppointmentOutcomeManager {
         }
     }
 
+    /**
+     * Generates a new appointment outcome ID.
+     *
+     * @return the newly generated appointment outcome ID
+     */
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
         if (lastAppointmentID != null && lastAppointmentID.length() > 1) {
@@ -97,11 +122,19 @@ public class AppointmentOutcomeManager {
         return lastAppointmentID;
     }
 
+    /**
+     * Retrieves the list of appointment outcomes.
+     *
+     * @return the list of appointment outcomes
+     */
     public List<AppointmentOutcome> getAppointmentOutcomes()
     {
         return this.appointmentOutcomes;
     }
 
+    /**
+     * Prints all appointment outcomes.
+     */
     public void printAppointmentOutcomes() {
         System.out.println("--------------------------------------------------------------------------------------------------------------");
         System.out.printf("%-5s %-15s %-20s %-20s %-20s %-10s %-10s%n", "No", "Appointment ID", "Service", "Notes", "Medicine", "Quantity", "Status");
@@ -115,6 +148,9 @@ public class AppointmentOutcomeManager {
         }
     }
 
+    /**
+     * Updates the appointment outcome list by exporting it to a CSV file.
+     */
     public void updateAppointmentOutcomeList() {
         appointmentOutcomeRepository.exportToCsv(appointmentOutcomes);
     }

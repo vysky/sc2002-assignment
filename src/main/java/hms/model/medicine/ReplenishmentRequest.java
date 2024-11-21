@@ -7,7 +7,14 @@ package hms.model.medicine;
 
 public class ReplenishmentRequest
 {
+    /**
+     * The medicine to be replenished.
+     */
     private Medicine medicine;
+
+    /**
+     * The quantity of medicine requested.
+     */
     private int requestedQuantity;
 
     /**

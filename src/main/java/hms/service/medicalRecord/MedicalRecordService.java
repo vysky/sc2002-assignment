@@ -17,14 +17,25 @@ public class MedicalRecordService {
     private AppointmentManager appointmentManager = new AppointmentManager();
     private List<Patient> patients, currentPatients;
 
+    /**
+     * Constructs a MedicalRecordService with the provided list of patients.
+     *
+     * @param listPatients the list of all patients
+     */
     public MedicalRecordService(List<Patient> listPatients) {
         this.patients = listPatients;
     }
 
+    /**
+     * Retrieves the list of patients under a specific doctor.
+     *
+     * @param doctorId the ID of the doctor
+     * @return the list of patients under the given doctor
+     */
     public List<Patient> getPatientsUnderDoctor(String doctorId) {
         currentPatients = new ArrayList<Patient>();
         List<String> patientIds = appointmentManager.getPatientsUnderDoctor(doctorId);
-        
+
         for (String patientId : patientIds) {
             Patient patient = getPatientById(patientId);
             if (patient != null) {
@@ -35,6 +46,11 @@ public class MedicalRecordService {
         return currentPatients;
     }
 
+    /**
+     * Prints the patients under a specific doctor.
+     *
+     * @param doctor the doctor whose patients are to be printed
+     */
     public void printPatients(Doctor doctor) {
         System.out.println("\nThe following patients are under Dr " + doctor.getName());
 
@@ -43,6 +59,12 @@ public class MedicalRecordService {
         }
     }
 
+    /**
+     * Checks if a patient is under the care of the current doctor.
+     *
+     * @param patientId the ID of the patient
+     * @return true if the patient is under the doctor, false otherwise
+     */
     public boolean isPatientUnderDoctor(String patientId) {
         for (Patient patient : currentPatients) {
             if (patient.getId().equals(patientId)) {
@@ -83,10 +105,15 @@ public class MedicalRecordService {
                 return;
             }
         }
-        
+
         System.out.println("Patient of ID: " + patientId + " is not under the care of the doctor.");
     }
 
+    /**
+     * Retrieves and prints the medical record of a patient for patient viewing.
+     *
+     * @param patientId the ID of the patient
+     */
     public void patientGetMedicalRecord(String patientId) {
         Patient p = getPatientById(patientId);
 
@@ -125,7 +152,16 @@ public class MedicalRecordService {
         p.setTreatments(treatment);
     }
 
-    // Prescription method goes here too
+    /**
+     * Sets a new prescription for a patient.
+     *
+     * @param patientId the ID of the patient
+     * @param prescription the prescription to set
+     */
+    public void setNewPrescription(String patientId, String prescription) {
+        Patient p = getPatientById(patientId);
+        p.setPrescriptions(prescription);
+    }
 
     /**
      * Retrieves a patient by their ID.

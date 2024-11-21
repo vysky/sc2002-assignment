@@ -22,7 +22,7 @@ import hms.service.medicalRecord.MedicalRecordService;
 public class PatientServiceImpl extends UserService
 {
     private Patient authenticatedPatient;
-    private SharedUserServiceImpl sharedUserServiceImpl;    
+    private SharedUserServiceImpl sharedUserServiceImpl;
     private AppointmentManager appointmentManager;
     private MedicalRecordService medicalRecordService;
     private RecordManager recordManager;
@@ -44,6 +44,7 @@ public class PatientServiceImpl extends UserService
     /**
      * Prints the menu options for the patient.
      */
+    @Override
     public void printMenu()
     {
         LocalDateTime dateTime = LocalDateTime.now();
@@ -126,11 +127,24 @@ public class PatientServiceImpl extends UserService
         }
     }
 
+    /**
+     * Retrieves and displays the patient's medical records.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option1(Scanner input)
     {
         medicalRecordService.patientGetMedicalRecord(authenticatedPatient.getId());
+
+        System.out.println("Enter any key to continue");
+        input.nextLine();
     }
 
+    /**
+     * Updates the patient's personal information.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option2(Scanner input)
     {
         List<Patient> allPatients = sharedUserServiceImpl.getPatientList();
@@ -140,6 +154,8 @@ public class PatientServiceImpl extends UserService
 
     /**
      * Handles option 3: View Available Appointment Slots.
+     *
+     * @param input the Scanner object to read user input
      */
     public void option3(Scanner input)
     {
@@ -165,6 +181,11 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
+    /**
+     * Schedules a new appointment for the patient.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option4(Scanner input)
     {
         List<Doctor> doctors = appointmentManager.getAllDoctors();
@@ -200,9 +221,16 @@ public class PatientServiceImpl extends UserService
 
         if(!availableTimeslots.isEmpty()) {
             appointmentManager.selectTimeslotAndMakeAppointment(input, authenticatedPatient.getId(), selectedDoctorId, selectedDate, availableTimeslots);
+            System.out.println("Enter any key to continue");
+            input.nextLine();
         }
     }
 
+    /**
+     * Reschedules an existing appointment for the patient.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option5(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
@@ -251,6 +279,11 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
+    /**
+     * Cancels an existing appointment for the patient.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option6(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
@@ -289,6 +322,11 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
+    /**
+     * Displays all scheduled appointments for the patient.
+     *
+     * @param input the Scanner object to read user input
+     */
     public void option7(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
@@ -303,10 +341,15 @@ public class PatientServiceImpl extends UserService
     }
 
     /**
-     * Handles option 8: View Past Appointment Outcome Records.
+     * Displays past appointment outcome records for the patient.
+     *
+     * @param rm    the RecordManager object
+     * @param input the Scanner object to read user input
      */
     public void option8(RecordManager rm, Scanner input)
     {
         rm.printPatientHistory(authenticatedPatient.getId());
+        System.out.println("Enter any key to continue");
+        input.nextLine();
     }
 }

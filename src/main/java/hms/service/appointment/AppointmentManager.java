@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -32,6 +31,12 @@ public class AppointmentManager {
     private static final String PATIENT_FILE = "src/main/resources/csv/patient.csv";
 
 //General
+    /**
+     * Prompts the user to input a date.
+     *
+     * @param input the scanner for user input
+     * @return the date entered by the user
+     */
     public String inputDate (Scanner input) {
         System.out.println("Enter Date (e.g., 04 Nov 2024):");
         return input.nextLine();
@@ -39,148 +44,156 @@ public class AppointmentManager {
 
 //Patient
 
-public void updateInformation (String patientId, List<Patient> allPatients, Scanner input) {
+    /**
+     * Updates patient information based on user input.
+     *
+     * @param patientId   the ID of the patient
+     * @param allPatients the list of all patients
+     * @param input       the scanner for user input
+     */
+    public void updateInformation (String patientId, List<Patient> allPatients, Scanner input) {
 
-    Patient currentPatient = null;
+        Patient currentPatient = null;
 
-    for (int i = 0; i < allPatients.size(); i++)
-    {
-        if (allPatients.get(i).getId().equals(patientId)) {
-            currentPatient = allPatients.get(i);
-            break;
+        for (int i = 0; i < allPatients.size(); i++)
+        {
+            if (allPatients.get(i).getId().equals(patientId)) {
+                currentPatient = allPatients.get(i);
+                break;
+            }
         }
-    }
 
-    String newName = currentPatient.getName();
-    String newDob = currentPatient.getDateOfBirth();
-    String newEmail = currentPatient.getEmail();
+        String newName = currentPatient.getName();
+        String newDob = currentPatient.getDateOfBirth();
+        String newEmail = currentPatient.getEmail();
 
-    while (true) {
-        System.out.println("Select the information you want to update:");
-        System.out.println("(1) Name");
-        System.out.println("(2) Date Of Birth");
-        System.out.println("(3) Email");
-        System.out.println("(4) Confirm the changes");
-        System.out.println("(5) Discard changes and exit");
-        int choice = input.nextInt();
-        input.nextLine();
+        while (true) {
+            System.out.println("Select the information you want to update:");
+            System.out.println("(1) Name");
+            System.out.println("(2) Date Of Birth");
+            System.out.println("(3) Email");
+            System.out.println("(4) Confirm the changes");
+            System.out.println("(5) Discard changes and exit");
+            int choice = input.nextInt();
+            input.nextLine();
 
-        switch (choice) {
-            case 1:
-                System.out.print("Enter new name: ");
-                newName = input.nextLine();
-                currentPatient.setName(newName);
-                break;
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter new name: ");
+                    newName = input.nextLine();
+                    currentPatient.setName(newName);
+                    break;
 
-            case 2:
-                System.out.print("Enter new date of birth: ");
-                newDob = input.nextLine();
-                currentPatient.setDateOfBirth(newDob);
-                break;
+                case 2:
+                    System.out.print("Enter new date of birth: ");
+                    newDob = input.nextLine();
+                    currentPatient.setDateOfBirth(newDob);
+                    break;
 
-            case 3:
-                System.out.print("Enter new email: ");
-                newEmail = input.nextLine();
-                currentPatient.setEmail(newEmail);
-                break;
+                case 3:
+                    System.out.print("Enter new email: ");
+                    newEmail = input.nextLine();
+                    currentPatient.setEmail(newEmail);
+                    break;
 
-            case 4:
+                case 4:
 
-                try (CSVWriter writer = new CSVWriter(new FileWriter(PATIENT_FILE))) {
-                // Write header
-                    String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"}; // Replace with actual field names
-                    writer.writeNext(header);
+                    try (CSVWriter writer = new CSVWriter(new FileWriter(PATIENT_FILE))) {
+                    // Write header
+                        String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"}; // Replace with actual field names
+                        writer.writeNext(header);
 
-                // Write patient data
-                    for (Patient patient : allPatients) {
-                        String[] patientData = convertPatientToStringArray(patient);
-                        writer.writeNext(patientData);
+                    // Write patient data
+                        for (Patient patient : allPatients) {
+                            String[] patientData = convertPatientToStringArray(patient);
+                            writer.writeNext(patientData);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                System.out.println("Changes confirmed and saved.");
-                return;
+                    System.out.println("Changes confirmed and saved.");
+                    return;
 
-            case 5:
-                System.out.println("No changes has been made");
-                System.out.println("Enter any key to continue");
-                input.nextLine();
-                return;
+                case 5:
+                    System.out.println("No changes has been made");
+                    System.out.println("Enter any key to continue");
+                    input.nextLine();
+                    return;
 
-            default:
-                System.out.println("Invalid choice. Please try again");
-                break;
-        }
-    }
-}
-
-private String[] convertPatientToStringArray(Patient patient) {
-    // Convert patient fields to a String array
-    // Replace getId(), getName(), getDateOfBirth(), getEmail() with actual getter methods
-    ArrayList<String> diagnoses = patient.getDiagnoses();
-    ArrayList<String> treatments = patient.getTreatments();
-    ArrayList<String> prescriptions = patient.getPrescriptions();
-    boolean active = patient.getActive();
-    String activeStatus = "";
-
-    StringBuilder stringBuilder = new StringBuilder("[");
-
-    for (int i = 0; i < diagnoses.size(); i++)
-    {
-        stringBuilder.append(diagnoses.get(i));
-        if (i < diagnoses.size() - 1) {
-            stringBuilder.append(",");
+                default:
+                    System.out.println("Invalid choice. Please try again");
+                    break;
+            }
         }
     }
 
-    stringBuilder.append("]");
-    String diagnosesString = stringBuilder.toString();
+    private String[] convertPatientToStringArray(Patient patient) {
+        // Convert patient fields to a String array
+        // Replace getId(), getName(), getDateOfBirth(), getEmail() with actual getter methods
+        ArrayList<String> diagnoses = patient.getDiagnoses();
+        ArrayList<String> treatments = patient.getTreatments();
+        ArrayList<String> prescriptions = patient.getPrescriptions();
+        boolean active = patient.getActive();
+        String activeStatus = "";
 
-    stringBuilder.setLength(0);
-    stringBuilder.append("[");
-    for (int i = 0; i < treatments.size(); i++)
-    {
-        stringBuilder.append(treatments.get(i));
-        if (i < treatments.size() - 1) {
-            stringBuilder.append(",");
+        StringBuilder stringBuilder = new StringBuilder("[");
+
+        for (int i = 0; i < diagnoses.size(); i++)
+        {
+            stringBuilder.append(diagnoses.get(i));
+            if (i < diagnoses.size() - 1) {
+                stringBuilder.append(",");
+            }
         }
-    }
-    stringBuilder.append("]");
-    String treatmentsString = stringBuilder.toString();
 
-    stringBuilder.setLength(0);
-    stringBuilder.append("[");
-    for (int i = 0; i < prescriptions.size(); i++)
-    {
-        stringBuilder.append(prescriptions.get(i));
-        if (i < prescriptions.size() - 1) {
-            stringBuilder.append(",");
+        stringBuilder.append("]");
+        String diagnosesString = stringBuilder.toString();
+
+        stringBuilder.setLength(0);
+        stringBuilder.append("[");
+        for (int i = 0; i < treatments.size(); i++)
+        {
+            stringBuilder.append(treatments.get(i));
+            if (i < treatments.size() - 1) {
+                stringBuilder.append(",");
+            }
         }
+        stringBuilder.append("]");
+        String treatmentsString = stringBuilder.toString();
+
+        stringBuilder.setLength(0);
+        stringBuilder.append("[");
+        for (int i = 0; i < prescriptions.size(); i++)
+        {
+            stringBuilder.append(prescriptions.get(i));
+            if (i < prescriptions.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+
+        stringBuilder.append("]");
+        String prescriptionsString = stringBuilder.toString();
+
+        stringBuilder.setLength(0);
+
+        if (active == true){
+            activeStatus = "true";
+        }
+
+        else {
+            activeStatus = "false";
+        }
+
+        return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(),
+        diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), activeStatus};
     }
-
-    stringBuilder.append("]");
-    String prescriptionsString = stringBuilder.toString();
-
-    stringBuilder.setLength(0);
-
-    if (active == true){
-        activeStatus = "true";
-    }
-
-    else {
-        activeStatus = "false";
-    }
-
-    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(),
-    diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), activeStatus};
-}
 
 
 //Related to Doctor
     /**
      * Retrieves all doctors from the staff file.
+     *
      * @return a list of all doctors
      */
     public List<Doctor> getAllDoctors() {
@@ -200,6 +213,11 @@ private String[] convertPatientToStringArray(Patient patient) {
         return doctors;
     }
 
+    /**
+     * Displays a list of doctors.
+     *
+     * @param doctors the list of doctors to display
+     */
     public void displayDoctor(List<Doctor> doctors) {
         System.out.println("List of doctors:");
         for (int i = 0; i < doctors.size(); i++) {
@@ -208,6 +226,13 @@ private String[] convertPatientToStringArray(Patient patient) {
         }
     }
 
+    /**
+     * Allows the user to select a doctor.
+     *
+     * @param input      the scanner for user input
+     * @param doctorSize the number of doctors available
+     * @return the selected doctor's index, or -1 if invalid
+     */
     public int selectDoctor(Scanner input, int doctorSize) {
         System.out.println("Select a doctor by numbers:");
         int doctorNumber = input.nextInt();
@@ -224,8 +249,9 @@ private String[] convertPatientToStringArray(Patient patient) {
 //Related to Timeslot
     /**
      * Retrieves available timeslots for a specific doctor on a specific date.
+     *
      * @param doctorId the ID of the doctor
-     * @param date the date to check for availability
+     * @param date     the date to check for availability
      * @return a list of available timeslots
      */
     public List<Timeslot> getAvailableTimeslots(String doctorId, String date) {
@@ -245,6 +271,12 @@ private String[] convertPatientToStringArray(Patient patient) {
         return availableTimeslots;
     }
 
+    /**
+     * Displays available timeslots.
+     *
+     * @param availableTimeslots the list of available timeslots
+     * @return 1 if timeslots are available, -1 otherwise
+     */
     public int displayAvailableTimeslots(List<Timeslot> availableTimeslots) {
         if (availableTimeslots.isEmpty()) {
             System.out.println("No available timeslots for the selected date.");
@@ -288,9 +320,10 @@ private String[] convertPatientToStringArray(Patient patient) {
     }
 
     /**
-     * Checks if a specific timeslot is available for a doctor on a specific date.
+     * Checks if a specific timeslot is available for a doctor on a date.
+     *
      * @param doctorId the ID of the doctor
-     * @param date the date to check
+     * @param date     the date to check
      * @param timeslot the timeslot to check
      * @return true if the timeslot is available, false otherwise
      */
@@ -313,6 +346,14 @@ private String[] convertPatientToStringArray(Patient patient) {
         return false;
     }
 
+    /**
+     * Updates the availability of a timeslot for a doctor.
+     *
+     * @param doctorId    the ID of the doctor
+     * @param date        the date
+     * @param timeslot    the timeslot
+     * @param availability the new availability status
+     */
     public void updateAvailability(String doctorId, String date, String timeslot, String availability) {
 
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
@@ -507,11 +548,12 @@ private String[] convertPatientToStringArray(Patient patient) {
     }
 
     /**
-     * Makes a new appointment.
+     * Makes a new appointment for a patient with a doctor at a specified date and timeslot.
+     *
      * @param patientId the ID of the patient
-     * @param doctorId the ID of the doctor
-     * @param date the date of the appointment
-     * @param timeslot the timeslot of the appointment
+     * @param doctorId  the ID of the doctor
+     * @param date      the date of the appointment
+     * @param timeslot  the timeslot of the appointment
      */
     public void makeAppointment(String patientId, String doctorId, String date, String timeslot) {
 
@@ -571,6 +613,12 @@ private String[] convertPatientToStringArray(Patient patient) {
         }
     }
 
+    /**
+     * Updates the status of an appointment.
+     *
+     * @param appointmentID the ID of the appointment
+     * @param status        the new status of the appointment
+     */
     public void updateAppointmentStatus(String appointmentID, String status) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
 
@@ -658,13 +706,20 @@ private String[] convertPatientToStringArray(Patient patient) {
         return selectedAppointment;
     }
 
+    /**
+     * Retrieves the appointment ID based on doctor ID and user input.
+     *
+     * @param doctorId the ID of the doctor
+     * @param input    the scanner for user input
+     * @return the appointment ID, or null if not found
+     */
     public String getAppointmentId(String doctorId, Scanner input) {
         List<String> appointmentIds = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
             int index = 1;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Confirmed")) {
                     System.out.println((index++) + ":");
                     System.out.println("Appointment ID: " + nextLine[0]);
                     System.out.println("Patient ID: " + nextLine[1]);
