@@ -3,6 +3,7 @@ package hms.service.user;
 import hms.model.appointment.*;
 import hms.model.medicine.Medicine;
 import hms.model.user.*;
+import hms.service.appointment.AppointmentManager;
 import hms.service.medicine.InventoryServiceImpl;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,6 @@ public class AdministratorServiceImpl extends UserService
     private InventoryServiceImpl inventoryService;
     private SharedUserServiceImpl sharedUserService;
     private UserAuthenticationServiceImpl userAuthenticationService;
-    
 
     /**
      * Constructs an AdministratorServiceImpl with the specified administrator, inventory service, and shared user service.

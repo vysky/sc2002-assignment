@@ -1,4 +1,4 @@
-package hms.model.appointment;
+package hms.service.appointment;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,9 +13,10 @@ import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
+import hms.model.appointment.Appointment;
+import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
-import hms.service.user.SharedUserServiceImpl;
 
 /**
  * The AppointmentManager class is responsible for managing appointments, including
@@ -25,10 +26,10 @@ import hms.service.user.SharedUserServiceImpl;
 public class AppointmentManager {
 
     private List<Patient> patients;
-    private static final String STAFF_FILE = "src\\main\\resources\\csv\\staff.csv";
-    private static final String AVAILABILITY_FILE = "src\\main\\resources\\csv\\Timeslot.csv";
-    private static final String APPOINTMENTS_FILE = "src\\main\\resources\\csv\\Appointment_Record.csv";
-    private static final String PATIENT_FILE = "src\\main\\resources\\csv\\patient.csv";
+    private static final String STAFF_FILE = "src/main/resources/csv/staff.csv";
+    private static final String AVAILABILITY_FILE = "src/main/resources/csv/Timeslot.csv";
+    private static final String APPOINTMENTS_FILE = "src/main/resources/csv/Appointment_Record.csv";
+    private static final String PATIENT_FILE = "src/main/resources/csv/patient.csv";
 
 //General
     public String inputDate (Scanner input) {
@@ -62,7 +63,7 @@ public void updateInformation (String patientId, List<Patient> allPatients, Scan
         System.out.println("(4) Confirm the changes");
         System.out.println("(5) Discard changes and exit");
         int choice = input.nextInt();
-        input.nextLine(); 
+        input.nextLine();
 
         switch (choice) {
             case 1:
@@ -89,7 +90,7 @@ public void updateInformation (String patientId, List<Patient> allPatients, Scan
                 // Write header
                     String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"}; // Replace with actual field names
                     writer.writeNext(header);
-    
+
                 // Write patient data
                     for (Patient patient : allPatients) {
                         String[] patientData = convertPatientToStringArray(patient);
@@ -106,13 +107,13 @@ public void updateInformation (String patientId, List<Patient> allPatients, Scan
                 System.out.println("No changes has been made");
                 System.out.println("Enter any key to continue");
                 input.nextLine();
-                return;   
+                return;
 
             default:
                 System.out.println("Invalid choice. Please try again");
                 break;
         }
-    }        
+    }
 }
 
 private String[] convertPatientToStringArray(Patient patient) {
@@ -123,7 +124,7 @@ private String[] convertPatientToStringArray(Patient patient) {
     ArrayList<String> prescriptions = patient.getPrescriptions();
     boolean active = patient.getActive();
     String activeStatus = "";
-    
+
     StringBuilder stringBuilder = new StringBuilder("[");
 
     for (int i = 0; i < diagnoses.size(); i++)
@@ -166,13 +167,13 @@ private String[] convertPatientToStringArray(Patient patient) {
 
     if (active == true){
         activeStatus = "true";
-    } 
-    
+    }
+
     else {
         activeStatus = "false";
     }
 
-    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), 
+    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(),
     diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), activeStatus};
 }
 
@@ -570,7 +571,7 @@ private String[] convertPatientToStringArray(Patient patient) {
         }
     }
 
-    public void updateAppointmentStatus(String appointmentID, String Status) {
+    public void updateAppointmentStatus(String appointmentID, String status) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
 
             List<String[]> allElements = new ArrayList<>();
@@ -578,7 +579,7 @@ private String[] convertPatientToStringArray(Patient patient) {
 
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals(appointmentID)) {
-                    nextLine[5] = Status;
+                    nextLine[5] = status;
                 }
                 allElements.add(nextLine);
             }
@@ -597,8 +598,10 @@ private String[] convertPatientToStringArray(Patient patient) {
     public void getAppointments(String doctorId) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
+            int index = 1;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals(doctorId)) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                    System.out.println((index++) + ":");
                     System.out.println("Appointment ID: " + nextLine[0]);
                     System.out.println("Patient ID: " + nextLine[1]);
                     System.out.println("Date: " + nextLine[3]);
@@ -606,8 +609,88 @@ private String[] convertPatientToStringArray(Patient patient) {
                     System.out.println();
                 }
             }
+            if (index == 1) {
+                System.out.println("No pending appointments.");
+            }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<String> getPatientAppointmentIds(String patientId) {
+        List<String> appointmentIds = new ArrayList<>();
+
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[1].equals(patientId)) {
+                    appointmentIds.add(nextLine[0]);
+                }
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return appointmentIds;
+    }
+
+    public Appointment chooseAppointment(Scanner input, String doctorId) {
+        Appointment selectedAppointment = null;
+
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            List<Appointment> appointments = new ArrayList<>();
+
+            if (appointments.isEmpty()) {
+                System.out.println("No pending appointments.");
+                return null;
+            }
+
+            getAppointments(doctorId);
+            System.out.println("Select an appointment by number:");
+
+            int appointmentNumber = Integer.parseInt(input.nextLine());
+            selectedAppointment =  appointments.get(appointmentNumber - 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return selectedAppointment;
+    }
+
+    public String getAppointmentId(String doctorId, Scanner input) {
+        List<String> appointmentIds = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            int index = 1;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                    System.out.println((index++) + ":");
+                    System.out.println("Appointment ID: " + nextLine[0]);
+                    System.out.println("Patient ID: " + nextLine[1]);
+                    System.out.println("Date: " + nextLine[3]);
+                    System.out.println("Timeslot: " + nextLine[4]);
+                    System.out.println();
+                    appointmentIds.add(nextLine[0]);
+                }
+            }
+
+            if (!appointmentIds.isEmpty()) {
+                System.out.print("Enter the index of the appointment: ");
+                int userIndex = Integer.parseInt(input.nextLine());
+                if (userIndex > 0 && userIndex <= appointmentIds.size()) {
+                    return appointmentIds.get(userIndex - 1);
+                } else {
+                    System.out.println("Invalid index.");
+                    return null;
+                }
+            } else {
+                System.out.println("No pending appointments found for the given doctor ID.");
+                return null;
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

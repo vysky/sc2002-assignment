@@ -2,8 +2,11 @@ package hms.service.user;
 
 import java.util.Scanner;
 
+import hms.model.appointment.AppointmentOutcome;
 import hms.model.user.Pharmacist;
+import hms.service.appointment.AppointmentOutcomeManager;
 import hms.service.medicine.InventoryServiceImpl;
+
 /**
  * The PharmacistServiceImpl class provides an implementation for pharmacist-specific functionalities
  * in the hospital management system (HMS). It extends the abstract UserService class and handles
@@ -16,16 +19,19 @@ public class PharmacistServiceImpl extends UserService
 {
     private Pharmacist authenticatedPharmacist;
     private InventoryServiceImpl inventoryService;
+    private AppointmentOutcomeManager appointmentOutcomeManager;
+
     /**
      * Constructs a PharmacistServiceImpl with the authenticated pharmacist and inventory service.
      *
-     * @param pharmacist The authenticated pharmacist.
+     * @param pharmacist       The authenticated pharmacist.
      * @param inventoryService The inventory service for managing medicines and replenishment requests.
      */
-    public PharmacistServiceImpl(Pharmacist pharmacist, InventoryServiceImpl inventoryService)
+    public PharmacistServiceImpl(Pharmacist pharmacist, InventoryServiceImpl inventoryService, AppointmentOutcomeManager appointmentOutcomeManager)
     {
         this.authenticatedPharmacist = pharmacist;
         this.inventoryService = inventoryService;
+        this.appointmentOutcomeManager = appointmentOutcomeManager;
     }
 
     /**
@@ -33,6 +39,7 @@ public class PharmacistServiceImpl extends UserService
      */
     public void printMenu()
     {
+        System.out.println();
         System.out.print("""
                                  ========== Pharmacist's Menu ==========
                                  (1) View Appointment Outcome Record
@@ -61,7 +68,7 @@ public class PharmacistServiceImpl extends UserService
             }
             case 2 ->
             {
-                option2();
+                option2(input);
             }
             case 3 ->
             {
@@ -87,15 +94,21 @@ public class PharmacistServiceImpl extends UserService
      */
     public void option1()
     {
-        System.out.println("Option 1");
+        appointmentOutcomeManager.printAppointmentOutcomes();
     }
 
     /**
      * Handles option 2: Update Prescription Status.
      */
-    public void option2()
+    public void option2(Scanner input)
     {
-        System.out.println("Option 2");
+        appointmentOutcomeManager.printAppointmentOutcomes();
+        System.out.print("Select a prescription to dispensed: ");
+        int i = Integer.parseInt(input.nextLine());
+        AppointmentOutcome appointmentOutcome = appointmentOutcomeManager.getAppointmentOutcomes().get(i - 1);
+        appointmentOutcome.getPrescription().setStatus(true);
+        System.out.printf("Prescription dispensed for appointment outcome id %s\n", appointmentOutcome.getAppointmentId());
+        appointmentOutcomeManager.updateAppointmentOutcomeList();
     }
 
     /**

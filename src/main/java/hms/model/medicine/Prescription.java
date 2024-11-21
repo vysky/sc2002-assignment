@@ -1,5 +1,7 @@
 package hms.model.medicine;
 
+import hms.model.shared.MedicineQuantityPair;
+
 /**
  * The Prescription class represents a prescription for a specific medicine with a specified quantity.
  * It contains the details of the medicine prescribed to a patient and the quantity of the medicine.
@@ -7,53 +9,65 @@ package hms.model.medicine;
 
 public class Prescription
 {
-    private Medicine medicine;
-    private int quantity;
+    // private List<MedicineQuantityPair> medicineQuantityPairList;
+    private MedicineQuantityPair medicineQuantityPair;
+    private boolean status = false; // false = pending, true = dispensed
 
     /**
      * Constructor with parameters.
+     *
      * @param medicine Medicine prescribed
      * @param quantity Quantity prescribed
      */
-    public Prescription(Medicine medicine, int quantity)
+    public Prescription(MedicineQuantityPair medicineQuantityPair, boolean status)
     {
-        this.medicine = medicine;
-        this.quantity = quantity;
+        this.medicineQuantityPair = medicineQuantityPair;
+        this.status = status;
+    }
+
+    public MedicineQuantityPair getMedicineQuantityPair()
+    {
+        return this.medicineQuantityPair;
+    }
+
+    public void setMedicineQuantityPair(MedicineQuantityPair medicineQuantityPair)
+    {
+        this.medicineQuantityPair = medicineQuantityPair;
+    }
+
+    // public Prescription(List<MedicineQuantityPair> medicineQuantityPairList, boolean status)
+    // {
+    //     this.medicineQuantityPairList = medicineQuantityPairList;
+    //     this.status = status;
+    // }
+
+    // public List<MedicineQuantityPair> getMedicineQuantityPairList()
+    // {
+    //     return this.medicineQuantityPairList;
+    // }
+    //
+    // public void setMedicineQuantityPairList(List<MedicineQuantityPair> medicineQuantityPairList)
+    // {
+    //     this.medicineQuantityPairList = medicineQuantityPairList;
+    // }
+
+    /**
+     * Gets the status of the prescription order.
+     *
+     * @return Status of the prescription order
+     */
+    public Boolean getStatus()
+    {
+        return this.status;
     }
 
     /**
-     * Gets the medicine prescribed.
-     * @return Medicine prescribed
+     * Sets the status of the prescription order.
+     *
+     * @param status Status of the prescription order
      */
-    public Medicine getMedicine()
+    public void setStatus(Boolean status)
     {
-        return this.medicine;
-    }
-
-    /**
-     * Sets the medicine prescribed.
-     * @param medicine Medicine prescribed
-     */
-    private void setMedicine(Medicine medicine)
-    {
-        this.medicine = medicine;
-    }
-
-    /**
-     * Gets the quantity prescribed.
-     * @return Quantity prescribed
-     */
-    public int getQuantity()
-    {
-        return this.quantity;
-    }
-
-    /**
-     * Sets the quantity prescribed.
-     * @param quantity Quantity prescribed
-     */
-    private void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
+        this.status = status;
     }
 }
