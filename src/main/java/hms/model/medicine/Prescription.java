@@ -10,14 +10,22 @@ import hms.model.shared.MedicineQuantityPair;
 public class Prescription
 {
     // private List<MedicineQuantityPair> medicineQuantityPairList;
+
+    /**
+     * The medicine and quantity pair prescribed.
+     */
     private MedicineQuantityPair medicineQuantityPair;
+
+    /**
+     * The status of the prescription order. False = pending, True = dispensed.
+     */
     private boolean status = false; // false = pending, true = dispensed
 
     /**
      * Constructor with parameters.
      *
-     * @param medicine Medicine prescribed
-     * @param quantity Quantity prescribed
+     * @param medicineQuantityPair Medicine and quantity pair prescribed
+     * @param status Status of the prescription order
      */
     public Prescription(MedicineQuantityPair medicineQuantityPair, boolean status)
     {
@@ -25,11 +33,19 @@ public class Prescription
         this.status = status;
     }
 
+    /**
+     * Gets the medicine and quantity pair prescribed.
+     * @return Medicine and quantity pair prescribed
+     */
     public MedicineQuantityPair getMedicineQuantityPair()
     {
         return this.medicineQuantityPair;
     }
 
+    /**
+     * Sets the medicine and quantity pair prescribed.
+     * @param medicineQuantityPair Medicine and quantity pair prescribed
+     */
     public void setMedicineQuantityPair(MedicineQuantityPair medicineQuantityPair)
     {
         this.medicineQuantityPair = medicineQuantityPair;

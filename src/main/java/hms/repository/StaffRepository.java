@@ -24,8 +24,14 @@ import hms.model.user.Staff;
  */
 public class StaffRepository implements CsvRepository<Staff>
 {
+    /**
+     * Path to the CSV file where staff data is stored.
+     */
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
+    /**
+     * Headers for the CSV file.
+     */
     String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age", "Password", "Hash", "Active"};
 
     /**
@@ -111,12 +117,6 @@ public class StaffRepository implements CsvRepository<Staff>
                 }
 
                 staffArrayList.add(staff);
-            }
-
-            // todo: delete, for dev only
-            for (Staff staff : staffArrayList)
-            {
-                System.out.println(staff.getName() + "\t" + staff.getPassword() + "\t" + staff.getActive());
             }
 
             return staffArrayList;

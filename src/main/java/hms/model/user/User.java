@@ -1,6 +1,6 @@
 package hms.model.user;
 
-import org.springframework.security.crypto.bcrypt.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  * The User class represents a user in the hospital management system (HMS).
@@ -34,6 +34,7 @@ public class User
      * @param name   The name of the user.
      * @param role   The role of the user (e.g., "Patient", "Doctor", "Administrator").
      * @param gender The gender of the user.
+     * @param active The active status of the user.
      */
     public User(String id, String name, String role, String gender, boolean active)
     {
@@ -53,6 +54,8 @@ public class User
      * @param role     The role of the user (e.g., "Patient", "Doctor", "Administrator").
      * @param gender   The gender of the user.
      * @param password The password of the user.
+     * @param hash     The hashed password of the user.
+     * @param active   The active status of the user.
      */
     public User(String id, String name, String role, String gender, String password, String hash, boolean active)
     {
@@ -165,21 +168,41 @@ public class User
         this.password = password;
     }
 
+    /**
+     * Gets the hashed password of the user.
+     *
+     * @return the hashed password
+     */
     public String getHash()
     {
         return this.hash;
     }
 
+    /**
+     * Sets the hashed password of the user.
+     *
+     * @param hash the hashed password
+     */
     public void setHash(String hash)
     {
         this.hash = hash;
     }
 
+    /**
+     * Gets the active status of the user.
+     *
+     * @return true if the user is active, false otherwise
+     */
     public boolean getActive()
     {
         return this.active;
     }
 
+    /**
+     * Sets the active status of the user.
+     *
+     * @param active the new active status
+     */
     public void setActive(boolean active)
     {
         this.active = active;

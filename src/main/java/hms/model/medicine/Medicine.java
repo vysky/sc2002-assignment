@@ -6,8 +6,19 @@ package hms.model.medicine;
  */
 
 public class Medicine {
+    /**
+     * The name of the medicine.
+     */
     private String medicineName;
+
+    /**
+     * The initial stock of the medicine.
+     */
     private int initialStock;
+
+    /**
+     * The low stock alert threshold.
+     */
     private int lowStockAlert;
 
     /**

@@ -84,7 +84,7 @@ public class DoctorServiceImpl extends UserService
             }
         }
     }
-    
+
     /**
      * Handles option 1: View Patient Medical Records.
      *
@@ -181,6 +181,12 @@ public class DoctorServiceImpl extends UserService
         } while (loop);
     }
 
+    /**
+     * Handles option 3: View Personal Schedule.
+     *
+     * @param am    the AppointmentManager object
+     * @param input the Scanner object to read user input
+     */
     public void option3(AppointmentManager am, Scanner input) {
         while (true) {
             System.out.println("Enter date to view schedule (eg 01 Jan 2000): \n(Input 0 to exit)");
@@ -193,6 +199,12 @@ public class DoctorServiceImpl extends UserService
         }
     }
 
+    /**
+     * Handles option 4: Set Availability for Appointments.
+     *
+     * @param am    the AppointmentManager object
+     * @param input the Scanner object to read user input
+     */
     public void option4(AppointmentManager am, Scanner input) { // Set availability for appointments
         System.out.println("Select a date (eg 01 Jan 2000): ");
         String date = input.nextLine();
@@ -201,14 +213,33 @@ public class DoctorServiceImpl extends UserService
         am.setAvailability(authenticatedDoctor.getId(), date, input);
     }
 
+    /**
+     * Handles option 5: Accept or Decline Appointment Requests.
+     *
+     * @param am    the AppointmentManager object
+     * @param input the Scanner object to read user input
+     */
     public void option5(AppointmentManager am, Scanner input) { // Accept or Decline Appointment Requests
         am.acceptAppointment(authenticatedDoctor.getId(), input);
     }
 
+    /**
+     * Handles option 6: View Upcoming Appointments.
+     *
+     * @param am    the AppointmentManager object
+     * @param input the Scanner object to read user input
+     */
     public void option6(AppointmentManager am, Scanner input) { // View upcoming appointments
         am.getAppointments(authenticatedDoctor.getId());
     }
 
+    /**
+     * Handles option 7: Record Appointment Outcome.
+     *
+     * @param am    the AppointmentManager object
+     * @param rm    the RecordManager object
+     * @param input the Scanner object to read user input
+     */
     public void option7(AppointmentManager am, RecordManager rm, Scanner input) { // Record Appointment Outcome
         rm.recordAppointmentOutcome(authenticatedDoctor.getId(), input);
     }

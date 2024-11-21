@@ -47,7 +47,7 @@ public class AdministratorServiceImpl extends UserService
      * Prints the menu options for the administrator.
      */
     public void printMenu()
-    {   
+    {
         // todo: for logout, want to try logout back to main menu. may be an option to logout and an option to end program?
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -122,9 +122,9 @@ public class AdministratorServiceImpl extends UserService
                         """);
                 opt = Integer.parseInt(input.nextLine());
                 break;
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Invalid Option! ");
-                
+
             } catch(NullPointerException e) {
                 System.out.println("Invalid Option! ");
             }
@@ -137,11 +137,11 @@ public class AdministratorServiceImpl extends UserService
             return;
         }
     }
-    
+
     /**
-     * Creates new staff.
+     * Creates a new staff member.
      *
-     * @param input the Scanner object to read user input.
+     * @param input the Scanner object to read user input
      */
     private void newStaff(Scanner input){
         String id="",i,name,role,gender,oopt,c="";
@@ -218,7 +218,7 @@ public class AdministratorServiceImpl extends UserService
             try{
                 System.out.println("Enter New Staff age");
                 age = Integer.parseInt(input.nextLine());
-                
+
                 System.out.println("Confirm age "+ age + " is correct?");
                 System.out.println("Key 1 to confirm, 0 to edit, any other key to return to menu");
                 oopt = input.nextLine();
@@ -234,9 +234,9 @@ public class AdministratorServiceImpl extends UserService
                     System.out.println("Invalid age");
                 }
                 else break;
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Invalid Option! ");
-            
+
             }catch(NullPointerException e) {
                 System.out.println("Invalid Option! ");
             }
@@ -256,14 +256,14 @@ public class AdministratorServiceImpl extends UserService
                 {
                     case "administrator" ->
                     {
-                        
+
                             staff = new Administrator(id, name, role, gender, age, active);
-                        
+
                     }
                     case "doctor" ->
                     {
                             staff = new Doctor(id, name, role, gender, age, active);
-                        
+
                     }
                     case "pharmacist" ->
                     {
@@ -273,13 +273,14 @@ public class AdministratorServiceImpl extends UserService
                 }
         List<Staff> staffList = sharedUserService.getStaffList();
         staffList.add(staff);
-        
+
     }
 
     /**
-     * Check existing staff number sequence based on role.
+     * Checks the existing staff number sequence based on role.
      *
      * @param role the selected role
+     * @return the highest existing staff number for the role
      */
     public int checkIDSeq(String role){
         int nid=-1;
@@ -301,6 +302,8 @@ public class AdministratorServiceImpl extends UserService
 
     /**
      * Handles option 2: View Appointments details.
+     *
+     * @param input the Scanner object to read user input
      */
     public void apptDetails(Scanner input)
     {
@@ -313,10 +316,11 @@ public class AdministratorServiceImpl extends UserService
     }
 
     /**
-     * Check existing staff number sequence based on role.
+     * Displays the list of patients.
      *
-     * @param patientList the List of the staff objects
-     * @param input the Scanner object to read user input.
+     * @param patientList the List of Patient objects
+     * @param input       the Scanner object to read user input
+     * @return the number of patients listed
      */
     private int showPatient(List<Patient> patientList,Scanner input){
         System.out.println("Index\t|ID: \t\t\t|Name\t\t\t|Role\t\t\t|Gender:");
@@ -333,11 +337,11 @@ public class AdministratorServiceImpl extends UserService
     }
 
     /**
-     * Check existing staff number sequence based on role.
+     * Selects a patient to view appointment details.
      *
-     * @param patientList the List of the staff objects
-     * @param i the maximum index of list
-     * @param input the Scanner object to read user input.
+     * @param patientList the List of Patient objects
+     * @param i           the maximum index of the list
+     * @param input       the Scanner object to read user input
      */
     private void selectPatient(List<Patient> patientList,int i,Scanner input){
         int oopt;
@@ -349,7 +353,7 @@ public class AdministratorServiceImpl extends UserService
                         """);
                 oopt = Integer.parseInt(input.nextLine());
                 break;
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Invalid Option! Exiting...");
             }catch(NullPointerException e) {
                 System.out.println("Invalid Option! Exiting...");
@@ -380,9 +384,9 @@ public class AdministratorServiceImpl extends UserService
 
 
     /**
-     * Check all appointment with all doctors.
+     * Lists all appointments for a specific doctor.
      *
-     * @param patientID the List of the staff objects
+     * @param patientID the ID of the patient
      */
     private void listByDoc(String patientID){
         appointmentManager = new AppointmentManager();
@@ -405,9 +409,10 @@ public class AdministratorServiceImpl extends UserService
 
 
     /**
-     * Print out medication list
+     * Prints the medication list and displays the management menu.
      *
-     *  @param input the Scanner object to read user input.
+     * @param input the Scanner object to read user input
+     * @return the selected menu option
      */
     private int printMedList(Scanner input){
         int c;
@@ -424,7 +429,7 @@ public class AdministratorServiceImpl extends UserService
                 System.out.print("Select an option: ");
                 c = Integer.parseInt(input.nextLine());
                 break;
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Non Numberical values entered!");
             } catch(NullPointerException e) {
                 System.out.println("Invalid Option!");
@@ -432,11 +437,11 @@ public class AdministratorServiceImpl extends UserService
         }
         return c;
     }
-    
+
     /**
-     * Add new medication to list
+     * Adds a new medicine to the inventory.
      *
-     *  @param input the Scanner object to read user input.
+     * @param input the Scanner object to read user input
      */
     private void addNewMed(Scanner input){
         String opt,medicineName;
@@ -450,7 +455,7 @@ public class AdministratorServiceImpl extends UserService
                     Key 1 to enter the name again, otherwise any key to exit""");
                 opt = input.nextLine();
                 switch (opt) {
-                    case "1":  break;                          
+                    case "1":  break;
                             default:
                                 test = true;
                                 break;
@@ -463,7 +468,7 @@ public class AdministratorServiceImpl extends UserService
                 }
             if(test){return;}
             int stockLevel,lowStockLevel;
-            while (true) {        
+            while (true) {
                     try{
                         System.out.print("Enter stock level: ");
                         stockLevel = Integer.parseInt(input.nextLine());
@@ -471,13 +476,13 @@ public class AdministratorServiceImpl extends UserService
                             System.out.println("Negative or zero values entered!");
                         }
                         else  break;
-                    }catch(NumberFormatException e) { 
+                    }catch(NumberFormatException e) {
                         System.out.println("Non Numberical values entered!");
                     } catch(NullPointerException e) {
                         System.out.println("Invalid Option!");
                     }
                 }
-                    
+
                 while (true) {
                     try{
                             System.out.print("Enter low stock level alert: ");
@@ -502,7 +507,7 @@ public class AdministratorServiceImpl extends UserService
                                 }
                             }
                             else  break;
-                        }catch(NumberFormatException e) { 
+                        }catch(NumberFormatException e) {
                             System.out.println("Non Numberical values entered!");
                         } catch(NullPointerException e) {
                             System.out.println("Invalid Option!");
@@ -512,11 +517,11 @@ public class AdministratorServiceImpl extends UserService
                     inventoryService.getMedicineList().add(newMedicine);
                     System.out.println("New medicine added!");
     }
-    
+
     /**
-     * Remove existing medication from list
+     * Removes an existing medicine from the inventory.
      *
-     *  @param input the Scanner object to read user input.
+     * @param input the Scanner object to read user input
      */
     private void removeMed(Scanner input){
         int max,index;
@@ -540,18 +545,18 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Medicine removed!");
                 break;
             }
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Non Numberical values entered!");
             }catch(NullPointerException e) {
                 System.out.println("Invalid Option!");
             }
         }
     }
-    
+
     /**
-     * update existing medication stock on the list
+     * Updates the stock level of an existing medicine.
      *
-     *  @param input the Scanner object to read user input.
+     * @param input the Scanner object to read user input
      */
     private void updateStock(Scanner input){
         int max,index,newcount=-1;
@@ -560,7 +565,7 @@ public class AdministratorServiceImpl extends UserService
             try{
                 max = inventoryService.printMedicineList() -1;
                 System.out.print("""
-                    Select medicine to update stock level (Enter the No. of medicine): 
+                    Select medicine to update stock level (Enter the No. of medicine):
                     Otherwise Key 0 to exit.
                     """);
                 index = Integer.parseInt(input.nextLine());
@@ -572,7 +577,7 @@ public class AdministratorServiceImpl extends UserService
                 }
                 else{
                     System.out.print("""
-                        Enter new stock: 
+                        Enter new stock:
                         Enter 0 to clear existing stocks, -1 to exit.
                         """);
                     newcount = Integer.parseInt(input.nextLine());
@@ -590,7 +595,7 @@ public class AdministratorServiceImpl extends UserService
                                 System.out.println("Stock amount cleared to 0.");
                                 inventoryService.updateMedicineStock(index, input.nextInt());
                                 break;
-                        
+
                             default:
                                 break;
                         }
@@ -604,8 +609,8 @@ public class AdministratorServiceImpl extends UserService
                         break;
                     }
                 }
-                
-            }catch(NumberFormatException e) { 
+
+            }catch(NumberFormatException e) {
                 System.out.println("Non Numberical values entered!");
             } catch(NullPointerException e) {
                 System.out.println("Invalid Option!");
@@ -613,7 +618,7 @@ public class AdministratorServiceImpl extends UserService
         }
 
     }
-    
+
     /**
      * Handles option 3: View and Manage Medication Inventory.
      *
@@ -661,8 +666,8 @@ public class AdministratorServiceImpl extends UserService
     public void medTopup(Scanner input)
     {
         int option, max;
-        
-        while (true) {        
+
+        while (true) {
             try{
                 max = inventoryService.printReplenishmentRequestList()-1;
                 System.out.print("Enter replenishment request No. to approve (Enter 0 to go back main menu): ");
@@ -671,7 +676,7 @@ public class AdministratorServiceImpl extends UserService
                     System.out.println("Invalid Option!");
                 }
                 else  break;
-            }catch(NumberFormatException e) { 
+            }catch(NumberFormatException e) {
                 System.out.println("Invalid Option!");
             } catch(NullPointerException e) {
                 System.out.println("Invalid Option!");
@@ -685,7 +690,7 @@ public class AdministratorServiceImpl extends UserService
     /**
      * Displays the sorting menu and allows the user to sort the staff list.
      *
-     * @param staffs   the list of staff
+     * @param staffs    the list of staff
      * @param tempscan the Scanner object to read user input
      */
     private void sortMenu(List<Staff> staffs, Scanner tempscan){
@@ -849,7 +854,7 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Enter new role: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setRole(tempopt);
-                sharedUserService.setStaffList();      
+                sharedUserService.setStaffList();
                 break;
 
             case "3":

@@ -19,11 +19,12 @@ public class Doctor extends Staff
     /**
      * Constructor with parameters.
      *
-     * @param id     Doctor ID
-     * @param name   Doctor name
-     * @param role   Doctor role
-     * @param gender Doctor gender
-     * @param age    Doctor age
+     * @param id     Doctor ID.
+     * @param name   Doctor name.
+     * @param role   Doctor role.
+     * @param gender Doctor gender.
+     * @param age    Doctor age.
+     * @param active Doctor active status.
      */
     public Doctor(String id, String name, String role, String gender, int age, boolean active)
     {
@@ -33,12 +34,14 @@ public class Doctor extends Staff
     /**
      * Constructor with parameters including password.
      *
-     * @param id       Doctor ID
-     * @param name     Doctor name
-     * @param role     Doctor role
-     * @param gender   Doctor gender
-     * @param age      Doctor age
-     * @param password Doctor password
+     * @param id       Doctor ID.
+     * @param name     Doctor name.
+     * @param role     Doctor role.
+     * @param gender   Doctor gender.
+     * @param age      Doctor age.
+     * @param password Doctor password.
+     * @param hash     Doctor hashed password.
+     * @param active   Doctor active status.
      */
     public Doctor(String id, String name, String role, String gender, int age, String password, String hash, boolean active)
     {
