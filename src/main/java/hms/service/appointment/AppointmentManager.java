@@ -472,10 +472,9 @@ public class AppointmentManager {
                     System.out.println("Timeslot: " + nextLine[4]);
                     System.out.println();
                 }
-                else {
-                    System.out.println("No pending appointments found for the given doctor ID.");
-                    return;
-                }
+            }
+            if (index == 1) {
+                System.out.println("No pending appointments.");
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
