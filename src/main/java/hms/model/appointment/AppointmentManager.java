@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -86,7 +87,7 @@ public void updateInformation (String patientId, List<Patient> allPatients, Scan
 
                 try (CSVWriter writer = new CSVWriter(new FileWriter(PATIENT_FILE))) {
                 // Write header
-                    String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Password", "Hash", "Active"}; // Replace with actual field names
+                    String[] header = {"Patient ID", "Name", "Date of Birth", "Gender", "Blood Type", "Contact Information", "Diagnoses", "Treatments", "Prescriptions", "Password", "Hash", "Active"}; // Replace with actual field names
                     writer.writeNext(header);
     
                 // Write patient data
@@ -120,6 +121,8 @@ private String[] convertPatientToStringArray(Patient patient) {
     ArrayList<String> diagnoses = patient.getDiagnoses();
     ArrayList<String> treatments = patient.getTreatments();
     ArrayList<String> prescriptions = patient.getPrescriptions();
+    boolean active = patient.getActive();
+    String activeStatus = "";
     
     StringBuilder stringBuilder = new StringBuilder("[");
 
@@ -127,7 +130,7 @@ private String[] convertPatientToStringArray(Patient patient) {
     {
         stringBuilder.append(diagnoses.get(i));
         if (i < diagnoses.size() - 1) {
-            stringBuilder.append(", ");
+            stringBuilder.append(",");
         }
     }
 
@@ -135,23 +138,24 @@ private String[] convertPatientToStringArray(Patient patient) {
     String diagnosesString = stringBuilder.toString();
 
     stringBuilder.setLength(0);
+    stringBuilder.append("[");
     for (int i = 0; i < treatments.size(); i++)
     {
         stringBuilder.append(treatments.get(i));
         if (i < treatments.size() - 1) {
-            stringBuilder.append(", ");
+            stringBuilder.append(",");
         }
     }
     stringBuilder.append("]");
     String treatmentsString = stringBuilder.toString();
 
     stringBuilder.setLength(0);
-
+    stringBuilder.append("[");
     for (int i = 0; i < prescriptions.size(); i++)
     {
         stringBuilder.append(prescriptions.get(i));
         if (i < prescriptions.size() - 1) {
-            stringBuilder.append(", ");
+            stringBuilder.append(",");
         }
     }
 
@@ -160,8 +164,16 @@ private String[] convertPatientToStringArray(Patient patient) {
 
     stringBuilder.setLength(0);
 
-    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getBloodType(), patient.getEmail(), 
-    diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), "true"};
+    if (active == true){
+        activeStatus = "true";
+    } 
+    
+    else {
+        activeStatus = "false";
+    }
+
+    return new String[]{patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), 
+    diagnosesString, treatmentsString, prescriptionsString, patient.getPassword(), patient.getHash(), activeStatus};
 }
 
 
