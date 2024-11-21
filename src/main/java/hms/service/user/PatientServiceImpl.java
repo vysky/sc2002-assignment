@@ -21,17 +21,19 @@ public class PatientServiceImpl extends UserService
     private Patient authenticatedPatient;
     private AppointmentManager appointmentManager;
     private MedicalRecordService medicalRecordService;
+    private SharedUserServiceImpl sharedUserServiceImpl;
 
     /**
      * Constructs a PatientServiceImpl with the authenticated patient.
      *
      * @param patient The authenticated patient.
      */
-    public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService)
+    public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService, SharedUserServiceImpl sharedUserServiceImpl)
     {
         this.authenticatedPatient = patient;
         this.appointmentManager = appointmentManager;
         this.medicalRecordService = medicalRecordService;
+        this.sharedUserServiceImpl = sharedUserServiceImpl;
     }
 
     /**
@@ -122,9 +124,9 @@ public class PatientServiceImpl extends UserService
 
     public void option2(Scanner input)
     {
-        //(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, String password)
-        System.out.println("Update Personal Information");
+        List<Patient> allPatients = sharedUserServiceImpl.getPatientList();
 
+        appointmentManager.updateInformation(authenticatedPatient.getId(), allPatients, input);
     }
 
     /**
