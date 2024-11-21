@@ -120,6 +120,9 @@ public class PatientServiceImpl extends UserService
     public void option1(Scanner input)
     {
         medicalRecordService.patientGetMedicalRecord(authenticatedPatient.getId());
+
+        System.out.println("Enter any key to continue");
+        input.nextLine();
     }
 
     public void option2(Scanner input)
