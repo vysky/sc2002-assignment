@@ -84,10 +84,6 @@ public class HMSApp
                                          ----- Welcome to Hospital Management System -----
                                          1. Login
                                          2. Forgot password
-                                         3. (DEV) Login as Patient
-                                         4. (DEV) Login as Administrator
-                                         5. (DEV) Login as Doctor
-                                         6. (DEV) Login as Pharmacist
                                          0. Exit program
                                          """);
                 System.out.print("Enter an option: ");
@@ -111,22 +107,22 @@ public class HMSApp
                     {
                         printForgetPasswordDialog();
                     }
-                    case 3 ->
+                    case 33 ->
                     {
                         credentialPair = new CredentialPair("P1001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
                     }
-                    case 4 ->
+                    case 44 ->
                     {
                         credentialPair = new CredentialPair("A001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
                     }
-                    case 5 ->
+                    case 55 ->
                     {
                         credentialPair = new CredentialPair("D001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
                     }
-                    case 6 ->
+                    case 66 ->
                     {
                         credentialPair = new CredentialPair("P001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
@@ -170,19 +166,51 @@ public class HMSApp
         String id = input.nextLine();
         String password;
 
-        if (csl == null)
-        {
-            password = getPasswordWithoutConsole("Enter password: ");
-        }
-        else
-        {
-            char[] ch = csl.readPassword("Enter password : ");
-            password = new String(ch);
-        }
+        password = enterPassword(1);
 
         return new CredentialPair(id, password);
     }
 
+
+    /**
+     * Prompts the user to enter their login password while hiding input.
+     *
+     * @return a CredentialPair containing the entered user id and password
+     */
+    private static String enterPassword(int c){
+        String password;
+
+        if(c==1){
+            if (csl == null)
+            {
+                password = getPasswordWithoutConsole("Enter password: ");
+            }
+            else
+            {
+                char[] ch = csl.readPassword("Enter password : ");
+                password = new String(ch);
+            }
+            return password;
+        }
+        else {
+            if (csl == null)
+            {
+                password = getPasswordWithoutConsole("Enter password again: ");
+            }
+            else
+            {
+                char[] ch = csl.readPassword("Enter password again: ");
+                password = new String(ch);
+            }
+            return password;
+        }
+    }
+
+    /**
+     * Prompts the user to enter their login credentials.
+     *
+     * @return a CredentialPair containing the entered user id and password
+     */
     public static String getPasswordWithoutConsole(String prompt)
     {
         final JPasswordField passwordField = new JPasswordField();
@@ -205,11 +233,11 @@ public class HMSApp
 
         while (!passwordVerified && counter <= maximumAttempt)
         {
-            System.out.print("Enter new password: ");
-            String password = input.nextLine();
-            System.out.print("Enter new password again: ");
+            
+            String password = enterPassword(1);
+            String password2 = enterPassword(2);
 
-            if (password.equals(input.nextLine()))
+            if (password.equals(password2))
             {
                 if (userAuthenticationService.changePassword(id, password))
                 {
@@ -273,11 +301,10 @@ public class HMSApp
             while (!passwordVerified && counter <= maximumAttempt)
             {
                 System.out.print("Please change your password on your first login.\n");
-                System.out.print("Enter new password: ");
-                String password = input.nextLine();
-                System.out.print("Enter new password again: ");
+                String password = enterPassword(1);
+                String password2 = enterPassword(2);
 
-                if (password.equals(input.nextLine()))
+                if (password.equals(password2))
                 {
                     if (userAuthenticationService.changePassword(authenticatedUser.getId(), password))
                     {
