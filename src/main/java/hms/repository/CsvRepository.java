@@ -2,6 +2,11 @@ package hms.repository;
 
 import java.util.List;
 
+/**
+ * Interface for CSV repositories handling data import and export.
+ *
+ * @param <T> the type of objects to be handled
+ */
 public interface CsvRepository<T>
 {
     /**

@@ -180,14 +180,17 @@ public class HMSApp
 
 
     /**
-     * Prompts the user to enter their login password while hiding input.
+     * Prompts the user to enter the password while hiding input.
      *
-     * @return a CredentialPair containing the entered user id and password
+     * @param c an integer indicating the prompt type: 1 for "Enter password", others for "Enter password again"
+     * @return the entered password as a String
      */
-    private static String enterPassword(int c){
+    private static String enterPassword(int c)
+    {
         String password;
 
-        if(c==1){
+        if (c == 1)
+        {
             if (csl == null)
             {
                 password = getPasswordWithoutConsole("Enter password: ");
@@ -199,7 +202,8 @@ public class HMSApp
             }
             return password;
         }
-        else {
+        else
+        {
             if (csl == null)
             {
                 password = getPasswordWithoutConsole("Enter password again: ");
@@ -214,9 +218,10 @@ public class HMSApp
     }
 
     /**
-     * Prompts the user to enter their login credentials.
+     * Prompts the user to enter a password without using the console.
      *
-     * @return a CredentialPair containing the entered user id and password
+     * @param prompt the message to display to the user
+     * @return the entered password as a String
      */
     public static String getPasswordWithoutConsole(String prompt)
     {
@@ -356,7 +361,7 @@ public class HMSApp
             case "administrator" ->
             {
                 assert authenticatedUser instanceof Administrator;
-                return new AdministratorServiceImpl((Administrator) authenticatedUser, inventoryService, sharedUserService,userAuthenticationService);
+                return new AdministratorServiceImpl((Administrator) authenticatedUser, inventoryService, sharedUserService, userAuthenticationService);
             }
             case "doctor" ->
             {
@@ -394,17 +399,27 @@ public class HMSApp
         clearUser();
     }
 
+    /**
+     * Saves the patient and staff lists to persist data.
+     */
     private static void saveData()
     {
+        inventoryService.updateMedicineList();
         sharedUserService.setPatientList();
         sharedUserService.setStaffList();
     }
 
+    /**
+     * Clears the authenticated user information after logout.
+     */
     private static void clearUser()
     {
         authenticatedUser = null;
     }
 
+    /**
+     * Exits the program gracefully.
+     */
     private static void exitProgram()
     {
         System.out.println("Goodbye!");

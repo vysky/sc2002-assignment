@@ -21,11 +21,12 @@ public class Staff extends User
     /**
      * Constructor with parameters.
      *
-     * @param id     Staff ID
-     * @param name   Staff name
-     * @param role   Staff role
-     * @param gender Staff gender
-     * @param age    Staff age
+     * @param id     Staff ID.
+     * @param name   Staff name.
+     * @param role   Staff role.
+     * @param gender Staff gender.
+     * @param age    Staff age.
+     * @param active Staff active status.
      */
     public Staff(String id, String name, String role, String gender, int age, boolean active)
     {
@@ -36,12 +37,14 @@ public class Staff extends User
     /**
      * Constructor with parameters including password.
      *
-     * @param id       Staff ID
-     * @param name     Staff name
-     * @param role     Staff role
-     * @param gender   Staff gender
-     * @param age      Staff age
-     * @param password Staff password
+     * @param id       Staff ID.
+     * @param name     Staff name.
+     * @param role     Staff role.
+     * @param gender   Staff gender.
+     * @param age      Staff age.
+     * @param password Staff password.
+     * @param hash     Staff hashed password.
+     * @param active   Staff active status.
      */
     public Staff(String id, String name, String role, String gender, int age, String password, String hash, boolean active)
     {
@@ -50,9 +53,9 @@ public class Staff extends User
     }
 
     /**
-     * Gets the age of the staff.
+     * Gets the age of the staff member.
      *
-     * @return Staff age
+     * @return the staff's age.
      */
     public int getAge()
     {
@@ -60,9 +63,9 @@ public class Staff extends User
     }
 
     /**
-     * Sets the age of the staff.
+     * Sets the age of the staff member.
      *
-     * @param age Staff age
+     * @param age the staff's age.
      */
     public void setAge(int age)
     {

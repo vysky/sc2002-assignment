@@ -16,10 +16,14 @@ import java.util.List;
 
 public class AppointmentRepository implements CsvRepository<Appointment>
 {
-     // Path to the CSV file where appointments are stored
+    /**
+     * Path to the CSV file where appointments are stored.
+     */
     static final String CSV_FILE_PATH_APPOINTMENT = "src/main/resources/appointment.csv";
-    
-    // Headers for the CSV file
+
+    /**
+     * Headers for the CSV file.
+     */
     String[] APPOINTMENT_HEADERS = {"Appointment ID", "Patient", "Doctor", "Date", "Timeslot", "Appointment_Status", "Service", "Medication", "Notes", "Prescription_Status"};
 
     /**
@@ -36,7 +40,7 @@ public class AppointmentRepository implements CsvRepository<Appointment>
             // Create a reader for the CSV file
             Reader reader = new FileReader(CSV_FILE_PATH_APPOINTMENT);
             Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader);
-            
+
             //Loop through each record and create an Appointment object
             for (CSVRecord record : records)
             {

@@ -2,7 +2,6 @@ package hms.service.medicine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.math.*;
 
 import hms.model.medicine.Medicine;
 import hms.model.medicine.ReplenishmentRequest;
@@ -60,13 +59,15 @@ public class InventoryServiceImpl
 
     /**
      * Prints the list of medicines.
+     *
+     * @return the total number of medicines printed
      */
     public int printMedicineList()
     {
         int i = 1, maxNL=-1,k=1;
         System.out.println("---------- CURRENT INVENTORY ----------");
         System.out.println("No.\tMedicine Name\tCurrent Stock\tLow Stock Level Alert");
-        
+
         for (Medicine medicine : this.medicineList)
         {
             if(medicine.getMedicineName().length()>maxNL){
@@ -135,6 +136,8 @@ public class InventoryServiceImpl
 
     /**
      * Prints the list of replenishment requests.
+     *
+     * @return the total number of replenishment requests printed
      */
     public int printReplenishmentRequestList()
     {
@@ -179,9 +182,15 @@ public class InventoryServiceImpl
         replenishmentRequestList.remove(index - 1);
     }
 
-    public int checkDuplicateMedications(String a){
+    /**
+     * Checks for duplicate medicines by name.
+     *
+     * @param medicineName the name of the medicine to check for duplicates
+     * @return 1 if a duplicate is found, 0 otherwise
+     */
+    public int checkDuplicateMedications(String medicineName){
         for(Medicine s: medicineList){
-            if(s.getMedicineName().equals(a)){
+            if(s.getMedicineName().equals(medicineName)){
                 return 1;
             }
         }

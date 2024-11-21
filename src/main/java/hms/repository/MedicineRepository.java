@@ -20,9 +20,14 @@ import hms.model.medicine.Medicine;
  */
 public class MedicineRepository implements CsvRepository<Medicine>
 {
-    // Path to the CSV file where medicine data is stored
+    /**
+     * Path to the CSV file where medicine data is stored.
+     */
     static final String CSV_FILE_PATH_MEDICINE = "src/main/resources/csv/medicine.csv";
-    // Headers for the CSV file
+
+    /**
+     * Headers for the CSV file.
+     */
     String[] MEDICINE_HEADERS = {"Medicine Name", "Initial Stock", "Low Stock Level Alert"};
 
     /**
@@ -46,16 +51,10 @@ public class MedicineRepository implements CsvRepository<Medicine>
                 String medicineName = record.get("Medicine Name");
                 int initialStock = Integer.parseInt(record.get("Initial Stock"));
                 int lowStockAlert = Integer.parseInt(record.get("Low Stock Level Alert"));
-                
+
                 // Create a new Medicine object and add it to the list
                 Medicine medicine = new Medicine(medicineName, initialStock, lowStockAlert);
                 medicineArrayList.add(medicine);
-            }
-
-            // todo: delete, for dev only
-            for (Medicine medicine : medicineArrayList)
-            {
-                System.out.println(medicine.getMedicineName());
             }
 
             return medicineArrayList;

@@ -14,8 +14,14 @@ import java.util.List;
  */
 public class TimeslotRepository implements CsvRepository<Timeslot>
 {
+    /**
+     * Path to the CSV file where timeslot data is stored.
+     */
     static final String CSV_FILE_PATH_TIMESLOT = "src/main/resources/timeslot.csv";
 
+    /**
+     * Headers for the CSV file.
+     */
     String[] TIMESLOT_HEADERS = {"ID", "Date", "Timeslot", "Status"};
 
     /**

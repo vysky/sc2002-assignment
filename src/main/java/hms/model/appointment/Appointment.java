@@ -129,8 +129,8 @@ public class Appointment {
     }
 
     /**
-     * Checks if the appointment status is pending or confirmed.
-     * @return true if the status is pending or confirmed, false otherwise
+     * Checks if the appointment status is either pending or confirmed.
+     * @return true if the status is "Pending" or "Confirmed", false otherwise
      */
     public boolean isPendingOrConfirmed() {
         return "Pending".equalsIgnoreCase(this.status) || "Confirmed".equalsIgnoreCase(this.status);

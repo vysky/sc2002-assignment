@@ -24,13 +24,17 @@ public class Patient extends User
     /**
      * Constructor with parameters.
      *
-     * @param id          Patient ID
-     * @param name        Patient name
-     * @param role        Patient role
-     * @param dateOfBirth Patient date of birth
-     * @param gender      Patient gender
-     * @param bloodType   Patient blood type
-     * @param email       Patient email
+     * @param id            Patient ID.
+     * @param name          Patient name.
+     * @param role          Patient role.
+     * @param dateOfBirth   Patient date of birth.
+     * @param gender        Patient gender.
+     * @param bloodType     Patient blood type.
+     * @param email         Patient email.
+     * @param diagnoses     Patient diagnoses.
+     * @param treatments    Patient treatments.
+     * @param prescriptions Patient prescriptions.
+     * @param active        Patient active status.
      */
     public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions, boolean active)
     {
@@ -46,14 +50,19 @@ public class Patient extends User
     /**
      * Constructor with parameters including password.
      *
-     * @param id          Patient ID
-     * @param name        Patient name
-     * @param role        Patient role
-     * @param dateOfBirth Patient date of birth
-     * @param gender      Patient gender
-     * @param bloodType   Patient blood type
-     * @param email       Patient email
-     * @param password    Patient password
+     * @param id            Patient ID.
+     * @param name          Patient name.
+     * @param role          Patient role.
+     * @param dateOfBirth   Patient date of birth.
+     * @param gender        Patient gender.
+     * @param bloodType     Patient blood type.
+     * @param email         Patient email.
+     * @param diagnoses     Patient diagnoses.
+     * @param treatments    Patient treatments.
+     * @param prescriptions Patient prescriptions.
+     * @param password      Patient password.
+     * @param hash          Patient hashed password.
+     * @param active        Patient active status.
      */
     public Patient(String id, String name, String role, String dateOfBirth, String gender, String bloodType, String email, ArrayList<String> diagnoses, ArrayList<String> treatments, ArrayList<String> prescriptions, String password, String hash, boolean active)
     {
@@ -127,9 +136,9 @@ public class Patient extends User
     }
 
     /**
-     * Gets the diagnoses of the patient.
+     * Gets the list of diagnoses for the patient.
      *
-     * @return Patient diagnoses as a comma-separated string
+     * @return the list of diagnoses.
      */
     public ArrayList<String> getDiagnoses()
     {
@@ -137,9 +146,9 @@ public class Patient extends User
     }
 
     /**
-     * Adds a new diagnosis to the patient's diagnoses.
+     * Adds a new diagnosis to the patient's list of diagnoses.
      *
-     * @param newDiagnosis New diagnosis
+     * @param newDiagnosis the new diagnosis to add.
      */
     public void setDiagnoses(String newDiagnosis)
     {
@@ -147,9 +156,9 @@ public class Patient extends User
     }
 
     /**
-     * Gets the treatments of the patient.
+     * Gets the list of treatments for the patient.
      *
-     * @return Patient treatments as a comma-separated string
+     * @return the list of treatments.
      */
     public ArrayList<String> getTreatments()
     {
@@ -157,9 +166,9 @@ public class Patient extends User
     }
 
     /**
-     * Adds a new treatment to the patient's treatments.
+     * Adds a new treatment to the patient's list of treatments.
      *
-     * @param newTreatment New treatment
+     * @param newTreatment the new treatment to add.
      */
     public void setTreatments(String newTreatment)
     {
@@ -167,9 +176,9 @@ public class Patient extends User
     }
 
     /**
-     * Gets the prescriptions of the patient.
+     * Gets the list of prescriptions for the patient.
      *
-     * @return Patient prescriptions as a comma-separated string
+     * @return the list of prescriptions.
      */
     public ArrayList<String> getPrescriptions()
     {
@@ -177,12 +186,12 @@ public class Patient extends User
     }
 
     /**
-     * Adds a new prescription to the patient's prescriptions.
+     * Adds a new prescription to the patient's list of prescriptions.
      *
-     * @param newPrescription New prescription
+     * @param newPrescription the new prescription to add.
      */
     public void setPrescriptions(String newPrescription)
     {
-        prescriptions.add(newPrescription);
+        this.prescriptions.add(newPrescription);
     }
 }
