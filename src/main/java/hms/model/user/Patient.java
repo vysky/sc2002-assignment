@@ -81,7 +81,7 @@ public class Patient extends User
      *
      * @param dateOfBirth Patient date of birth
      */
-    private void setDateOfBirth(String dateOfBirth)
+    public void setDateOfBirth(String dateOfBirth)
     {
         this.dateOfBirth = dateOfBirth;
     }
@@ -121,7 +121,7 @@ public class Patient extends User
      *
      * @param email Patient email
      */
-    private void setEmail(String email)
+    public void setEmail(String email)
     {
         this.email = email;
     }
