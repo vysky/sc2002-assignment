@@ -26,6 +26,7 @@ public class AdministratorServiceImpl extends UserService
     private Administrator authenticatedAdministrator;
     private InventoryServiceImpl inventoryService;
     private SharedUserServiceImpl sharedUserService;
+    private UserAuthenticationServiceImpl userAuthenticationService;
 
     /**
      * Constructs an AdministratorServiceImpl with the specified administrator, inventory service, and shared user service.
@@ -34,11 +35,12 @@ public class AdministratorServiceImpl extends UserService
      * @param inventoryService the inventory service
      * @param sharedUserService the shared user service
      */
-    public AdministratorServiceImpl(Administrator administrator, InventoryServiceImpl inventoryService, SharedUserServiceImpl sharedUserService)
+    public AdministratorServiceImpl(Administrator administrator, InventoryServiceImpl inventoryService, SharedUserServiceImpl sharedUserService,UserAuthenticationServiceImpl userAuthenticationService)
     {
         this.authenticatedAdministrator = administrator;
         this.inventoryService = inventoryService;
         this.sharedUserService = sharedUserService;
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     /**
@@ -840,18 +842,21 @@ public class AdministratorServiceImpl extends UserService
                 System.out.println("Enter new name: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setName(tempopt);
+                sharedUserService.setStaffList();
                 break;
 
             case "2":
                 System.out.println("Enter new role: ");
                 tempopt = tempScanner.nextLine();
-                //staff.setrole(tempopt);           #set role function
+                theList.get(index-1).setRole(tempopt);
+                sharedUserService.setStaffList();      
                 break;
 
             case "3":
                 System.out.println("Enter new gender: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setGender(tempopt);
+                sharedUserService.setStaffList();
                 break;
 
             case "4":
@@ -860,12 +865,14 @@ public class AdministratorServiceImpl extends UserService
                 theList.get(index-1).setAge(newAge);
                 if(tempScanner.hasNextLine()){
                 tempScanner.nextLine();}
+                sharedUserService.setStaffList();
                 break;
 
             case "5":
                 System.out.println("Enter new password: ");
                 tempopt = tempScanner.nextLine();
                 theList.get(index-1).setPassword(tempopt);
+                sharedUserService.setStaffList();
                 break;
 
             case "6":
@@ -877,10 +884,12 @@ public class AdministratorServiceImpl extends UserService
                     tempopt = tempScanner.nextLine();
                     if(tempopt.equals("t")||tempopt.equals("T")){
                         theList.get(index-1).setActive(true);
+                        sharedUserService.setStaffList();
                         break;
                     }
                     else if(tempopt.equals("f")||tempopt.equals("F")){
                         theList.get(index-1).setActive(false);
+                        sharedUserService.setStaffList();
                         break;
                     }else{
 
@@ -888,9 +897,9 @@ public class AdministratorServiceImpl extends UserService
                 }
                 break;
             case "7":
-                System.out.println("Enter new password: ");
-                tempopt = tempScanner.nextLine();
-                theList.get(index-1).setPassword(tempopt);
+                System.out.println("Removing Password Hash ");
+                theList.get(index-1).setHash("password");
+                sharedUserService.setStaffList();
                 break;
             default:
                 break;

@@ -249,6 +249,8 @@ public class HMSApp
                 if (userAuthenticationService.changePassword(id, password))
                 {
                     System.out.println("Password changed successfully, please login using your new password.");
+                    sharedUserService.setPatientList();
+                    sharedUserService.setStaffList();
                     passwordVerified = true;
                 }
                 else
@@ -354,7 +356,7 @@ public class HMSApp
             case "administrator" ->
             {
                 assert authenticatedUser instanceof Administrator;
-                return new AdministratorServiceImpl((Administrator) authenticatedUser, inventoryService, sharedUserService);
+                return new AdministratorServiceImpl((Administrator) authenticatedUser, inventoryService, sharedUserService,userAuthenticationService);
             }
             case "doctor" ->
             {
