@@ -2,8 +2,6 @@ package hms.model.medicine;
 
 import hms.model.shared.MedicineQuantityPair;
 
-import java.util.List;
-
 /**
  * The Prescription class represents a prescription for a specific medicine with a specified quantity.
  * It contains the details of the medicine prescribed to a patient and the quantity of the medicine.

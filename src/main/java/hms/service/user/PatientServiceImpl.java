@@ -8,6 +8,7 @@ import hms.model.appointment.Timeslot;
 import hms.model.user.Doctor;
 import hms.model.user.Patient;
 import hms.service.appointment.AppointmentManager;
+import hms.service.appointment.RecordManager;
 import hms.service.medicalRecord.MedicalRecordService;
 
 /**
@@ -21,17 +22,19 @@ public class PatientServiceImpl extends UserService
     private Patient authenticatedPatient;
     private AppointmentManager appointmentManager;
     private MedicalRecordService medicalRecordService;
+    private RecordManager recordManager;
 
     /**
      * Constructs a PatientServiceImpl with the authenticated patient.
      *
      * @param patient The authenticated patient.
      */
-    public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService)
+    public PatientServiceImpl(Patient patient, AppointmentManager appointmentManager , MedicalRecordService medicalRecordService, RecordManager recordManager)
     {
         this.authenticatedPatient = patient;
         this.appointmentManager = appointmentManager;
         this.medicalRecordService = medicalRecordService;
+        this.recordManager = recordManager;
     }
 
     /**
@@ -96,7 +99,7 @@ public class PatientServiceImpl extends UserService
             }
             case 8 ->
             {
-                option8();
+                option8(recordManager, input);
             }
             case 11 ->
             {
@@ -294,8 +297,8 @@ public class PatientServiceImpl extends UserService
     /**
      * Handles option 8: View Past Appointment Outcome Records.
      */
-    public void option8()
+    public void option8(RecordManager rm, Scanner input)
     {
-        System.out.println("View Past Appointment Outcome Records");
+        rm.printPatientHistory(authenticatedPatient.getId());
     }
 }
