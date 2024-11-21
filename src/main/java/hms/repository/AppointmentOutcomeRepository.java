@@ -119,7 +119,7 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
 
             for (AppointmentOutcome appointmentOutcome : appointmentOutcomes)
             {
-                csvPrinter.printRecord(appointmentOutcome.getAppointmentOutcomeId(), appointmentOutcome.getAppointmentId(), appointmentOutcome.getService(), appointmentOutcome.getNotes(), appointmentOutcome.getPrescription().getMedicineQuantityPair(), appointmentOutcome.getPrescription().getStatus());
+                csvPrinter.printRecord(appointmentOutcome.getAppointmentOutcomeId(), appointmentOutcome.getAppointmentId(), appointmentOutcome.getService(), appointmentOutcome.getNotes(), appointmentOutcome.getPrescription().getMedicineQuantityPair().medicine(), appointmentOutcome.getPrescription().getMedicineQuantityPair().quantity(), appointmentOutcome.getPrescription().getStatus());
             }
 
             csvPrinter.flush();
