@@ -129,10 +129,10 @@ public class PharmacistServiceImpl extends UserService
         inventoryService.printMedicineList();
 
         System.out.print("Enter medicine to replenish: ");
-        int index = input.nextInt();
+        int index = Integer.parseInt(input.nextLine());
 
         System.out.print("Enter the amount to replenish: ");
-        int amount = input.nextInt();
+        int amount = Integer.parseInt(input.nextLine());
 
         inventoryService.createReplenishmentRequest(index, amount);
         inventoryService.printReplenishmentRequestList();
