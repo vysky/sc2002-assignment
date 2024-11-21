@@ -3,6 +3,7 @@ package hms.model.appointment;
 import hms.model.medicine.Prescription;
 
 public class AppointmentOutcome {
+
     private String appointmentOutcomeId;
     private String appointmentId;
     private String service;
@@ -54,13 +55,11 @@ public class AppointmentOutcome {
         this.notes = notes;
     }
 
-    public Prescription getPrescription()
-    {
+    public Prescription getPrescription() {
         return this.prescription;
     }
 
-    public void setPrescription(Prescription prescription)
-    {
+    public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
 
@@ -71,7 +70,6 @@ public class AppointmentOutcome {
     // public void setMedicine(String medicine) {
     //     this.medicine = medicine;
     // }
-
     // public String getPrescriptionStatus() {
     //     return prescriptionStatus;
     // }
@@ -79,15 +77,13 @@ public class AppointmentOutcome {
     // public void setPrescriptionStatus(String prescriptionStatus) {
     //     this.prescriptionStatus = prescriptionStatus;
     // }
-
-    @Override public String toString() {
-        return "AppointmentOutcome{" +
-                "appointmentOutcomeId='" + appointmentOutcomeId + '\'' +
-                ", appointmentId='" + appointmentId + '\'' +
-                ", service='" + service + '\'' +
-                ", notes='" + notes + '\'' +
-                ", medicine='" + this.prescription.getMedicineQuantityPair() + '\'' +
-                ", prescriptionStatus='" + this.prescription.getStatus() + '\'' +
-                '}';
+    @Override
+    public String toString() {
+        return "Appointment Outcome ID'" + appointmentOutcomeId + '\''
+                + ", Appointment Id='" + appointmentId + '\''
+                + ", Service='" + service + '\''
+                + ", Notes='" + notes + '\''
+                + ", Medicine='" + this.prescription.getMedicineQuantityPair() + '\''
+                + ", PrescriptionStatus='" + this.prescription.getStatus();
     }
 }

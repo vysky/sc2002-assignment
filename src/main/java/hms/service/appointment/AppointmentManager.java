@@ -482,6 +482,23 @@ public class AppointmentManager {
         }
     }
 
+    public List<String> getPatientAppointmentIds(String patientId) {
+        List<String> appointmentIds = new ArrayList<>();
+
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[1].equals(patientId)) {
+                    appointmentIds.add(nextLine[0]);
+                }
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return appointmentIds;
+    }
+
     public Appointment chooseAppointment(Scanner input, String doctorId) {
         Appointment selectedAppointment = null;
 

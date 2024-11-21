@@ -51,6 +51,24 @@ public class AppointmentOutcomeManager {
         appointmentOutcomes.add(newOutcome);
     }
 
+    public void printPatientHistory(List<String> appointmentIds) {
+        if (appointmentIds.isEmpty()) {
+            System.out.println("No appointment history found for the patient.");
+            return;
+        }
+
+        System.out.println("Patient Appointment History:");
+        for (AppointmentOutcome outcome : appointmentOutcomes) {
+            if (appointmentIds.contains(outcome.getAppointmentId())) {
+                System.out.println("Appointment ID: " + outcome.getAppointmentId());
+                System.out.println("Service: " + outcome.getService());
+                System.out.println("Notes: " + outcome.getNotes());
+                System.out.println("Prescription: " + outcome.getPrescription().getMedicineQuantityPair());
+                System.out.println();
+            }
+        }
+    }
+
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
         if (lastAppointmentID != null && lastAppointmentID.length() > 1) {

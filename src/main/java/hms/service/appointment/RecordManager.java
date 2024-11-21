@@ -1,5 +1,6 @@
 package hms.service.appointment;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class RecordManager {
@@ -24,6 +25,14 @@ public class RecordManager {
             // write appointment outcome to CSV
             appointmentOutcomeManager.updateAppointmentOutcomeList();
         }
+    }
 
+    public void printPatientHistory(String patientId) {
+        List<String> appointmentIds = appointmentManager.getPatientAppointmentIds(patientId);
+        if (appointmentIds.isEmpty()) {
+            System.out.println("No appointment history found for the patient.");
+            return;
+        }
+        appointmentOutcomeManager.printPatientHistory(appointmentIds);
     }
 }
