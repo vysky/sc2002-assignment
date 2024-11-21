@@ -26,7 +26,7 @@ public class StaffRepository implements CsvRepository<Staff>
 {
     static final String CSV_FILE_PATH_STAFF = "src/main/resources/csv/staff.csv";
 
-    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age","Password","Hash","Active"};
+    String[] STAFF_HEADERS = {"Staff ID", "Name", "Role", "Gender", "Age", "Password", "Hash", "Active"};
 
     /**
      * Imports staff data from a CSV file.
@@ -47,17 +47,21 @@ public class StaffRepository implements CsvRepository<Staff>
                 Staff staff = new Staff();
                 String id = record.get("Staff ID");
                 String name = record.get("Name");
-                String role = record.get("Role").toLowerCase(); // User.Role role = User.Role.valueOf(record.get("Role").toUpperCase());
+                String role = record.get("Role").toLowerCase();
                 String gender = record.get("Gender");
-                String hash = record.get("Hash");
-                boolean active = false;
                 int age = Integer.parseInt(record.get("Age"));
-                if(Integer.parseInt(record.get("Active"))==1){
-                    active = true;}
-                if(Integer.parseInt(record.get("Active"))==0){
-                    active = false;}
-                String password = "";
-                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
+                String password;
+                String hash = record.get("Hash");
+                boolean active;
+
+                if (record.get("Active") == null || record.get("Active").isEmpty())
+                {
+                    active = true;
+                }
+                else
+                {
+                    active = Boolean.parseBoolean(record.get("Active"));
+                }
 
                 try
                 {
@@ -78,7 +82,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Administrator(id, name, role, gender, age, hash, active);
+                            staff = new Administrator(id, name, role, gender, age, password, hash, active);
                         }
                     }
                     case "doctor" ->
@@ -89,7 +93,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Doctor(id, name, role, gender, age, hash, active);
+                            staff = new Doctor(id, name, role, gender, age, password, hash, active);
                         }
                     }
                     case "pharmacist" ->
@@ -100,7 +104,7 @@ public class StaffRepository implements CsvRepository<Staff>
                         }
                         else
                         {
-                            staff = new Pharmacist(id, name, role, gender, age, hash, active);
+                            staff = new Pharmacist(id, name, role, gender, age, password, hash, active);
                         }
                     }
                     default -> System.out.printf("Unknown role, skipping user %s.", staff.getRole());
@@ -112,7 +116,7 @@ public class StaffRepository implements CsvRepository<Staff>
             // todo: delete, for dev only
             for (Staff staff : staffArrayList)
             {
-                System.out.println(staff.getName());
+                System.out.println(staff.getName() + "\t" + staff.getPassword() + "\t" + staff.getActive());
             }
 
             return staffArrayList;
@@ -145,10 +149,7 @@ public class StaffRepository implements CsvRepository<Staff>
 
             for (Staff staff : staffList)
             {
-                if(staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(),staff.getHash(), 1);
-                else if(!staff.getActive())
-                    csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(),staff.getHash(), 0);
+                csvPrinter.printRecord(staff.getId(), staff.getName(), staff.getRole(), staff.getGender(), staff.getAge(), staff.getPassword(), staff.getHash(), staff.getActive());
             }
 
             csvPrinter.flush();

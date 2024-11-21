@@ -20,8 +20,8 @@ public class PatientServiceImpl extends UserService
 {
     private Patient authenticatedPatient;
     private AppointmentManager appointmentManager;
-    private MedicalRecordService medicalRecordService; 
-    
+    private MedicalRecordService medicalRecordService;
+
     /**
      * Constructs a PatientServiceImpl with the authenticated patient.
      *
@@ -68,7 +68,7 @@ public class PatientServiceImpl extends UserService
         {
             case 1 ->
             {
-                option1(medicalRecordService, input);
+                option1(input);
             }
             case 2 ->
             {
@@ -76,23 +76,23 @@ public class PatientServiceImpl extends UserService
             }
             case 3 ->
             {
-                option3(appointmentManager, input);
+                option3(input);
             }
             case 4 ->
             {
-                option4(appointmentManager, input);
+                option4(input);
             }
             case 5 ->
             {
-                option5(appointmentManager, input);
+                option5(input);
             }
             case 6 ->
             {
-                option6(appointmentManager, input);
+                option6(input);
             }
             case 7 ->
             {
-                option7(appointmentManager, input);
+                option7(input);
             }
             case 8 ->
             {
@@ -115,7 +115,7 @@ public class PatientServiceImpl extends UserService
         }
     }
 
-    public void option1(MedicalRecordService medicalRecordService, Scanner input)
+    public void option1(Scanner input)
     {
         medicalRecordService.patientGetMedicalRecord(authenticatedPatient.getId());
     }
@@ -126,11 +126,11 @@ public class PatientServiceImpl extends UserService
         System.out.println("Update Personal Information");
 
     }
-    
+
     /**
      * Handles option 3: View Available Appointment Slots.
      */
-    public void option3()
+    public void option3(Scanner input)
     {
         List<Doctor> doctors = appointmentManager.getAllDoctors();
         appointmentManager.displayDoctor(doctors);
@@ -154,7 +154,7 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
-    public void option4(AppointmentManager appointmentManager, Scanner input)
+    public void option4(Scanner input)
     {
         List<Doctor> doctors = appointmentManager.getAllDoctors();
         appointmentManager.displayDoctor(doctors);
@@ -170,7 +170,7 @@ public class PatientServiceImpl extends UserService
         String selectedDoctorId = doctors.get(doctorNumber - 1).getId();
 
         Appointment existingAppointment = appointmentManager.getExistingAppointment(authenticatedPatient.getId(), selectedDoctorId);
-        
+
         if (existingAppointment != null) {
             System.out.println("You already have an existing appointment with Dr. " + doctors.get(doctorNumber - 1).getName() + " on " +
                 existingAppointment.getDate() + " at " + existingAppointment.getTimeslot());
@@ -178,7 +178,7 @@ public class PatientServiceImpl extends UserService
                 input.nextLine();
                 return;
         }
-        
+
         String selectedDate = appointmentManager.inputDate(input);
 
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(selectedDoctorId, selectedDate);
@@ -186,17 +186,17 @@ public class PatientServiceImpl extends UserService
             System.out.println("Enter any key to continue");
             input.nextLine();
         }
-        
+
         if(!availableTimeslots.isEmpty()) {
-            appointmentManager.selectTimeslotAndMakeAppointment(input, authenticatedPatient.getId(), selectedDoctorId, selectedDate, availableTimeslots);    
+            appointmentManager.selectTimeslotAndMakeAppointment(input, authenticatedPatient.getId(), selectedDoctorId, selectedDate, availableTimeslots);
         }
     }
 
-    public void option5(AppointmentManager appointmentManager, Scanner input)
+    public void option5(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
         List<Doctor> doctors = appointmentManager.getAllDoctors();
-    
+
         if (appointmentManager.displayExistingAppointment(existingAppointments, doctors) == -1) {
             System.out.println("There is no existing appointment.");
             System.out.println("Enter any key to continue");
@@ -207,7 +207,7 @@ public class PatientServiceImpl extends UserService
         System.out.println("Select an appointment for rescheduling by number:");
         int appointmentNumber = input.nextInt();
         input.nextLine();
-        
+
         if (appointmentNumber < 1 || appointmentNumber > existingAppointments.size()) {
             System.out.println("Invalid selection.");
             System.out.println("Enter any key to continue");
@@ -222,7 +222,7 @@ public class PatientServiceImpl extends UserService
 
         System.out.println("Enter a new appointment date (e.g., 04 Nov 2024):");
         String selectedDate = input.nextLine();
-        
+
         List<Timeslot> availableTimeslots = appointmentManager.getAvailableTimeslots(doctorId, selectedDate);
         if (appointmentManager.displayAvailableTimeslots(availableTimeslots) == -1) {
 
@@ -240,11 +240,11 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
-    public void option6(AppointmentManager appointmentManager, Scanner input)
+    public void option6(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
         List<Doctor> doctors = appointmentManager.getAllDoctors();
-    
+
         if (appointmentManager.displayExistingAppointment(existingAppointments, doctors) == -1) {
             System.out.println("There is no existing appointment.");
             System.out.println("Enter any key to continue");
@@ -278,11 +278,11 @@ public class PatientServiceImpl extends UserService
         input.nextLine();
     }
 
-    public void option7(AppointmentManager appointmentManager, Scanner input)
+    public void option7(Scanner input)
     {
         List<Appointment> existingAppointments = appointmentManager.getExistingAppointment(authenticatedPatient.getId());
         List<Doctor> doctors = appointmentManager.getAllDoctors();
-        
+
         if (appointmentManager.displayExistingAppointment(existingAppointments, doctors) == -1) {
             System.out.println("There is no existing appointment.");
         }
