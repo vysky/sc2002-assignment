@@ -16,47 +16,42 @@ public class Staff extends User
      */
     public Staff()
     {
-    }  
-    
-    /**
-    * Constructor with parameters.
-    * @param id Staff ID
-    * @param name Staff name
-    * @param role Staff role
-    * @param gender Staff gender
-    * @param age Staff age
-    */
-   public Staff(String id, String name, String role, String gender, int age)
-   {
-       super(id, name, role, gender);
-       this.age = age;
-   }
+    }
 
-   
-   public Staff(String id, String name, String role, String gender, int age, boolean active)
-   {
-       super(id, name, role, gender, active);
-       this.age = age;
-   }
+    /**
+     * Constructor with parameters.
+     *
+     * @param id     Staff ID
+     * @param name   Staff name
+     * @param role   Staff role
+     * @param gender Staff gender
+     * @param age    Staff age
+     */
+    public Staff(String id, String name, String role, String gender, int age, boolean active)
+    {
+        super(id, name, role, gender, active);
+        this.age = age;
+    }
 
     /**
      * Constructor with parameters including password.
-     * @param id Staff ID
-     * @param name Staff name
-     * @param role Staff role
-     * @param gender Staff gender
-     * @param age Staff age
+     *
+     * @param id       Staff ID
+     * @param name     Staff name
+     * @param role     Staff role
+     * @param gender   Staff gender
+     * @param age      Staff age
      * @param password Staff password
      */
-    public Staff(String id, String name, String role, String gender, int age, String hash, boolean active)
+    public Staff(String id, String name, String role, String gender, int age, String password, String hash, boolean active)
     {
-        super(id, name, role, gender, hash,active);
+        super(id, name, role, gender, password, hash, active);
         this.age = age;
     }
-    
 
     /**
      * Gets the age of the staff.
+     *
      * @return Staff age
      */
     public int getAge()
@@ -66,6 +61,7 @@ public class Staff extends User
 
     /**
      * Sets the age of the staff.
+     *
      * @param age Staff age
      */
     public void setAge(int age)

@@ -2,7 +2,7 @@ package hms.model.appointment;
 
 /**
  * The Appointment class represents an appointment in the hospital management system.
- * It contains details about the appointment including the appointment ID, patient ID, doctor ID, date, 
+ * It contains details about the appointment including the appointment ID, patient ID, doctor ID, date,
  * timeslot, and status. The class also provides methods for retrieving and modifying these details.
  */
 

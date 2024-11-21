@@ -18,6 +18,7 @@ import hms.service.user.PharmacistServiceImpl;
 import hms.service.user.SharedUserServiceImpl;
 import hms.service.user.UserAuthenticationServiceImpl;
 import hms.service.user.UserService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  * Main application class for the Hospital Management System (HMS).
@@ -132,8 +133,7 @@ public class HMSApp
                     }
                     case 0 ->
                     {
-                        System.out.println("Goodbye!");
-                        System.exit(0); // todo: see if can remove this
+                        exitProgram();
                     }
                     default ->
                     {
@@ -169,31 +169,24 @@ public class HMSApp
         System.out.print("User id: ");
         String id = input.nextLine();
         String password;
-        //System.out.print("Password: ");
-        //String password = input.nextLine();
-        
-        if (csl == null) {
+
+        if (csl == null)
+        {
             password = getPasswordWithoutConsole("Enter password: ");
-        } else {
-            
-            char[] ch = csl.readPassword(
-                "Enter password : ");
+        }
+        else
+        {
+            char[] ch = csl.readPassword("Enter password : ");
             password = new String(ch);
         }
-        
 
         return new CredentialPair(id, password);
     }
 
-    public static String getPasswordWithoutConsole(String prompt) {
-
+    public static String getPasswordWithoutConsole(String prompt)
+    {
         final JPasswordField passwordField = new JPasswordField();
-        return JOptionPane.showConfirmDialog(
-                null,
-                passwordField,
-                prompt,
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(passwordField.getPassword()) : "";
+        return JOptionPane.showConfirmDialog(null, passwordField, prompt, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(passwordField.getPassword()) : "";
     }
 
     /**
@@ -277,7 +270,6 @@ public class HMSApp
         // todo: if have time, add a parameter in csv to track if login the first time instead of checking the default password
         if (authenticatedUser.getPassword().equals("password"))
         {
-
             while (!passwordVerified && counter <= maximumAttempt)
             {
                 System.out.print("Please change your password on your first login.\n");
@@ -287,9 +279,15 @@ public class HMSApp
 
                 if (password.equals(input.nextLine()))
                 {
-                    authenticatedUser.setPassword(password);
-                    System.out.println("Password changed successfully.");
-                    passwordVerified = true;
+                    if (userAuthenticationService.changePassword(authenticatedUser.getId(), password))
+                    {
+                        System.out.println("Password changed successfully.");
+                        passwordVerified = true;
+                    }
+                    else
+                    {
+                        System.out.println("Error changing password, please try again.");
+                    }
                 }
                 else
                 {
@@ -356,9 +354,24 @@ public class HMSApp
             userService.handleSelectedOption(input, option);
         } while (option != 0);
 
+        saveData();
+        clearUser();
+    }
+
+    private static void saveData()
+    {
         sharedUserService.setPatientList();
         sharedUserService.setStaffList();
+    }
 
+    private static void clearUser()
+    {
         authenticatedUser = null;
+    }
+
+    private static void exitProgram()
+    {
+        System.out.println("Goodbye!");
+        System.exit(0); // todo: see if can remove this
     }
 }

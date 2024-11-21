@@ -15,8 +15,8 @@ public class User
     private String role;
     private String gender;
     private String password = "password";
+    private String hash = BCrypt.hashpw(password, BCrypt.gensalt());
     private boolean active = true;
-    private String hash;
 
     /**
      * Default constructor that creates a new User object.
@@ -25,42 +25,16 @@ public class User
     public User()
     {
     }
-    
+
     /**
      * Constructs a new User object with the specified details.
      * This constructor initializes the user properties excluding the password.
-     * 
-     * @param id The unique identifier for the user.
-     * @param name The name of the user.
-     * @param role The role of the user (e.g., "Patient", "Doctor", "Administrator").
+     *
+     * @param id     The unique identifier for the user.
+     * @param name   The name of the user.
+     * @param role   The role of the user (e.g., "Patient", "Doctor", "Administrator").
      * @param gender The gender of the user.
      */
-    public User(String id, String name, String role, String gender)
-    {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.gender = gender;
-    }
-        /**
-     * Constructs a new User object with the specified details, including a password.
-     * This constructor initializes the user properties, including the password.
-     * 
-     * @param id The unique identifier for the user.
-     * @param name The name of the user.
-     * @param role The role of the user (e.g., "Patient", "Doctor", "Administrator").
-     * @param gender The gender of the user.
-     * @param password The password of the user.
-     */
-    public User(String id, String name, String role, String gender, String hash)
-    {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.gender = gender;
-        this.hash = hash;
-    }
-
     public User(String id, String name, String role, String gender, boolean active)
     {
         this.id = id;
@@ -68,15 +42,25 @@ public class User
         this.role = role;
         this.gender = gender;
         this.active = active;
-        this.hash = BCrypt.hashpw("password" , BCrypt.gensalt());
     }
 
-    public User(String id, String name, String role, String gender, String hash, boolean active)
+    /**
+     * Constructs a new User object with the specified details, including a password.
+     * This constructor initializes the user properties, including the password.
+     *
+     * @param id       The unique identifier for the user.
+     * @param name     The name of the user.
+     * @param role     The role of the user (e.g., "Patient", "Doctor", "Administrator").
+     * @param gender   The gender of the user.
+     * @param password The password of the user.
+     */
+    public User(String id, String name, String role, String gender, String password, String hash, boolean active)
     {
         this.id = id;
         this.name = name;
         this.role = role;
         this.gender = gender;
+        this.password = password;
         this.hash = hash;
         this.active = active;
     }
@@ -181,19 +165,23 @@ public class User
         this.password = password;
     }
 
-    public String getHash(){
+    public String getHash()
+    {
         return this.hash;
     }
 
-    public void setHash(String hash){
-         this.hash = hash;
+    public void setHash(String hash)
+    {
+        this.hash = hash;
     }
 
-    public boolean getActive(){
+    public boolean getActive()
+    {
         return this.active;
     }
 
-    public void setActive(boolean tf){
-        this.active = tf;
+    public void setActive(boolean active)
+    {
+        this.active = active;
     }
 }

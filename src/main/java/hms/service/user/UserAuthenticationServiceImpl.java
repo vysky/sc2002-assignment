@@ -6,6 +6,7 @@ import hms.model.shared.CredentialPair;
 import hms.model.user.Patient;
 import hms.model.user.Staff;
 import hms.model.user.User;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.*;
 
 /**
@@ -23,7 +24,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
      * Constructor for UserAuthenticationServiceImpl.
      *
      * @param patientList List of patients.
-     * @param staffList List of staff.
+     * @param staffList   List of staff.
      */
     public UserAuthenticationServiceImpl(List<Patient> patientList, List<Staff> staffList)
     {
@@ -64,29 +65,21 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
 
             if (isCredentialFromStaff(credentialPair.id(), credentialPair.password()))
             {
-                //if(this.getActivebyStaffId(credentialPair)){
                 return this.getStaffById(credentialPair.id());
             }
         }
         catch (Exception ex)
         {
-            System.out.println("""
-                Invalid credentials or Inactive account.
-                Contact your Administrator for more information.
-                """);
+            System.out.println("Invalid credentials or inactive account.");
         }
 
         return null;
     }
 
-    /*public User checkEnabled(CredentialPair credentialPair){
-
-    }*/
-
     /**
      * Changes the password for a user.
      *
-     * @param id The id of the user.
+     * @param id          The id of the user.
      * @param newPassword The new password to set.
      * @return true if the password was successfully changed, false otherwise.
      */
@@ -96,16 +89,15 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
         {
             if (isIdFromPatient(id))
             {
-                
+                getPatientById(id).setPassword(newPassword);
                 getPatientById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-                sharedUserService.setPatientList();
                 return true;
             }
 
             if (isIdFromStaff(id))
             {
+                getStaffById(id).setPassword(newPassword);
                 getStaffById(id).setHash(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-                sharedUserService.setStaffList();
                 return true;
             }
         }
@@ -142,47 +134,25 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     /**
      * Checks if the given credentials belong to a patient.
      *
-     * @param id The id to check.
+     * @param id       The id to check.
      * @param password The password to check.
      * @return true if the credentials belong to a patient, false otherwise.
      */
     private boolean isCredentialFromPatient(String id, String password)
-    {  
-        for(int i = 0; i < this.patientList.size();i++){
-            if(id.equals(this.patientList.get(i).getId())){
-                return BCrypt.checkpw(password, this.patientList.get(i).getHash());
-            }
-            else if(password.equals(this.patientList.get(i).getPassword())){
-                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
-            }
-        }
-        return false;
-        
-        
-        //return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+    {
+        return this.patientList.stream().anyMatch(uObject -> uObject.getId().equals(id) && BCrypt.checkpw(password, uObject.getHash()));
     }
 
     /**
      * Checks if the given credentials belong to a staff member.
      *
-     * @param id The id to check.
+     * @param id       The id to check.
      * @param password The password to check.
      * @return true if the credentials belong to a staff member, false otherwise.
      */
     private boolean isCredentialFromStaff(String id, String password)
     {
-        for(int i = 0; i < this.staffList.size();i++){
-            if(id.equals(this.staffList.get(i).getId())){
-                if (this.staffList.get(i).getActive()) {
-                    return BCrypt.checkpw(password, this.staffList.get(i).getHash());
-                }
-            }
-            else if(password.equals(this.patientList.get(i).getHash())){
-                this.patientList.get(i).setHash(BCrypt.hashpw(password, BCrypt.gensalt()));
-            }
-        }
-        return false;
-        //return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && uObject.getPassword().equals(password));
+        return this.staffList.stream().anyMatch(uObject -> uObject.getId().equals(id) && BCrypt.checkpw(password, uObject.getHash()));
     }
 
     /**
@@ -206,15 +176,4 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService
     {
         return this.staffList.stream().filter(uObject -> uObject.getId().equals(id)).findFirst().orElse(null);
     }
-
-    /*private boolean getActivebyStaffId(String id)
-    {
-        for(int i = 0; i < this.staffList.size();i++){
-                if(id.equals(this.staffList.get(i).getId())){
-                    return this.staffList.get(i).getActive();
-                }
-            }
-            return false;
-        //return this.staffList.stream().filter(uObject -> uObject.getId().equals(id) && (uObject.getActive()==true));
-    }*/
 }

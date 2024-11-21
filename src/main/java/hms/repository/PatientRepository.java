@@ -15,6 +15,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import hms.model.user.Patient;
+
 /**
  * The PatientRepository class provides methods to import and export patient data
  * from and to a CSV file. It implements the CsvRepository interface for handling patient objects.
@@ -37,7 +38,6 @@ public class PatientRepository implements CsvRepository<Patient>
         try
         {
             Reader reader = new FileReader(CSV_FILE_PATH_PATIENT);
-            // Iterable<CSVRecord> records = CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).build().parse(in);
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).build().parse(reader);
 
             for (CSVRecord record : records)
@@ -50,23 +50,27 @@ public class PatientRepository implements CsvRepository<Patient>
                 String gender = record.get("Gender");
                 String bloodType = record.get("Blood Type");
                 String email = record.get("Contact Information");
+                ArrayList<String> diagnoses;
+                ArrayList<String> treatments;
+                ArrayList<String> prescriptions;
+                String password;
                 String hash = record.get("Hash");
-                boolean active = false;
-                if(Integer.parseInt(record.get("Active"))==1){
-                    active = true;}
-                if(Integer.parseInt(record.get("Active"))==0){
-                    active = false;}
-                ArrayList<String> diagnoses = null;
-                ArrayList<String> treatments = null;
-                ArrayList<String> prescriptions = null;
-                String password = "";
-                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
+                boolean active;
+
+                if (record.get("Active") == null || record.get("Active").isEmpty())
+                {
+                    active = true;
+                }
+                else
+                {
+                    active = Boolean.parseBoolean(record.get("Active"));
+                }
 
                 try
                 {
                     String arrayListString = record.get("Diagnoses");
                     String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
-                    diagnoses = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                    diagnoses = trimmedString.isEmpty() ? new ArrayList<>() : new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
                 }
                 catch (Exception e)
                 {
@@ -77,7 +81,7 @@ public class PatientRepository implements CsvRepository<Patient>
                 {
                     String arrayListString = record.get("Treatments");
                     String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
-                    treatments = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                    treatments = trimmedString.isEmpty() ? new ArrayList<>() : new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
                 }
                 catch (Exception e)
                 {
@@ -88,13 +92,12 @@ public class PatientRepository implements CsvRepository<Patient>
                 {
                     String arrayListString = record.get("Prescriptions");
                     String trimmedString = arrayListString.substring(1, arrayListString.length() - 1);
-                    prescriptions = new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
+                    prescriptions = trimmedString.isEmpty() ? new ArrayList<>() : new ArrayList<>(Arrays.asList(trimmedString.split(", ")));
                 }
                 catch (Exception e)
                 {
                     prescriptions = new ArrayList<>();
                 }
-                // boolean changedDefaultPassword = record.get("Changed Default Password") != null;
 
                 try
                 {
@@ -107,11 +110,11 @@ public class PatientRepository implements CsvRepository<Patient>
 
                 if (password == null || password.isEmpty())
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, active);
                 }
                 else
                 {
-                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, hash, active);
+                    patient = new Patient(id, name, "patient", dateOfBirth, gender, bloodType, email, diagnoses, treatments, prescriptions, password, hash, active);
                 }
 
                 patientArrayList.add(patient);
@@ -124,6 +127,8 @@ public class PatientRepository implements CsvRepository<Patient>
                 System.out.print("\tD: " + patient.getDiagnoses());
                 System.out.print("\tT: " + patient.getTreatments());
                 System.out.print("\tP: " + patient.getPrescriptions());
+                System.out.print("\tPassword: " + patient.getPassword());
+                System.out.print("\tActive: " + patient.getActive());
                 System.out.println();
             }
 
@@ -157,7 +162,7 @@ public class PatientRepository implements CsvRepository<Patient>
 
             for (Patient patient : patientList)
             {
-                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), patient.getDiagnoses(), patient.getTreatments(), patient.getPrescriptions(), patient.getPassword());
+                csvPrinter.printRecord(patient.getId(), patient.getName(), patient.getDateOfBirth(), patient.getGender(), patient.getBloodType(), patient.getEmail(), patient.getDiagnoses(), patient.getTreatments(), patient.getPrescriptions(), patient.getPassword(), patient.getHash(), patient.getActive());
             }
 
             csvPrinter.flush();

@@ -39,7 +39,7 @@ public class AppointmentManager {
     }
 
 //Patient
-   
+
 
 //Related to Doctor
     /**
@@ -53,7 +53,7 @@ public class AppointmentManager {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 if ("doctor".equalsIgnoreCase(nextLine[2])) {
-                    doctors.add(new Doctor(nextLine[0], nextLine[1], nextLine[2], nextLine[3], Integer.parseInt(nextLine[4])));
+                    doctors.add(new Doctor(nextLine[0], nextLine[1], nextLine[2], nextLine[3], Integer.parseInt(nextLine[4]), nextLine[5], nextLine[6], Boolean.parseBoolean(nextLine[7])));
                 }
             }
         } catch (IOException | CsvValidationException e) {
@@ -115,7 +115,7 @@ public class AppointmentManager {
         } else {
             System.out.println("Available Timeslots:");
             for (int i = 0; i < availableTimeslots.size(); i++) {
-                System.out.println("(" + (i + 1) + ") " + availableTimeslots.get(i).getTime()); 
+                System.out.println("(" + (i + 1) + ") " + availableTimeslots.get(i).getTime());
             }
         }
         return 1;
@@ -205,7 +205,7 @@ public class AppointmentManager {
     public void selectTimeslotAndMakeAppointment(Scanner input, String patientId, String doctorId, String date, List<Timeslot> availableTimeslots) {
         System.out.println("Select a timeslot by number:");
         int timeslotNumber = input.nextInt();
-        input.nextLine(); 
+        input.nextLine();
 
         if (timeslotNumber < 1 || timeslotNumber > availableTimeslots.size()) {
             System.out.println("Invalid selection.");
@@ -221,7 +221,7 @@ public class AppointmentManager {
         }
     }
 
-//Related to Appointment    
+//Related to Appointment
     public void setAvailability(String doctorId, String date, Scanner input) {
         try (CSVReader reader = new CSVReader(new FileReader(AVAILABILITY_FILE))) {
             Timeslot timeslot = timeSlotSelector(doctorId, date, input);
@@ -305,14 +305,14 @@ public class AppointmentManager {
             for (int i = 0; i < existingAppointments.size(); i++) {
                 Appointment appointment = existingAppointments.get(i);
                 String doctorId = existingAppointments.get(i).getDoctorId();
-                
+
                 for (int j = 0; j < doctors.size(); j++) {
                     if (doctors.get(j).getId().equals(doctorId)) {
-                        doctorName = doctors.get(j).getName();       
-                    }    
+                        doctorName = doctors.get(j).getName();
+                    }
                 }
 
-                System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());   
+                System.out.println("(" + (i + 1) + ") Dr. " + doctorName + ", " + appointment.getDate() + ", " + appointment.getTimeslot() + ", " + appointment.getStatus());
             }
 
             return 1;
@@ -392,7 +392,7 @@ public class AppointmentManager {
 
         System.out.println("Appointment made successfully. Your appointment ID is " + appointmentID);
     }
-  
+
     public void acceptAppointment(String doctorId, Scanner input) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
 
