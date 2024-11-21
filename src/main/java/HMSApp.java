@@ -77,7 +77,7 @@ public class HMSApp
      */
     private static void runProgram()
     {
-        int option;
+        int option,i=0;
         int counter = 1;
         int maximumAttempt = 3;
         CredentialPair credentialPair = null;
@@ -87,14 +87,30 @@ public class HMSApp
             do
             {
                 System.out.println();
-                System.out.print("""
-                                         ----- Welcome to Hospital Management System -----
-                                         1. Login
-                                         2. Forgot password
-                                         0. Exit program
-                                         """);
-                System.out.print("Enter an option: ");
-                option = Integer.parseInt(input.nextLine());
+                
+                while(true){
+                    try{
+                        if(i==10|| i==0){
+                            System.out.print("""
+                            ----- Welcome to Hospital Management System -----
+                            1. Login
+                            2. Forgot password
+                            0. Exit program
+                            """);
+                            i=1;
+                        }
+                        System.out.print("Enter an option: ");
+                        option = Integer.parseInt(input.nextLine());
+                        break;
+                    }catch(NumberFormatException e) { 
+                        System.out.println("Invalid Option! ");
+                                                
+                    } catch(NullPointerException e) {
+                        System.out.println("Invalid Option! ");
+                    }
+                    i++;
+                }
+                
 
                 switch (option)
                 {
@@ -109,30 +125,36 @@ public class HMSApp
 
                             counter++;
                         }
+                        i=0;
                     }
                     case 2 ->
                     {
                         printForgetPasswordDialog();
+                        i=0;
                     }
                     case 33 ->
                     {
                         credentialPair = new CredentialPair("P1001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
+                        i=0;
                     }
                     case 44 ->
                     {
                         credentialPair = new CredentialPair("A001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
+                        i=0;
                     }
                     case 55 ->
                     {
                         credentialPair = new CredentialPair("D001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
+                        i=0;
                     }
                     case 66 ->
                     {
                         credentialPair = new CredentialPair("P001", "password");
                         performAuthentication(credentialPair, counter, maximumAttempt);
+                        i=0;
                     }
                     case 0 ->
                     {
@@ -318,6 +340,8 @@ public class HMSApp
                     if (userAuthenticationService.changePassword(authenticatedUser.getId(), password))
                     {
                         System.out.println("Password changed successfully.");
+                        sharedUserService.setPatientList();
+                        sharedUserService.setStaffList();
                         passwordVerified = true;
                     }
                     else

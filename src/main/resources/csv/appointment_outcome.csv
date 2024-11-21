@@ -1,2 +1,2 @@
 Appointment Outcome ID,Appointment ID,Service,Notes,Medicine,Medicine Quantity,Prescription Status
-AO0001,A0001,Testing,NA,Paracetamol,10,false
+AO0001,A0001,Testing,NA,Paracetamol,10,true
