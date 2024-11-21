@@ -337,7 +337,7 @@ public class HMSApp
             case "pharmacist" ->
             {
                 assert authenticatedUser instanceof Pharmacist;
-                return new PharmacistServiceImpl((Pharmacist) authenticatedUser, inventoryService);
+                return new PharmacistServiceImpl((Pharmacist) authenticatedUser, inventoryService, appointmentOutcomeManager);
             }
             default ->
             {
