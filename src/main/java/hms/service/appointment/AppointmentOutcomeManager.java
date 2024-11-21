@@ -1,5 +1,6 @@
 package hms.service.appointment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,12 +14,19 @@ import hms.service.medicine.InventoryServiceImpl;
 public class AppointmentOutcomeManager {
     InventoryServiceImpl inventoryService;
     AppointmentOutcomeRepository appointmentOutcomeRepository;
+    private static int counter = 1;
     List<AppointmentOutcome> appointmentOutcomes;
 
     public AppointmentOutcomeManager(InventoryServiceImpl inventoryService) {
         this.inventoryService = inventoryService;
         this.appointmentOutcomeRepository = new AppointmentOutcomeRepository(inventoryService);
         this.appointmentOutcomes = appointmentOutcomeRepository.importFromCsv();
+        // Initialize the counter based on existing records
+        if (appointmentOutcomes != null && !appointmentOutcomes.isEmpty()) {
+            counter = appointmentOutcomes.size() + 1;
+        } else {
+            appointmentOutcomes = new ArrayList<>(); // Ensure the list is initialized
+        }
     }
 
     public void createAppointmentOutcome(String appointmentId, Scanner input) {
@@ -45,13 +53,18 @@ public class AppointmentOutcomeManager {
 
     public String generateAppointmentID() {
         String lastAppointmentID = getLastAppointmentID();
-        if (lastAppointmentID == null) {
-            return "AO00001";
+        if (lastAppointmentID != null && lastAppointmentID.length() > 1) {
+            String numericPart = lastAppointmentID.substring(1); // Extract the numeric part
+            try {
+                int id = Integer.parseInt(numericPart);
+                id++;
+                return "O" + String.format("%05d", id); // Format the new ID
+            } catch (NumberFormatException e) {
+                // Handle the exception if the numeric part is not a valid integer
+                e.printStackTrace();
+            }
         }
-
-        int numericPart = Integer.parseInt(lastAppointmentID.substring(1));
-        int newNumericPart = numericPart + 1;
-        return String.format("AO%05d", newNumericPart);
+        return "O00001"; // Default ID if no valid last ID is found
     }
 
     private String getLastAppointmentID() {

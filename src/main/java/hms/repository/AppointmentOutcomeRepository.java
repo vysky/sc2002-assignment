@@ -48,7 +48,12 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
                 String notes = record.get("Notes");
                 String medicine = record.get("Medicine");
                 Medicine medicineObject;
-                int medicineQuantity = Integer.parseInt(record.get("Medicine Quantity"));
+                int medicineQuantity = 0; // Default value
+
+                if (record.isMapped("Medicine Quantity")) {
+                    medicineQuantity = Integer.parseInt(record.get("Medicine Quantity"));
+                }
+
                 MedicineQuantityPair medicineQuantityPair;
                 boolean prescriptionStatus;
 
@@ -119,7 +124,7 @@ public class AppointmentOutcomeRepository implements CsvRepository<AppointmentOu
 
             for (AppointmentOutcome appointmentOutcome : appointmentOutcomes)
             {
-                csvPrinter.printRecord(appointmentOutcome.getAppointmentOutcomeId(), appointmentOutcome.getAppointmentId(), appointmentOutcome.getService(), appointmentOutcome.getNotes(), appointmentOutcome.getPrescription().getMedicineQuantityPair(), appointmentOutcome.getPrescription().getStatus());
+                csvPrinter.printRecord(appointmentOutcome.getAppointmentOutcomeId(), appointmentOutcome.getAppointmentId(), appointmentOutcome.getService(), appointmentOutcome.getNotes(), appointmentOutcome.getPrescription().getMedicineQuantityPair().medicine().getMedicineName(), appointmentOutcome.getPrescription().getMedicineQuantityPair().quantity(), appointmentOutcome.getPrescription().getStatus());
             }
 
             csvPrinter.flush();

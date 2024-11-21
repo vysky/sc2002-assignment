@@ -3,6 +3,7 @@ package hms.service.appointment;
 import java.util.Scanner;
 
 public class RecordManager {
+
     private AppointmentManager appointmentManager;
     private AppointmentOutcomeManager appointmentOutcomeManager;
 
@@ -11,15 +12,18 @@ public class RecordManager {
         this.appointmentOutcomeManager = appointmentOutcomeManager;
     }
 
-    public void recordAppointmentOutcome(String appointmentID, Scanner input) {
-        // set appointment status as completed
-        appointmentManager.updateAppointmentStatus(appointmentID, "Completed");
+    public void recordAppointmentOutcome(String doctorId, Scanner input) {
+        String appointmentID = appointmentManager.getAppointmentId(doctorId, input);
+        if (appointmentID != null) {
+            // set appointment status as completed
+            appointmentManager.updateAppointmentStatus(appointmentID, "Completed");
 
-        // open new entry in appointment outcome
-        appointmentOutcomeManager.createAppointmentOutcome(appointmentID, input);
+            // open new entry in appointment outcome
+            appointmentOutcomeManager.createAppointmentOutcome(appointmentID, input);
 
-        // write appointment outcome to CSV
-        appointmentOutcomeManager.updateAppointmentOutcomeList();
+            // write appointment outcome to CSV
+            appointmentOutcomeManager.updateAppointmentOutcomeList();
+        }
 
     }
 }

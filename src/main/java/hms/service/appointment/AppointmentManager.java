@@ -462,13 +462,19 @@ public class AppointmentManager {
     public void getAppointments(String doctorId) {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
+            int index = 1;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals(doctorId)) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                    System.out.println((index++) + ":");
                     System.out.println("Appointment ID: " + nextLine[0]);
                     System.out.println("Patient ID: " + nextLine[1]);
                     System.out.println("Date: " + nextLine[3]);
                     System.out.println("Timeslot: " + nextLine[4]);
                     System.out.println();
+                }
+                else {
+                    System.out.println("No pending appointments found for the given doctor ID.");
+                    return;
                 }
             }
         } catch (IOException | CsvValidationException e) {
@@ -482,11 +488,6 @@ public class AppointmentManager {
         try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
             String[] nextLine;
             List<Appointment> appointments = new ArrayList<>();
-            while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
-                    appointments.add(new Appointment(nextLine[0], nextLine[1], nextLine[2], nextLine[3], nextLine[4], nextLine[5]));
-                }
-            }
 
             if (appointments.isEmpty()) {
                 System.out.println("No pending appointments.");
@@ -498,10 +499,46 @@ public class AppointmentManager {
 
             int appointmentNumber = Integer.parseInt(input.nextLine());
             selectedAppointment =  appointments.get(appointmentNumber - 1);
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return selectedAppointment;
+    }
+
+    public String getAppointmentId(String doctorId, Scanner input) {
+        List<String> appointmentIds = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(APPOINTMENTS_FILE))) {
+            String[] nextLine;
+            int index = 1;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals(doctorId) && nextLine[5].equals("Pending")) {
+                    System.out.println((index++) + ":");
+                    System.out.println("Appointment ID: " + nextLine[0]);
+                    System.out.println("Patient ID: " + nextLine[1]);
+                    System.out.println("Date: " + nextLine[3]);
+                    System.out.println("Timeslot: " + nextLine[4]);
+                    System.out.println();
+                    appointmentIds.add(nextLine[0]);
+                }
+            }
+            
+            if (!appointmentIds.isEmpty()) {
+                System.out.print("Enter the index of the appointment: ");
+                int userIndex = Integer.parseInt(input.nextLine());
+                if (userIndex > 0 && userIndex <= appointmentIds.size()) {
+                    return appointmentIds.get(userIndex - 1);
+                } else {
+                    System.out.println("Invalid index.");
+                    return null;
+                }
+            } else {
+                System.out.println("No pending appointments found for the given doctor ID.");
+                return null;
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

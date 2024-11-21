@@ -210,8 +210,6 @@ public class DoctorServiceImpl extends UserService
     }
 
     public void option7(AppointmentManager am, RecordManager rm, Scanner input) { // Record Appointment Outcome
-        am.getAppointments(authenticatedDoctor.getId());
-        String appointmentID = input.nextLine();
-        rm.recordAppointmentOutcome(appointmentID, input);
+        rm.recordAppointmentOutcome(authenticatedDoctor.getId(), input);
     }
 }
